@@ -1,0 +1,149 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+// Enums replace the CHECK (col IN (...)) constraints from the original SQL.
+// Postgres stores them as native enum types — same enforcement, cleaner TS.
+// ──────────────────────────────────────────────────────────────────────────
+
+enum Sexo {
+  m
+  f
+}
+
+enum StatusUsuarioCargo {
+  ativo
+  inativo
+}
+
+enum ResultadoTriagem {
+  suspeito
+  baixo_risco
+}
+
+enum CategoriaSintoma {
+  comportamental
+  cognitivo
+  fisico
+}
+
+// ──────────────────────────────────────────────────────────────────────────
+// Models. Field names are camelCase (Prisma idiom for clean TS); DB columns
+// stay snake_case via @map / @@map so the Postgres schema matches the
+// original SQL.
+// ──────────────────────────────────────────────────────────────────────────
+
+model Usuario {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nome       String
+  email      String    @unique
+  criadoEm   DateTime  @default(now()) @map("criado_em")   @db.Timestamptz
+  deletadoEm DateTime?                  @map("deletado_em") @db.Timestamptz
+
+  cargos     UsuarioCargo[]
+  avaliacoes Avaliacao[]
+
+  @@map("usuario")
+}
+
+model Cargo {
+  id   Int    @id @default(autoincrement())
+  nome String @unique
+
+  usuarios UsuarioCargo[]
+
+  @@map("cargo")
+}
+
+model UsuarioCargo {
+  id             String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  idUsuario      String             @map("id_usuario")       @db.Uuid
+  idCargo        Int                @map("id_cargo")
+  dataAtribuicao DateTime           @default(now())           @map("data_atribuicao") @db.Timestamptz
+  status         StatusUsuarioCargo @default(ativo)
+
+  usuario Usuario @relation(fields: [idUsuario], references: [id])
+  cargo   Cargo   @relation(fields: [idCargo],   references: [id])
+
+  @@map("usuario_cargo")
+}
+
+model ResponsavelPaciente {
+  id       String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nome     String
+  cpf      String? @unique @map("cpf") @db.VarChar(11)
+  email    String?
+  telefone String? @db.VarChar(13)
+
+  pacientes Paciente[]
+
+  @@map("responsavel_paciente")
+}
+
+model Paciente {
+  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  idResponsavel  String?   @map("id_responsavel")  @db.Uuid
+  nome           String
+  sexo           Sexo
+  dataNascimento DateTime  @map("data_nascimento") @db.Date
+  deletadoEm     DateTime? @map("deletado_em")     @db.Timestamptz
+
+  responsavel ResponsavelPaciente? @relation(fields: [idResponsavel], references: [id], onDelete: SetNull)
+  avaliacoes  Avaliacao[]
+
+  @@map("paciente")
+}
+
+model Avaliacao {
+  id                String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  idUsuario         String            @map("id_usuario")          @db.Uuid
+  idPaciente        String            @map("id_paciente")         @db.Uuid
+  score             Decimal?          @db.Decimal(3, 2)
+  resultadoTriagem  ResultadoTriagem? @map("resultado_triagem")
+  dataAvaliacao     DateTime          @default(now())              @map("data_avaliacao")    @db.Timestamptz
+  thresholdAplicado Decimal?          @map("threshold_aplicado")  @db.Decimal(4, 3)
+  deletadoEm        DateTime?         @map("deletado_em")          @db.Timestamptz
+
+  usuario  Usuario            @relation(fields: [idUsuario],  references: [id])
+  paciente Paciente           @relation(fields: [idPaciente], references: [id])
+  sintomas AvaliacaoSintoma[]
+
+  @@map("avaliacao")
+}
+
+model Sintoma {
+  id            String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nomeSintoma   String            @map("nome_sintoma")
+  categoria     CategoriaSintoma?
+  pesoM         Decimal?          @map("peso_m")          @db.Decimal(3, 2)
+  pesoF         Decimal?          @map("peso_f")          @db.Decimal(3, 2)
+  aplicavelSexo Sexo?             @map("aplicavel_sexo")
+
+  avaliacoes AvaliacaoSintoma[]
+
+  @@map("sintoma")
+}
+
+model AvaliacaoSintoma {
+  idAvaliacao String @map("id_avaliacao") @db.Uuid
+  idSintoma   String @map("id_sintoma")   @db.Uuid
+
+  avaliacao Avaliacao @relation(fields: [idAvaliacao], references: [id])
+  sintoma   Sintoma   @relation(fields: [idSintoma],   references: [id])
+
+  @@id([idAvaliacao, idSintoma])
+  @@map("avaliacao_sintoma")
+}
