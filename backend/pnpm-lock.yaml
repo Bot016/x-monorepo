@@ -21,6 +21,9 @@ importers:
       '@types/node':
         specifier: ^25.7.0
         version: 25.7.0
+      dotenv:
+        specifier: ^17.4.2
+        version: 17.4.2
       nodemon:
         specifier: ^3.1.14
         version: 3.1.14
