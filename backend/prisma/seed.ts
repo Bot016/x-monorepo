@@ -21,7 +21,7 @@ const sintomas = [
   { nomeSintoma: "Atraso no desenvolvimento da fala",     categoria: "cognitivo",      pesoM: "0.14", pesoF: "0.01", aplicavelSexo: null },
   { nomeSintoma: "Dificuldade de aprendizado",            categoria: "cognitivo",      pesoM: "0.18", pesoF: "0.28", aplicavelSexo: null },
   { nomeSintoma: "Deficit de atenção",                    categoria: "comportamental", pesoM: "0.17", pesoF: "0.12", aplicavelSexo: null },
-  { nomeSintoma: "Deficiencia intelectual",               categoria: "cognitivo", pesoM: "0.32", pesoF: "0.20", aplicavelSexo: null },
+  { nomeSintoma: "Deficiencia intelectual",               categoria: "cognitivo",      pesoM: "0.32", pesoF: "0.20", aplicavelSexo: null },
   { nomeSintoma: "Hiperatividade",                        categoria: "comportamental", pesoM: "0.12", pesoF: "0.04", aplicavelSexo: null },
   { nomeSintoma: "Comportamento agressivo",               categoria: "comportamental", pesoM: "0.01", pesoF: "0.02", aplicavelSexo: null },
   { nomeSintoma: "Evitacao de contato visual",            categoria: "comportamental", pesoM: "0.06", pesoF: "0.08", aplicavelSexo: null },
