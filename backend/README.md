@@ -15,16 +15,33 @@ PORT=3000
 NODE_ENV=development
 ```
 
+## Primeiros passos
+
+```bash
+cp .env.example .env   # 1. preencha com as credenciais do Supabase
+pnpm install           # 2. instala as dependências
+pnpm db:migrate        # 3. cria as tabelas no banco + roda o seed
+pnpm dev               # 4. sobe o servidor (http://localhost:3000)
+```
+
+Para conferir, acesse `http://localhost:3000/health` — deve responder `OK`
+(esse endpoint também testa a conexão com o banco).
+
 ## Comandos
 
 ```bash
-pnpm install        # instala dependências
-pnpm dev            # sobe o servidor em watch (tsx)
+pnpm dev            # servidor em watch (tsx)
+pnpm build          # compila TypeScript para dist/
+pnpm start          # roda o build de produção
 
 pnpm db:migrate     # cria/aplica migrations + roda o seed
 pnpm db:seed        # roda só o seed
 pnpm db:studio      # GUI do banco
 pnpm db:deploy      # aplica migrations sem prompt (CI/produção)
+
+pnpm check:types    # checagem de tipos (tsc)
+pnpm format         # formata o código com Prettier
+pnpm format:check   # checa formatação sem alterar
 ```
 
 ## Estrutura
