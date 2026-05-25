@@ -18,18 +18,18 @@ const cargos = ["administrador", "profissional_saude"] as const;
 // Expectation: 12 rows total → 11 apply to females, 12 to males.
 // ─────────────────────────────────────────────────────────────────────────────
 const sintomas = [
-  { nomeSintoma: "Dificuldade de aprendizado",            categoria: "cognitivo",      pesoM: "0.10", pesoF: "0.10", aplicavelSexo: null },
-  { nomeSintoma: "Déficit de atenção",                    categoria: "comportamental", pesoM: "0.08", pesoF: "0.09", aplicavelSexo: null },
-  { nomeSintoma: "Comportamento agressivo",               categoria: "comportamental", pesoM: "0.07", pesoF: "0.07", aplicavelSexo: null },
-  { nomeSintoma: "Atraso no desenvolvimento da fala",     categoria: "cognitivo",      pesoM: "0.10", pesoF: "0.10", aplicavelSexo: null },
-  { nomeSintoma: "Hiperatividade",                        categoria: "comportamental", pesoM: "0.07", pesoF: "0.08", aplicavelSexo: null },
-  { nomeSintoma: "Ansiedade social",                      categoria: "comportamental", pesoM: "0.06", pesoF: "0.08", aplicavelSexo: null },
-  { nomeSintoma: "Contato visual reduzido",               categoria: "comportamental", pesoM: "0.06", pesoF: "0.06", aplicavelSexo: null },
-  { nomeSintoma: "Comportamentos repetitivos",            categoria: "comportamental", pesoM: "0.07", pesoF: "0.07", aplicavelSexo: null },
-  { nomeSintoma: "Hipersensibilidade sensorial",          categoria: "comportamental", pesoM: "0.06", pesoF: "0.06", aplicavelSexo: null },
-  { nomeSintoma: "Face alongada / orelhas proeminentes",  categoria: "fisico",         pesoM: "0.09", pesoF: "0.08", aplicavelSexo: null },
-  { nomeSintoma: "Hiperextensibilidade articular",        categoria: "fisico",         pesoM: "0.07", pesoF: "0.08", aplicavelSexo: null },
-  { nomeSintoma: "Macroorquidismo",                       categoria: "fisico",         pesoM: "0.10", pesoF: null,   aplicavelSexo: "m" },
+  { nomeSintoma: "Atraso no desenvolvimento da fala",     categoria: "cognitivo",      pesoM: "0.14", pesoF: "0.01", aplicavelSexo: null },
+  { nomeSintoma: "Dificuldade de aprendizado",            categoria: "cognitivo",      pesoM: "0.18", pesoF: "0.28", aplicavelSexo: null },
+  { nomeSintoma: "Deficit de atenção",                    categoria: "comportamental", pesoM: "0.17", pesoF: "0.12", aplicavelSexo: null },
+  { nomeSintoma: "Deficiencia intelectual",               categoria: "cognitivo",      pesoM: "0.32", pesoF: "0.20", aplicavelSexo: null },
+  { nomeSintoma: "Hiperatividade",                        categoria: "comportamental", pesoM: "0.12", pesoF: "0.04", aplicavelSexo: null },
+  { nomeSintoma: "Comportamento agressivo",               categoria: "comportamental", pesoM: "0.01", pesoF: "0.02", aplicavelSexo: null },
+  { nomeSintoma: "Evitacao de contato visual",            categoria: "comportamental", pesoM: "0.06", pesoF: "0.08", aplicavelSexo: null },
+  { nomeSintoma: "Evitacao de contato fisico",            categoria: "comportamental", pesoM: "0.04", pesoF: "0.07", aplicavelSexo: null },
+  { nomeSintoma: "Comportamentos repetitivos",            categoria: "comportamental", pesoM: "0.17", pesoF: "0.05", aplicavelSexo: null },
+  { nomeSintoma: "Hipermobilidade articular",             categoria: "fisico",         pesoM: "0.19", pesoF: "0.04", aplicavelSexo: null },
+  { nomeSintoma: "Macroorquidismo",                       categoria: "fisico",         pesoM: "0.26", pesoF: null,   aplicavelSexo: "m" },
+  { nomeSintoma: "Face alongada / orelhas proeminentes",  categoria: "fisico",         pesoM: "0.29", pesoF: "0.09", aplicavelSexo: null },
 ] as const;
 
 async function main() {
