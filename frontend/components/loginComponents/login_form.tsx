@@ -5,7 +5,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { LoginInput } from '@/components/loginComponents/login_input';
 import { LoginButton } from '@/components/loginComponents/login_button';
-import { Colors } from '@/constants/colors';
+import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
 type LoginFormProps = {
