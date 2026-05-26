@@ -3,7 +3,7 @@ import { TouchableOpacity, StyleSheet } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { Colors } from '@/constants/theme';;
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useThemeColor } from '@/hooks/use-theme-color';
 
 type LoginButtonProps = {
 onPress: () => void;
@@ -11,8 +11,7 @@ label?: string;
 };
 
 export function LoginButton({ onPress, label = 'Entrar' }: LoginButtonProps) {
-const colorScheme = useColorScheme();
-const tint = Colors[colorScheme ?? 'light'].tint;
+const tint = useThemeColor({}, "corBotao");
 
 return (
     <TouchableOpacity
