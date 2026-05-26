@@ -1,115 +1,116 @@
 import { prisma } from "../src/config/prisma.js";
 
-const cargos = ["administrador", "profissional_saude"] as const;
-const sintomas = [
+const roles = ["administrator", "healthcare_professional"] as const;
+
+const symptoms = [
   {
-    nomeSintoma: "Atraso no desenvolvimento da fala",
-    categoria: "cognitivo",
-    pesoM: "0.14",
-    pesoF: "0.01",
-    aplicavelSexo: null,
+    symptomName: "Delayed speech development",
+    category: "cognitive",
+    weightM: "0.14",
+    weightF: "0.01",
+    applicableSex: null,
   },
   {
-    nomeSintoma: "Dificuldade de aprendizado",
-    categoria: "cognitivo",
-    pesoM: "0.18",
-    pesoF: "0.28",
-    aplicavelSexo: null,
+    symptomName: "Learning difficulty",
+    category: "cognitive",
+    weightM: "0.18",
+    weightF: "0.28",
+    applicableSex: null,
   },
   {
-    nomeSintoma: "Deficit de atenção",
-    categoria: "comportamental",
-    pesoM: "0.17",
-    pesoF: "0.12",
-    aplicavelSexo: null,
+    symptomName: "Attention deficit",
+    category: "behavioral",
+    weightM: "0.17",
+    weightF: "0.12",
+    applicableSex: null,
   },
   {
-    nomeSintoma: "Deficiencia intelectual",
-    categoria: "cognitivo",
-    pesoM: "0.32",
-    pesoF: "0.20",
-    aplicavelSexo: null,
+    symptomName: "Intellectual disability",
+    category: "cognitive",
+    weightM: "0.32",
+    weightF: "0.20",
+    applicableSex: null,
   },
   {
-    nomeSintoma: "Hiperatividade",
-    categoria: "comportamental",
-    pesoM: "0.12",
-    pesoF: "0.04",
-    aplicavelSexo: null,
+    symptomName: "Hyperactivity",
+    category: "behavioral",
+    weightM: "0.12",
+    weightF: "0.04",
+    applicableSex: null,
   },
   {
-    nomeSintoma: "Comportamento agressivo",
-    categoria: "comportamental",
-    pesoM: "0.01",
-    pesoF: "0.02",
-    aplicavelSexo: null,
+    symptomName: "Aggressive behavior",
+    category: "behavioral",
+    weightM: "0.01",
+    weightF: "0.02",
+    applicableSex: null,
   },
   {
-    nomeSintoma: "Evitacao de contato visual",
-    categoria: "comportamental",
-    pesoM: "0.06",
-    pesoF: "0.08",
-    aplicavelSexo: null,
+    symptomName: "Avoidance of eye contact",
+    category: "behavioral",
+    weightM: "0.06",
+    weightF: "0.08",
+    applicableSex: null,
   },
   {
-    nomeSintoma: "Evitacao de contato fisico",
-    categoria: "comportamental",
-    pesoM: "0.04",
-    pesoF: "0.07",
-    aplicavelSexo: null,
+    symptomName: "Avoidance of physical contact",
+    category: "behavioral",
+    weightM: "0.04",
+    weightF: "0.07",
+    applicableSex: null,
   },
   {
-    nomeSintoma: "Comportamentos repetitivos",
-    categoria: "comportamental",
-    pesoM: "0.17",
-    pesoF: "0.05",
-    aplicavelSexo: null,
+    symptomName: "Repetitive behaviors",
+    category: "behavioral",
+    weightM: "0.17",
+    weightF: "0.05",
+    applicableSex: null,
   },
   {
-    nomeSintoma: "Hipermobilidade articular",
-    categoria: "fisico",
-    pesoM: "0.19",
-    pesoF: "0.04",
-    aplicavelSexo: null,
+    symptomName: "Joint hypermobility",
+    category: "physical",
+    weightM: "0.19",
+    weightF: "0.04",
+    applicableSex: null,
   },
   {
-    nomeSintoma: "Macroorquidismo",
-    categoria: "fisico",
-    pesoM: "0.26",
-    pesoF: null,
-    aplicavelSexo: "m",
+    symptomName: "Macroorchidism",
+    category: "physical",
+    weightM: "0.26",
+    weightF: null,
+    applicableSex: "m",
   },
   {
-    nomeSintoma: "Face alongada / orelhas proeminentes",
-    categoria: "fisico",
-    pesoM: "0.29",
-    pesoF: "0.09",
-    aplicavelSexo: null,
+    symptomName: "Elongated face / prominent ears",
+    category: "physical",
+    weightM: "0.29",
+    weightF: "0.09",
+    applicableSex: null,
   },
 ] as const;
 
 async function main() {
-  for (const nome of cargos) {
-    await prisma.cargo.upsert({
-      where: { nome },
+  for (const name of roles) {
+    await prisma.role.upsert({
+      where: { name },
       update: {},
-      create: { nome },
+      create: { name },
     });
   }
-  console.log(`Seeded ${cargos.length} cargos.`);
+  console.log(`Seeded ${roles.length} roles.`);
 
-  // sintoma.nomeSintoma is not unique, so guard each insert by name to stay idempotent.
+  // symptom.symptomName is not unique, so guard each insert by name to stay idempotent.
   let inserted = 0;
-  for (const s of sintomas) {
-    const existing = await prisma.sintoma.findFirst({
-      where: { nomeSintoma: s.nomeSintoma },
+  for (const s of symptoms) {
+    const existing = await prisma.symptom.findFirst({
+      where: { symptomName: s.symptomName },
     });
     if (existing) continue;
-    await prisma.sintoma.create({ data: s });
+    await prisma.symptom.create({ data: s });
     inserted++;
   }
   console.log(
-    `Seeded ${inserted} new sintomas (${sintomas.length} total defined).`,
+    `Seeded ${inserted} new symptoms (${symptoms.length} total defined).`,
   );
 }
 
