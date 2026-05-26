@@ -17,25 +17,25 @@ datasource db {
 // Postgres stores them as native enum types — same enforcement, cleaner TS.
 // ──────────────────────────────────────────────────────────────────────────
 
-enum Sexo {
+enum Sex {
   m
   f
 }
 
-enum StatusUsuarioCargo {
-  ativo
-  inativo
+enum UserRoleStatus {
+  active
+  inactive
 }
 
-enum ResultadoTriagem {
-  suspeito
-  baixo_risco
+enum ScreeningResult {
+  suspected
+  low_risk
 }
 
-enum CategoriaSintoma {
-  comportamental
-  cognitivo
-  fisico
+enum SymptomCategory {
+  behavioral
+  cognitive
+  physical
 }
 
 // ──────────────────────────────────────────────────────────────────────────
@@ -44,104 +44,104 @@ enum CategoriaSintoma {
 // original SQL.
 // ──────────────────────────────────────────────────────────────────────────
 
-model Usuario {
-  id         String    @id @db.Uuid
-  nome       String
-  email      String    @unique
-  criadoEm   DateTime  @default(now()) @map("criado_em")   @db.Timestamptz
-  deletadoEm DateTime?                  @map("deletado_em") @db.Timestamptz
+model User {
+  id        String    @id @db.Uuid
+  name      String
+  email     String    @unique
+  createdAt DateTime  @default(now()) @map("created_at") @db.Timestamptz
+  deletedAt DateTime? @map("deleted_at") @db.Timestamptz
 
-  cargos     UsuarioCargo[]
-  avaliacoes Avaliacao[]
+  roles       UserRole[]
+  assessments Assessment[]
 
-  @@map("usuario")
+  @@map("user")
 }
 
-model Cargo {
+model Role {
   id   Int    @id @default(autoincrement())
-  nome String @unique
+  name String @unique
 
-  usuarios UsuarioCargo[]
+  users UserRole[]
 
-  @@map("cargo")
+  @@map("role")
 }
 
-model UsuarioCargo {
-  id             String             @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  idUsuario      String             @map("id_usuario")       @db.Uuid
-  idCargo        Int                @map("id_cargo")
-  dataAtribuicao DateTime           @default(now())           @map("data_atribuicao") @db.Timestamptz
-  status         StatusUsuarioCargo @default(ativo)
+model UserRole {
+  id         String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId     String         @map("user_id") @db.Uuid
+  roleId     Int            @map("role_id")
+  assignedAt DateTime       @default(now()) @map("assigned_at") @db.Timestamptz
+  status     UserRoleStatus @default(active)
 
-  usuario Usuario @relation(fields: [idUsuario], references: [id])
-  cargo   Cargo   @relation(fields: [idCargo],   references: [id])
+  user User @relation(fields: [userId], references: [id])
+  role Role @relation(fields: [roleId], references: [id])
 
-  @@map("usuario_cargo")
+  @@map("user_role")
 }
 
-model ResponsavelPaciente {
-  id       String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  nome     String
-  cpf      String? @unique @map("cpf") @db.VarChar(11)
-  email    String?
-  telefone String? @db.VarChar(13)
+model PatientGuardian {
+  id    String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name  String
+  cpf   String? @unique @map("cpf") @db.VarChar(11)
+  email String?
+  phone String? @db.VarChar(13)
 
-  pacientes Paciente[]
+  patients Patient[]
 
-  @@map("responsavel_paciente")
+  @@map("patient_guardian")
 }
 
-model Paciente {
-  id             String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  idResponsavel  String?   @map("id_responsavel")  @db.Uuid
-  nome           String
-  sexo           Sexo
-  dataNascimento DateTime  @map("data_nascimento") @db.Date
-  deletadoEm     DateTime? @map("deletado_em")     @db.Timestamptz
+model Patient {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  guardianId String?   @map("guardian_id") @db.Uuid
+  name       String
+  sex        Sex
+  birthDate  DateTime  @map("birth_date") @db.Date
+  deletedAt  DateTime? @map("deleted_at") @db.Timestamptz
 
-  responsavel ResponsavelPaciente? @relation(fields: [idResponsavel], references: [id], onDelete: SetNull)
-  avaliacoes  Avaliacao[]
+  guardian    PatientGuardian? @relation(fields: [guardianId], references: [id], onDelete: SetNull)
+  assessments Assessment[]
 
-  @@map("paciente")
+  @@map("patient")
 }
 
-model Avaliacao {
-  id                String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  idUsuario         String            @map("id_usuario")          @db.Uuid
-  idPaciente        String            @map("id_paciente")         @db.Uuid
-  score             Decimal?          @db.Decimal(3, 2)
-  resultadoTriagem  ResultadoTriagem? @map("resultado_triagem")
-  dataAvaliacao     DateTime          @default(now())              @map("data_avaliacao")    @db.Timestamptz
-  thresholdAplicado Decimal?          @map("threshold_aplicado")  @db.Decimal(4, 3)
-  deletadoEm        DateTime?         @map("deletado_em")          @db.Timestamptz
+model Assessment {
+  id               String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId           String           @map("user_id") @db.Uuid
+  patientId        String           @map("patient_id") @db.Uuid
+  score            Decimal?         @db.Decimal(3, 2)
+  screeningResult  ScreeningResult? @map("screening_result")
+  assessmentDate   DateTime         @default(now()) @map("assessment_date") @db.Timestamptz
+  appliedThreshold Decimal?         @map("applied_threshold") @db.Decimal(4, 3)
+  deletedAt        DateTime?        @map("deleted_at") @db.Timestamptz
 
-  usuario  Usuario            @relation(fields: [idUsuario],  references: [id])
-  paciente Paciente           @relation(fields: [idPaciente], references: [id])
-  sintomas AvaliacaoSintoma[]
+  user     User                @relation(fields: [userId], references: [id])
+  patient  Patient             @relation(fields: [patientId], references: [id])
+  symptoms AssessmentSymptom[]
 
-  @@map("avaliacao")
+  @@map("assessment")
 }
 
-model Sintoma {
-  id            String            @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  nomeSintoma   String            @map("nome_sintoma")
-  categoria     CategoriaSintoma?
-  pesoM         Decimal?          @map("peso_m")          @db.Decimal(3, 2)
-  pesoF         Decimal?          @map("peso_f")          @db.Decimal(3, 2)
-  aplicavelSexo Sexo?             @map("aplicavel_sexo")
+model Symptom {
+  id            String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  symptomName   String           @map("symptom_name")
+  category      SymptomCategory?
+  weightM       Decimal?         @map("weight_m") @db.Decimal(3, 2)
+  weightF       Decimal?         @map("weight_f") @db.Decimal(3, 2)
+  applicableSex Sex?             @map("applicable_sex")
 
-  avaliacoes AvaliacaoSintoma[]
+  assessments AssessmentSymptom[]
 
-  @@map("sintoma")
+  @@map("symptom")
 }
 
-model AvaliacaoSintoma {
-  idAvaliacao String @map("id_avaliacao") @db.Uuid
-  idSintoma   String @map("id_sintoma")   @db.Uuid
+model AssessmentSymptom {
+  assessmentId String @map("assessment_id") @db.Uuid
+  symptomId    String @map("symptom_id") @db.Uuid
 
-  avaliacao Avaliacao @relation(fields: [idAvaliacao], references: [id])
-  sintoma   Sintoma   @relation(fields: [idSintoma],   references: [id])
+  assessment Assessment @relation(fields: [assessmentId], references: [id])
+  symptom    Symptom    @relation(fields: [symptomId], references: [id])
 
-  @@id([idAvaliacao, idSintoma])
-  @@map("avaliacao_sintoma")
+  @@id([assessmentId, symptomId])
+  @@map("assessment_symptom")
 }
