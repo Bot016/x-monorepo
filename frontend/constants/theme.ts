@@ -17,6 +17,8 @@ export const Colors = {
     tabIconDefault: '#687076',
     tabIconSelected: tintColorLight,
     corBotao:'#00478D',
+    placeholderTextColor: '#C2C6D4',
+    buttonColor: '#005EB8',
   },
   dark: {
     text: '#ECEDEE',
@@ -26,6 +28,8 @@ export const Colors = {
     tabIconDefault: '#9BA1A6',
     tabIconSelected: tintColorDark,
     corBotao:'#00478D',
+    placeholderTextColor: '#C2C6D4',
+    buttonColor: '#005EB8',
   },
 };
 
