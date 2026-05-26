@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
+import { ThemedView } from '@/components/themed-view';
 import { LoginForm } from '@/components/loginComponents/login_form';
 import { LoginHeader } from '@/components/loginComponents/login_header';
 
@@ -8,7 +9,6 @@ export default function LoginScreen() {
 const router = useRouter();
 
 const handleLogin = (email: string, password: string) => {
-    // sua lógica de autenticação aqui
     console.log('Login:', email, password);
     router.replace('/(tabs)');
 };
@@ -18,13 +18,13 @@ const handleForgotPassword = () => {
 };
 
 return (
-    <View style={styles.container}>
+    <ThemedView lightColor="#FFFFFF" darkColor="#FFFFFF" style={styles.container}>
     <LoginHeader />
     <LoginForm
         onSubmit={handleLogin}
         onForgotPassword={handleForgotPassword}
     />
-    </View>
+    </ThemedView>
 );
 }
 

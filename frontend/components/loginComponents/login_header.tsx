@@ -8,15 +8,13 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export function LoginHeader() {
 const colorScheme = useColorScheme();
-const isDark = colorScheme === 'dark';
 
 return (
-    <ThemedView style={styles.container}>
+    <ThemedView lightColor="#FFFFFF" darkColor="#FFFFFF" style={styles.container}>
     <ThemedView
-        style={[
-        styles.iconBox,
-        { backgroundColor: isDark ? '#1E3A5F' : '#DBEAFE' },
-        ]}
+        lightColor="#DBEAFE"
+        darkColor="#DBEAFE"
+        style={styles.iconBox}
     >
         <IconSymbol
         name="cross.case.fill"
@@ -24,7 +22,12 @@ return (
         color={Colors[colorScheme ?? 'light'].tint}
         />
     </ThemedView>
-    <ThemedText type="title" style={styles.title}>
+    <ThemedText
+        type="title"
+        lightColor="#0F172A"
+        darkColor="#0F172A"
+        style={styles.title}
+    >
         Login Triagem X
     </ThemedText>
     </ThemedView>

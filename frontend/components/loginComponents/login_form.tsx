@@ -19,14 +19,11 @@ const [password, setPassword] = useState('');
 const [passwordVisible, setPasswordVisible] = useState(false);
 const colorScheme = useColorScheme();
 
-const handleSubmit = () => {
-    onSubmit(email, password);
-};
-
 return (
-    <ThemedView style={styles.container}>
-      {/* Campo E-mail */}
-    <ThemedText style={styles.label}>E-MAIL PROFISSIONAL</ThemedText>
+    <ThemedView lightColor="#FFFFFF" darkColor="#FFFFFF" style={styles.container}>
+    <ThemedText lightColor="#64748B" darkColor="#64748B" style={styles.label}>
+        E-MAIL PROFISSIONAL
+    </ThemedText>
     <LoginInput
         value={email}
         onChangeText={setEmail}
@@ -37,22 +34,19 @@ return (
         iconName="envelope.fill"
     />
 
-      {/* Label Senha + Link Esqueci */}
-    <ThemedView style={styles.passwordLabelRow}>
-        <ThemedText style={styles.label}>SENHA</ThemedText>
+    <ThemedView lightColor="#FFFFFF" darkColor="#FFFFFF" style={styles.passwordLabelRow}>
+        <ThemedText lightColor="#64748B" darkColor="#64748B" style={styles.label}>
+        SENHA
+        </ThemedText>
         <TouchableOpacity onPress={onForgotPassword}>
         <ThemedText
-            style={[
-            styles.forgotText,
-            { color: Colors[colorScheme ?? 'light'].tint },
-            ]}
+            style={[styles.forgotText, { color: Colors[colorScheme ?? 'light'].tint }]}
         >
             Esqueci minha senha
         </ThemedText>
         </TouchableOpacity>
     </ThemedView>
 
-      {/* Campo Senha */}
     <LoginInput
         value={password}
         onChangeText={setPassword}
@@ -63,8 +57,7 @@ return (
         onRightIconPress={() => setPasswordVisible(!passwordVisible)}
     />
 
-      {/* Botão Entrar */}
-    <LoginButton onPress={handleSubmit} />
+    <LoginButton onPress={() => onSubmit(email, password)} />
     </ThemedView>
 );
 }
@@ -77,7 +70,6 @@ label: {
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 0.8,
-    opacity: 0.5,
     marginTop: 14,
     marginBottom: 4,
 },
