@@ -6,18 +6,20 @@ import { Colors } from '@/constants/theme';;
 import { useThemeColor } from '@/hooks/use-theme-color';
 
 type LoginButtonProps = {
-onPress: () => void;
-label?: string;
+  onPress: () => void;
+  label?: string;
+  disabled?: boolean;
 };
 
-export function LoginButton({ onPress, label = 'Entrar' }: LoginButtonProps) {
-const tint = useThemeColor({}, "corBotao");
+export function LoginButton({ onPress, label = 'Entrar', disabled = false }: LoginButtonProps) {
+  const tint = useThemeColor({}, 'corBotao');
 
-return (
+  return (
     <TouchableOpacity
-    style={[styles.button, { backgroundColor: tint }]}
-    onPress={onPress}
-    activeOpacity={0.85}
+      style={[styles.button, { backgroundColor: tint }, disabled && styles.buttonDisabled]}
+      onPress={onPress}
+      activeOpacity={0.85}
+      disabled={disabled}
     >
     <ThemedText style={styles.label}>{label}</ThemedText>
     <IconSymbol name="arrow.right.circle.fill" size={20} color="#FFFFFF" />
@@ -45,5 +47,8 @@ label: {
     fontSize: 16,
     fontWeight: '700',
     letterSpacing: 0.3,
+},
+buttonDisabled: {
+    opacity: 0.6,
 },
 });

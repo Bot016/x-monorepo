@@ -9,11 +9,18 @@ import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 
 type LoginFormProps = {
-onSubmit: (email: string, password: string) => void;
-onForgotPassword: () => void;
+  onSubmit: (email: string, password: string) => void | Promise<void>;
+  onForgotPassword: () => void;
+  isLoading?: boolean;
+  errorMessage?: string | null;
 };
 
-export function LoginForm({ onSubmit, onForgotPassword }: LoginFormProps) {
+export function LoginForm({
+  onSubmit,
+  onForgotPassword,
+  isLoading = false,
+  errorMessage = null,
+}: LoginFormProps) {
 const [email, setEmail] = useState('');
 const [password, setPassword] = useState('');
 const [passwordVisible, setPasswordVisible] = useState(false);
@@ -57,7 +64,17 @@ return (
         onRightIconPress={() => setPasswordVisible(!passwordVisible)}
     />
 
-    <LoginButton onPress={() => onSubmit(email, password)} />
+    {errorMessage ? (
+      <ThemedText lightColor="#DC2626" darkColor="#F87171" style={styles.errorText}>
+        {errorMessage}
+      </ThemedText>
+    ) : null}
+
+    <LoginButton
+      onPress={() => void onSubmit(email, password)}
+      disabled={isLoading}
+      label={isLoading ? 'Entrando...' : 'Entrar'}
+    />
     </ThemedView>
 );
 }
@@ -83,5 +100,10 @@ passwordLabelRow: {
 forgotText: {
     fontSize: 13,
     fontWeight: '500',
+},
+errorText: {
+    marginTop: 12,
+    fontSize: 14,
+    textAlign: 'center',
 },
 });

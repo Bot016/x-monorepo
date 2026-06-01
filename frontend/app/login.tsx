@@ -1,37 +1,52 @@
-import { useRouter } from 'expo-router';
+import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { ThemedView } from '@/components/themed-view';
 import { LoginForm } from '@/components/loginComponents/login_form';
 import { LoginHeader } from '@/components/loginComponents/login_header';
+import { ThemedView } from '@/components/themed-view';
+import { useAuth } from '@/providers/AuthProvider';
+import { AuthError } from '@/services/auth';
 
 export default function LoginScreen() {
-const router = useRouter();
+  const { signIn, isSigningIn } = useAuth();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-const handleLogin = (email: string, password: string) => {
-    console.log('Login:', email, password);
-    router.replace('/(tabs)');
-};
+  const handleLogin = async (email: string, password: string) => {
+    setErrorMessage(null);
 
-const handleForgotPassword = () => {
+    try {
+      await signIn({ email, password });
+    } catch (error) {
+      if (error instanceof AuthError) {
+        setErrorMessage(error.message);
+        return;
+      }
+
+      setErrorMessage('Não foi possível entrar. Tente novamente.');
+    }
+  };
+
+  const handleForgotPassword = () => {
     console.log('Esqueci minha senha');
-};
+  };
 
-return (
+  return (
     <ThemedView lightColor="#FFFFFF" darkColor="#FFFFFF" style={styles.container}>
-    <LoginHeader />
-    <LoginForm
+      <LoginHeader />
+      <LoginForm
         onSubmit={handleLogin}
         onForgotPassword={handleForgotPassword}
-    />
+        isLoading={isSigningIn}
+        errorMessage={errorMessage}
+      />
     </ThemedView>
-);
+  );
 }
 
 const styles = StyleSheet.create({
-container: {
+  container: {
     flex: 1,
     paddingHorizontal: 28,
     justifyContent: 'center',
-},
+  },
 });
