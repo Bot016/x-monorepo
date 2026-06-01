@@ -2,10 +2,12 @@ import express from "express";
 import { env, allowedOrigins } from "./config/env.js";
 import { prisma } from "./config/prisma.js";
 import cors from "cors";
+import { userRouter } from "./routes/user.routes.js";
 
 const app = express();
 app.use(express.json());
 app.use(cors({ origin: allowedOrigins }));
+app.use("/users", userRouter);
 
 app.get("/health", async (_req, res) => {
   try {
