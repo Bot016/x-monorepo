@@ -14,4 +14,9 @@ export const userController = {
     if (!user) return res.status(404).json({ error: "Usuário não encontrado" });
     res.json(user);
   },
+
+  async getUsers(_: Request, res: Response) {
+    const users = await userService.getUsers();
+    res.json(users);
+  },
 };

@@ -2,13 +2,14 @@ import { Router } from "express";
 import { userController } from "../controllers/user.controller.js";
 import { validate } from "../middleware/validate.js";
 import { requireAuth } from "../middleware/requireAuth.js";
+import { requireAdmin } from "../middleware/requireAdmin.js";
 import { getUserParamsSchema } from "../types/user.schema.js";
 
 export const userRouter: Router = Router();
 
 userRouter.use(requireAuth);
 userRouter.get("/me", userController.getMe);
-
+userRouter.get("/", requireAdmin, userController.getUsers);
 userRouter.get(
   "/:id",
   validate(getUserParamsSchema, "params"),
