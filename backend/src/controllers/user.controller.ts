@@ -8,4 +8,10 @@ export const userController = {
     if (!user) return res.status(404).json({ error: "Usuário não encontrado" });
     res.json(user);
   },
+
+  async getMe(req: Request, res: Response) {
+    const user = await userService.getById(req.user!.id);
+    if (!user) return res.status(404).json({ error: "Usuário não encontrado" });
+    res.json(user);
+  },
 };
