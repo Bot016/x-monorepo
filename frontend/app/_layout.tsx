@@ -33,7 +33,7 @@ function RootLayoutNav() {
         <Stack.Protected guard={!user}>
           <Stack.Screen name="login" />
           <Stack.Screen
-            name="Cadastro"
+            name="register"
             options={{ headerShown: true, title: 'Cadastro', presentation: 'card' }}
           />
         </Stack.Protected>
