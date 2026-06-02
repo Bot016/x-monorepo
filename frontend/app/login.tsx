@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { StyleSheet } from 'react-native';
 
-import { LoginForm } from '@/components/loginComponents/login_form';
-import { LoginHeader } from '@/components/loginComponents/login_header';
 import { ThemedView } from '@/components/themed-view';
+import { LoginForm } from '@/components/authComponents/loginComponents/login_form';
+import { LoginHeader } from '@/components/authComponents/auth_header';
 import { useAuth } from '@/providers/AuthProvider';
 import { AuthError } from '@/services/auth';
 

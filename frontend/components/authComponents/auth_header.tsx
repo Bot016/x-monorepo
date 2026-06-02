@@ -19,7 +19,7 @@ return (
         <IconSymbol
         name="cross.case.fill"
         size={28}
-        color={Colors[colorScheme ?? 'light'].tint}
+        color={Colors[colorScheme ?? 'light'].iconColor}
         />
     </ThemedView>
     <ThemedText
@@ -33,6 +33,8 @@ return (
     </ThemedView>
 );
 }
+
+export const AuthHeader = LoginHeader;
 
 const styles = StyleSheet.create({
 container: {
