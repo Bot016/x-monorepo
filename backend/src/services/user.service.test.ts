@@ -6,6 +6,10 @@ vi.mock("../repositories/user.repository.js", () => ({
   },
 }));
 
+vi.mock("../config/supabase.js", () => ({
+  supabaseAdmin: { auth: { admin: {} } },
+}));
+
 import { userService } from "./user.service.js";
 import { userRepository } from "../repositories/user.repository.js";
 
