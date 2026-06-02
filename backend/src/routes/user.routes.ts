@@ -3,7 +3,7 @@ import { userController } from "../controllers/user.controller.js";
 import { validate } from "../middleware/validate.js";
 import { requireAuth } from "../middleware/requireAuth.js";
 import { requireAdmin } from "../middleware/requireAdmin.js";
-import { getUserParamsSchema } from "../types/user.schema.js";
+import { getUserParamsSchema, inviteUserSchema } from "../types/user.schema.js";
 
 export const userRouter: Router = Router();
 
@@ -14,4 +14,11 @@ userRouter.get(
   "/:id",
   validate(getUserParamsSchema, "params"),
   userController.getById,
+);
+
+userRouter.post(
+  "/",
+  requireAdmin,
+  validate(inviteUserSchema),
+  userController.invite,
 );

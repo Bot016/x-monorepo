@@ -19,4 +19,9 @@ export const userController = {
     const users = await userService.getUsers();
     res.json(users);
   },
+
+  async invite(req: Request, res: Response) {
+    const user = await userService.invite(req.body);
+    res.status(201).json(user);
+  },
 };
