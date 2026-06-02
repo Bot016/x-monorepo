@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { RegisterInput } from '@/components/authComponents/registerComponents/register_input';
 import { RegisterButton } from '@/components/authComponents/registerComponents/register_button';
 import { useThemeColor } from '@/hooks/use-theme-color';
+import { formStyles } from '@/components/authComponents/formStyles';
 
 type RegisterFormProps = {
   onSubmit: (name: string, email: string, password: string, confirmPassword: string) => void;
@@ -17,10 +17,11 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const placeholderTextColor = useThemeColor({}, 'placeholderTextColor');
+  const labelColor = useThemeColor({}, 'label');
 
   return (
-    <ThemedView lightColor="#FFFFFF" darkColor="#FFFFFF" style={styles.container}>
-      <ThemedText lightColor="#64748B" darkColor="#64748B" style={styles.label}>
+    <ThemedView style={formStyles.container}>
+      <ThemedText style={[formStyles.label, { color: labelColor }]}> 
         NOME
       </ThemedText>
       <RegisterInput
@@ -32,7 +33,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
         iconName="person.fill"
       />
 
-      <ThemedText lightColor="#64748B" darkColor="#64748B" style={styles.label}>
+      <ThemedText style={[formStyles.label, { color: labelColor }]}> 
         E-MAIL PROFISSIONAL
       </ThemedText>
       <RegisterInput
@@ -46,7 +47,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
         iconName="envelope.fill"
       />
 
-      <ThemedText lightColor="#64748B" darkColor="#64748B" style={styles.label}>
+      <ThemedText style={[formStyles.label, { color: labelColor }]}> 
         SENHA
       </ThemedText>
       <RegisterInput
@@ -58,7 +59,7 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
         iconName="lock.fill"
       />
 
-      <ThemedText lightColor="#64748B" darkColor="#64748B" style={styles.label}>
+      <ThemedText style={[formStyles.label, { color: labelColor }]}> 
         CONFIRMAR SENHA
       </ThemedText>
       <RegisterInput
@@ -74,16 +75,3 @@ export function RegisterForm({ onSubmit }: RegisterFormProps) {
     </ThemedView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    gap: 12,
-  },
-  label: {
-    fontSize: 11,
-    fontWeight: '700',
-    letterSpacing: 0.8,
-    marginTop: 14,
-    marginBottom: 4,
-  },
-});

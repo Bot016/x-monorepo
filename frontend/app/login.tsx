@@ -31,7 +31,7 @@ export default function LoginScreen() {
   };
 
   return (
-    <ThemedView lightColor="#FFFFFF" darkColor="#FFFFFF" style={styles.container}>
+    <ThemedView style={styles.container}>
       <LoginHeader />
       <LoginForm
         onSubmit={handleLogin}

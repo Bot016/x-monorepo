@@ -2,6 +2,7 @@ import { TextInput, TextInputProps, StyleSheet, TouchableOpacity } from 'react-n
 
 import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import { useThemeColor } from '@/hooks/use-theme-color';
 
 type RegisterInputProps = TextInputProps & {
   iconName: string;
@@ -15,26 +16,28 @@ export function RegisterInput({
   onRightIconPress,
   ...textInputProps
 }: RegisterInputProps) {
+  const backgroundColor = useThemeColor({}, 'inputBackground');
+  const borderColor = useThemeColor({}, 'inputBorder');
+  const iconColor = useThemeColor({}, 'icon');
+  const textColor = useThemeColor({}, 'inputText');
+  const placeholderTextColor = textInputProps.placeholderTextColor ?? useThemeColor({}, 'placeholderTextColor');
+
   return (
-    <ThemedView
-      lightColor="#FFFFFF"
-      darkColor="#FFFFFF"
-      style={styles.wrapper}
-    >
+    <ThemedView lightColor={backgroundColor} darkColor={backgroundColor} style={[styles.wrapper, { borderColor }]}> 
       <IconSymbol
         name={iconName as any}
         size={16}
-        color="#AABAC8"
+        color={iconColor}
         style={styles.leftIcon}
       />
       <TextInput
-        style={styles.input}
-        placeholderTextColor={textInputProps.placeholderTextColor ?? '#AABAC8'}
+        style={[styles.input, { color: textColor }]}
+        placeholderTextColor={placeholderTextColor}
         {...textInputProps}
       />
       {rightIconName && onRightIconPress && (
         <TouchableOpacity onPress={onRightIconPress} style={styles.rightIconBtn}>
-          <IconSymbol name={rightIconName as any} size={16} color="#AABAC8" />
+          <IconSymbol name={rightIconName as any} size={16} color={iconColor} />
         </TouchableOpacity>
       )}
     </ThemedView>
