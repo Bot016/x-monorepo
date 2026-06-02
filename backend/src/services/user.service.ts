@@ -7,12 +7,17 @@ import type {
   UpdateUserParams,
 } from "../types/user.schema.js";
 
+export type DeleteUserResult =
+  | { ok: true; user: UserDTO }
+  | { ok: false; reason: "not_found" | "self_delete" | "last_admin" };
+
 export const userService = {
   async getById(id: string): Promise<UserDTO | null> {
     const user = await userRepository.findById(id);
     if (!user) return null;
     return { id: user.id, name: user.name, email: user.email };
   },
+
   async getUsers(): Promise<UserDTO[]> {
     const users = await userRepository.findAll();
     return users.map((user: User) => ({
@@ -21,6 +26,7 @@ export const userService = {
       email: user.email,
     }));
   },
+
   async invite({
     name,
     email,
@@ -37,6 +43,7 @@ export const userService = {
     await userRepository.assignRole(userId, roleRow.id);
     return userService.getById(userId);
   },
+
   async update(
     id: string,
     { name, roles }: UpdateUserParams,
@@ -64,5 +71,28 @@ export const userService = {
       userId,
       found.map((r) => r.id),
     );
+  },
+
+  async delete(userId: string, actorId: string): Promise<DeleteUserResult> {
+    if (userId === actorId) return { ok: false, reason: "self_delete" };
+
+    const user = await userRepository.findById(userId);
+    if (!user) return { ok: false, reason: "not_found" };
+
+    const isAdmin = await userRepository.hasActiveRole(userId, "administrator");
+    if (isAdmin && (await userRepository.countActiveAdmins()) <= 1) {
+      return { ok: false, reason: "last_admin" };
+    }
+
+    const { error } = await supabaseAdmin.auth.admin.updateUserById(userId, {
+      ban_duration: "876000h",
+    });
+    if (error) throw error;
+
+    await userRepository.softDeleteUser(userId);
+    return {
+      ok: true,
+      user: { id: user.id, name: user.name, email: user.email },
+    };
   },
 };

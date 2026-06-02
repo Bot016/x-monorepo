@@ -34,3 +34,10 @@ userRouter.patch(
   validate(updateUserSchema),
   userController.update,
 );
+
+userRouter.delete(
+  "/:id",
+  requireAdmin,
+  validate(getUserParamsSchema, "params"),
+  userController.delete,
+);

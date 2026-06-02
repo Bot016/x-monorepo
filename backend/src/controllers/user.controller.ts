@@ -30,4 +30,20 @@ export const userController = {
     if (!user) return res.status(404).json({ error: "Usuário não encontrado" });
     res.json(user);
   },
+
+  async delete(req: Request<GetUserParams>, res: Response) {
+    const result = await userService.delete(req.params.id, req.user!.id);
+    if (!result.ok) {
+      const status = { not_found: 404, self_delete: 403, last_admin: 409 }[
+        result.reason
+      ];
+      const message = {
+        not_found: "Usuário não encontrado",
+        self_delete: "Não é possível excluir a própria conta",
+        last_admin: "Não é possível excluir o último administrador",
+      }[result.reason];
+      return res.status(status).json({ error: message });
+    }
+    res.json(result.user);
+  },
 };

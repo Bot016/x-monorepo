@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { supabaseAdmin } from "../config/supabase.js";
+import { userRepository } from "../repositories/user.repository.js";
 
 export async function requireAuth(
   req: Request,
@@ -16,6 +17,11 @@ export async function requireAuth(
 
   if (error || !data.user) {
     return res.status(401).json({ error: "Token inválido ou expirado" });
+  }
+
+  const profile = await userRepository.findById(data.user.id);
+  if (!profile) {
+    return res.status(401).json({ error: "Conta inativa ou inexistente" });
   }
 
   req.user = { id: data.user.id };

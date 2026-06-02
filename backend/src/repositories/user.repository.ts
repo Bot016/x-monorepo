@@ -1,11 +1,21 @@
 import { prisma } from "../config/prisma.js";
 
 export const userRepository = {
+  // Reads exclude soft-deleted users (deletedAt set) everywhere.
   findById(id: string) {
-    return prisma.user.findUnique({ where: { id } });
+    return prisma.user.findFirst({ where: { id, deletedAt: null } });
   },
   findAll() {
-    return prisma.user.findMany();
+    return prisma.user.findMany({ where: { deletedAt: null } });
+  },
+  // Distinct, non-deleted users holding an active administrator role.
+  countActiveAdmins() {
+    return prisma.user.count({
+      where: {
+        deletedAt: null,
+        roles: { some: { status: "active", role: { name: "administrator" } } },
+      },
+    });
   },
   hasActiveRole(userId: string, roleName: string) {
     return prisma.userRole.findFirst({
@@ -47,5 +57,19 @@ export const userRepository = {
         }
       }
     });
+  },
+  // Atomically deactivate the user's active roles and stamp deletedAt, so a
+  // deleted user is never left with lingering active roles.
+  softDeleteUser(userId: string) {
+    return prisma.$transaction([
+      prisma.userRole.updateMany({
+        where: { userId, status: "active" },
+        data: { status: "inactive" },
+      }),
+      prisma.user.update({
+        where: { id: userId },
+        data: { deletedAt: new Date() },
+      }),
+    ]);
   },
 };
