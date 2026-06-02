@@ -24,4 +24,10 @@ export const userController = {
     const user = await userService.invite(req.body);
     res.status(201).json(user);
   },
+
+  async update(req: Request<GetUserParams>, res: Response) {
+    const user = await userService.update(req.params.id, req.body);
+    if (!user) return res.status(404).json({ error: "Usuário não encontrado" });
+    res.json(user);
+  },
 };
