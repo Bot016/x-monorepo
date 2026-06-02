@@ -19,6 +19,12 @@ export const Colors = {
     placeholderTextColor: '#C2C6D4',
     buttonColor: '#005EB8',
     iconColor: '#00478D',
+    iconBoxColor: '#EFF4FF',
+    label: '#424752',
+    inputBackground: '#FFFFFF',
+    inputBorder: '#DDE4EE',
+    inputText: '#0F172A',
+    error: '#DC2626',
   },
   dark: {
     text: '#ECEDEE',
@@ -30,6 +36,12 @@ export const Colors = {
     placeholderTextColor: '#C2C6D4',
     buttonColor: '#005EB8',
     iconColor: '#00478D',
+    iconBoxColor: '#1F2426',
+    label: '#94A3B8',
+    inputBackground: '#1F2426',
+    inputBorder: '#384047',
+    inputText: '#ECEDEE',
+    error: '#F87171',
   },
 };
 

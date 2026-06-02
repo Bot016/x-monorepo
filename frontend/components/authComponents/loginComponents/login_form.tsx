@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -8,6 +8,7 @@ import { LoginButton } from '@/components/authComponents/loginComponents/login_b
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useThemeColor } from '@/hooks/use-theme-color';
+import { formStyles } from '@/components/authComponents/formStyles';
 
 type LoginFormProps = {
   onSubmit: (email: string, password: string) => void | Promise<void>;
@@ -27,10 +28,12 @@ const [password, setPassword] = useState('');
 const [passwordVisible, setPasswordVisible] = useState(false);
 const colorScheme = useColorScheme();
 const placeholderTextColor = useThemeColor({}, 'placeholderTextColor');
+const labelColor = useThemeColor({}, 'label');
+const errorColor = useThemeColor({}, 'error');
 
 return (
-    <ThemedView lightColor="#FFFFFF" darkColor="#FFFFFF" style={styles.container}>
-    <ThemedText lightColor="#64748B" darkColor="#64748B" style={styles.label}>
+    <ThemedView style={formStyles.container}>
+    <ThemedText style={[formStyles.label, { color: labelColor }]}> 
         E-MAIL PROFISSIONAL
     </ThemedText>
     <LoginInput
@@ -44,13 +47,13 @@ return (
         iconName="envelope.fill"
     />
 
-    <ThemedView lightColor="#FFFFFF" darkColor="#FFFFFF" style={styles.passwordLabelRow}>
-        <ThemedText lightColor="#64748B" darkColor="#64748B" style={styles.label}>
+    <ThemedView style={formStyles.passwordLabelRow}>
+        <ThemedText style={[formStyles.label, { color: labelColor }]}> 
         SENHA
         </ThemedText>
         <TouchableOpacity onPress={onForgotPassword}>
         <ThemedText
-            style={[styles.forgotText, { color: Colors[colorScheme ?? 'light'].tint }]}
+            style={[formStyles.forgotText, { color: Colors[colorScheme ?? 'light'].tint }]}
         >
             Esqueci minha senha
         </ThemedText>
@@ -69,7 +72,7 @@ return (
     />
 
     {errorMessage ? (
-      <ThemedText lightColor="#DC2626" darkColor="#F87171" style={styles.errorText}>
+      <ThemedText style={[formStyles.errorText, { color: errorColor }]}> 
         {errorMessage}
       </ThemedText>
     ) : null}
@@ -82,32 +85,3 @@ return (
     </ThemedView>
 );
 }
-
-const styles = StyleSheet.create({
-container: {
-    gap: 6,
-},
-label: {
-    fontSize: 11,
-    fontWeight: '700',
-    letterSpacing: 0.8,
-    marginTop: 14,
-    marginBottom: 4,
-},
-passwordLabelRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: 14,
-    marginBottom: 4,
-},
-forgotText: {
-    fontSize: 13,
-    fontWeight: '500',
-},
-errorText: {
-    marginTop: 12,
-    fontSize: 14,
-    textAlign: 'center',
-},
-});

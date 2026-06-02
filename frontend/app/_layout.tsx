@@ -34,8 +34,7 @@ function RootLayoutNav() {
           <Stack.Screen name="login" />
           <Stack.Screen
             name="register"
-            options={{ headerShown: true, title: 'Cadastro', presentation: 'card' }}
-          />
+            />
         </Stack.Protected>
       </Stack>
       <StatusBar style="auto" />
