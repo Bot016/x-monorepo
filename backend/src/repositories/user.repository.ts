@@ -23,6 +23,12 @@ export const userRepository = {
   findRolesByNames(names: string[]) {
     return prisma.role.findMany({ where: { name: { in: names } } });
   },
+  findRoleByName(name: string) {
+    return prisma.role.findUniqueOrThrow({ where: { name } });
+  },
+  assignRole(userId: string, roleId: number) {
+    return prisma.userRole.create({ data: { userId, roleId } });
+  },
   replaceUserRoles(userId: string, roleIds: number[]) {
     return prisma.$transaction(async (tx) => {
       await tx.userRole.updateMany({

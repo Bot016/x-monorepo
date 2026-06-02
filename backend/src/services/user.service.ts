@@ -2,7 +2,6 @@ import type { UserDTO } from "../types/user.schema.js";
 import { userRepository } from "../repositories/user.repository.js";
 import type { User } from "../generated/prisma/index.js";
 import { supabaseAdmin } from "../config/supabase.js";
-import { prisma } from "../config/prisma.js";
 import type {
   InviteUserParams,
   UpdateUserParams,
@@ -34,15 +33,8 @@ export const userService = {
     if (error) throw error;
 
     const userId = data.user.id;
-    const roleRow = await prisma.role.findUniqueOrThrow({
-      where: { name: role },
-    });
-    await prisma.userRole.create({
-      data: {
-        userId,
-        roleId: roleRow.id,
-      },
-    });
+    const roleRow = await userRepository.findRoleByName(role);
+    await userRepository.assignRole(userId, roleRow.id);
     return userService.getById(userId);
   },
   async update(
