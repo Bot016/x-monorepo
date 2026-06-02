@@ -2,33 +2,30 @@ import { TouchableOpacity, StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';;
 import { useThemeColor } from '@/hooks/use-theme-color';
 
-type LoginButtonProps = {
+type RegisterButtonProps = {
   onPress: () => void;
   label?: string;
-  disabled?: boolean;
 };
 
-export function LoginButton({ onPress, label = 'Entrar', disabled = false }: LoginButtonProps) {
-  const tint = useThemeColor({}, 'corBotao');
+export function RegisterButton({ onPress, label = 'Cadastrar' }: RegisterButtonProps) {
+  const tint = useThemeColor({}, 'buttonColor');
 
   return (
     <TouchableOpacity
-      style={[styles.button, { backgroundColor: tint }, disabled && styles.buttonDisabled]}
+      style={[styles.button, { backgroundColor: tint }]}
       onPress={onPress}
       activeOpacity={0.85}
-      disabled={disabled}
     >
-    <ThemedText style={styles.label}>{label}</ThemedText>
-    <IconSymbol name="arrow.right.circle.fill" size={20} color="#FFFFFF" />
+      <ThemedText style={styles.label}>{label}</ThemedText>
+      <IconSymbol name="arrow.right.circle.fill" size={20} color="#FFFFFF" />
     </TouchableOpacity>
-);
+  );
 }
 
 const styles = StyleSheet.create({
-button: {
+  button: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -41,14 +38,11 @@ button: {
     shadowOpacity: 0.35,
     shadowRadius: 10,
     elevation: 6,
-},
-label: {
+  },
+  label: {
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '700',
     letterSpacing: 0.3,
-},
-buttonDisabled: {
-    opacity: 0.6,
-},
+  },
 });

@@ -21,6 +21,7 @@ const MAPPING = {
   'square.grid.2x2.fill': 'dashboard',
   'person.2.fill': 'people',
   'doc.text.fill': 'description',
+  'cross.case.fill': 'medical-services',
 } as IconMapping;
 
 /**

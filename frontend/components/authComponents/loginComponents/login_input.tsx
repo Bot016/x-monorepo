@@ -29,7 +29,7 @@ return (
     />
     <TextInput
         style={styles.input}
-        placeholderTextColor="#AABAC8"
+        placeholderTextColor={textInputProps.placeholderTextColor ?? '#AABAC8'}
         {...textInputProps}
     />
     {rightIconName && onRightIconPress && (
