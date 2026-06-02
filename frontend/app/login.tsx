@@ -1,7 +1,7 @@
 import { useRouter } from 'expo-router';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native';
 
-import { LoginForm } from '@/components/authComponents/loginComponents/login_form';
+import { LoginForm } from '@/components/loginComponents/login_form';
 import { LoginHeader } from '@/components/authComponents/auth_header';
 import { ThemedView } from '@/components/themed-view';
 
