@@ -1,12 +1,22 @@
 import express from "express";
+import swaggerUi from "swagger-ui-express";
 import { env, allowedOrigins } from "./config/env.js";
 import { prisma } from "./config/prisma.js";
 import cors from "cors";
 import { userRouter } from "./routes/user.routes.js";
+import { openApiDocument } from "./openapi.js";
 
 const app = express();
 app.use(express.json());
 app.use(cors({ origin: allowedOrigins }));
+
+// API docs: raw spec at /openapi.json, interactive UI at /docs.
+// Disabled in production to avoid exposing the API surface publicly.
+if (env.NODE_ENV !== "production") {
+  app.get("/openapi.json", (_req, res) => res.json(openApiDocument));
+  app.use("/docs", swaggerUi.serve, swaggerUi.setup(openApiDocument));
+}
+
 app.use("/users", userRouter);
 
 app.get("/health", async (_req, res) => {
