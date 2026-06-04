@@ -48,12 +48,12 @@ Zod garante que os **formatos dos dados** estejam corretos; **a lista de rotas
 é responsabilidade sua** — se você adicionar uma rota e esquecer de documentá-la,
 a spec simplesmente não a menciona (nada quebra, só fica incompleta).
 
-| Arquivo       | Papel                                                                       |
-| ------------- | --------------------------------------------------------------------------- |
+| Arquivo | Papel |
+|---------|-------|
 | `*.schema.ts` | verdade sobre os **formatos de dados** (compartilhado por validação + docs) |
-| `*.routes.ts` | verdade sobre o **comportamento** (o que realmente roda)                    |
-| `*.docs.ts`   | mapa manual ligando rotas → schemas → status codes                          |
-| `openapi.ts`  | índice que junta todos os mapas e define info + auth                        |
+| `*.routes.ts` | verdade sobre o **comportamento** (o que realmente roda) |
+| `*.docs.ts` | mapa manual ligando rotas → schemas → status codes |
+| `openapi.ts` | índice que junta todos os mapas e define info + auth |
 
 ### Como documentar um novo domínio
 
