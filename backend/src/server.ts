@@ -1,4 +1,8 @@
-import express from "express";
+import express, {
+  type Request,
+  type Response,
+  type NextFunction,
+} from "express";
 import swaggerUi from "swagger-ui-express";
 import { env, allowedOrigins } from "./config/env.js";
 import { prisma } from "./config/prisma.js";
@@ -26,6 +30,13 @@ app.get("/health", async (_req, res) => {
   } catch {
     res.status(503).send("Internal Server Error. DB unreachable");
   }
+});
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
+  console.error(err);
+  const message = err instanceof Error ? err.message : "Internal server error";
+  res.status(500).json({ error: message });
 });
 
 const server = app.listen(env.PORT, () => {
