@@ -22,42 +22,103 @@ describe("symptomService.getBySex", () => {
     expect(symptomRepository.findBySex).toHaveBeenCalledWith("m");
   });
 
-  it("deve retornar os sintomas mapeados apenas com 'weight' quando um sexo ('m' ou 'f') é informado", async () => {
+  it("deve retornar os sintomas mapeados apenas com 'weight' unificado ao informar sexo 'm'", async () => {
     const mockRepoResponse = [
       {
-        id: "s-1",
-        symptomName: "Dor de Cabeça",
-        category: "GERAL",
-        weight: 1.5,
-        createdAt: new Date(), 
+        id: "uuid-1",
+        symptomName: "Delayed speech development",
+        category: "cognitive",
+        weight: "0.14",
+      },
+      {
+        id: "uuid-2",
+        symptomName: "Macroorchidism",
+        category: "physical",
+        weight: "0.26",
       },
     ];
-    
+
     vi.mocked(symptomRepository.findBySex).mockResolvedValue(mockRepoResponse as never);
 
     const result = await symptomService.getBySex("m");
 
     expect(result).toEqual([
       {
-        id: "s-1",
-        symptomName: "Dor de Cabeça",
-        category: "GERAL",
-        weight: 1.5,
+        id: "uuid-1",
+        symptomName: "Delayed speech development",
+        category: "cognitive",
+        weight: "0.14",
+        weightM: undefined,
+        weightF: undefined,
+      },
+      {
+        id: "uuid-2",
+        symptomName: "Macroorchidism",
+        category: "physical",
+        weight: "0.26",
         weightM: undefined,
         weightF: undefined,
       },
     ]);
   });
 
-  it("deve retornar os sintomas com 'weightM' e 'weightF' quando nenhum sexo ('') é informado", async () => {
-    // O repositório retorna os pesos separados quando recebe string vazia
+  it("deve retornar os sintomas mapeados apenas com 'weight' unificado ao informar sexo 'f'", async () => {
     const mockRepoResponse = [
       {
-        id: "s-2",
-        symptomName: "Enjoo",
-        category: "GASTRO",
-        weightM: 1.0,
-        weightF: 2.0,
+        id: "uuid-1",
+        symptomName: "Delayed speech development",
+        category: "cognitive",
+        weight: "0.01",
+      },
+      {
+        id: "uuid-2",
+        symptomName: "Macroorchidism",
+        category: "physical",
+        weight: null,
+      },
+    ];
+
+    vi.mocked(symptomRepository.findBySex).mockResolvedValue(mockRepoResponse as never);
+
+    const result = await symptomService.getBySex("f");
+
+    expect(result).toEqual([
+      {
+        id: "uuid-1",
+        symptomName: "Delayed speech development",
+        category: "cognitive",
+        weight: "0.01",
+        weightM: undefined,
+        weightF: undefined,
+      },
+      {
+        id: "uuid-2",
+        symptomName: "Macroorchidism",
+        category: "physical",
+        weight: null,
+        weightM: undefined,
+        weightF: undefined,
+      },
+    ]);
+  });
+
+  it("deve retornar os sintomas com 'weightM' e 'weightF' separados quando nenhum sexo ('') é informado", async () => {
+    const mockRepoResponse = [
+      {
+        id: "uuid-1",
+        symptomName: "Delayed speech development",
+        category: "cognitive",
+        weightM: "0.14",
+        weightF: "0.01",
+        applicableSex: null,
+      },
+      {
+        id: "uuid-2",
+        symptomName: "Macroorchidism",
+        category: "physical",
+        weightM: "0.26",
+        weightF: null,
+        applicableSex: "m",
       },
     ];
 
@@ -67,12 +128,20 @@ describe("symptomService.getBySex", () => {
 
     expect(result).toEqual([
       {
-        id: "s-2",
-        symptomName: "Enjoo",
-        category: "GASTRO",
+        id: "uuid-1",
+        symptomName: "Delayed speech development",
+        category: "cognitive",
         weight: undefined,
-        weightM: 1.0,
-        weightF: 2.0,
+        weightM: "0.14",
+        weightF: "0.01",
+      },
+      {
+        id: "uuid-2",
+        symptomName: "Macroorchidism",
+        category: "physical",
+        weight: undefined,
+        weightM: "0.26",
+        weightF: null,
       },
     ]);
   });
