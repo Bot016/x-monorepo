@@ -1,14 +1,13 @@
 import { prisma } from "../config/prisma.js";
 
-export type SexOption = 'm' | 'f' | '';
+export type SexOption = "m" | "f" | "";
 
 export const symptomRepository = {
   async findBySex(sex: SexOption) {
     const symptoms = await prisma.symptom.findMany();
 
     return symptoms.map((symptom) => {
-      
-      if (sex === '') {
+      if (sex === "") {
         return symptom;
       }
 
@@ -16,7 +15,7 @@ export const symptomRepository = {
 
       return {
         ...rest,
-        weight: sex === 'm' ? weightM : weightF,
+        weight: sex === "m" ? weightM : weightF,
       };
     });
   },

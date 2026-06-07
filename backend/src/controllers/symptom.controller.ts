@@ -6,14 +6,16 @@ import type { SexOption } from "../repositories/symptom.repository.js";
 export const symptomController = {
   async getBySex(req: Request, res: Response) {
     try {
-      const sexQuery = (req.query.sex as string) || '';
+      const sexQuery = (req.query.sex as string) || "";
 
-      if (sexQuery !== 'm' && sexQuery !== 'f' && sexQuery !== '') {
-        return res.status(400).json({ error: "O parâmetro sex deve ser 'm', 'f' ou vazio." });
+      if (sexQuery !== "m" && sexQuery !== "f" && sexQuery !== "") {
+        return res
+          .status(400)
+          .json({ error: "O parâmetro sex deve ser 'm', 'f' ou vazio." });
       }
 
       const symptoms = await symptomService.getBySex(sexQuery as SexOption);
-      
+
       return res.json(symptoms);
     } catch (error) {
       console.error(error);

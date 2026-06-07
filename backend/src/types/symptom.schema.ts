@@ -4,7 +4,7 @@ import type { Symptom } from "../generated/prisma/index.js";
 export const createSymptomSchema = z.object({
   symptomName: z.string().min(1),
 
-  category: z.string(), 
+  category: z.string(),
 
   weightM: z.number(),
   weightF: z.number(),

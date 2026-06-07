@@ -38,7 +38,9 @@ describe("symptomService.getBySex", () => {
       },
     ];
 
-    vi.mocked(symptomRepository.findBySex).mockResolvedValue(mockRepoResponse as never);
+    vi.mocked(symptomRepository.findBySex).mockResolvedValue(
+      mockRepoResponse as never,
+    );
 
     const result = await symptomService.getBySex("m");
 
@@ -78,7 +80,9 @@ describe("symptomService.getBySex", () => {
       },
     ];
 
-    vi.mocked(symptomRepository.findBySex).mockResolvedValue(mockRepoResponse as never);
+    vi.mocked(symptomRepository.findBySex).mockResolvedValue(
+      mockRepoResponse as never,
+    );
 
     const result = await symptomService.getBySex("f");
 
@@ -122,7 +126,9 @@ describe("symptomService.getBySex", () => {
       },
     ];
 
-    vi.mocked(symptomRepository.findBySex).mockResolvedValue(mockRepoResponse as never);
+    vi.mocked(symptomRepository.findBySex).mockResolvedValue(
+      mockRepoResponse as never,
+    );
 
     const result = await symptomService.getBySex("");
 

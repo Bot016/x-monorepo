@@ -4,7 +4,4 @@ import { symptomController } from "../controllers/symptom.controller.js";
 
 export const symtomRouter: Router = Router();
 
-symtomRouter.get(
-  "/",
-  symptomController.getBySex
-);
+symtomRouter.get("/", symptomController.getBySex);
