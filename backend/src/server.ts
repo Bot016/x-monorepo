@@ -8,6 +8,7 @@ import { env, allowedOrigins } from "./config/env.js";
 import { prisma } from "./config/prisma.js";
 import cors from "cors";
 import { userRouter } from "./routes/user.routes.js";
+import { symptomRouter } from "./routes/symptoms.routes.js";
 import { openApiDocument } from "./openapi.js";
 
 const app = express();
@@ -22,6 +23,7 @@ if (env.NODE_ENV !== "production") {
 }
 
 app.use("/users", userRouter);
+app.use("/symptoms", symptomRouter);
 
 app.get("/health", async (_req, res) => {
   try {
