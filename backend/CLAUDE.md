@@ -42,7 +42,7 @@ Register in `server.ts` (`app.use`) and `openapi.ts` (`paths: { ...resourcePaths
 ## Code style
 
 - Be minimal: change only what the task requires. Do not refactor surrounding code, add abstractions, or clean up unrelated areas.
-- No comments unless the *why* is non-obvious (hidden constraint, workaround, subtle invariant).
+- No comments unless the _why_ is non-obvious (hidden constraint, workaround, subtle invariant).
 - No `console.log` in production paths — errors surface through the global error handler in `server.ts`.
 - Validation lives in Zod schemas (`types/<resource>.schema.ts`), not in controllers or services.
 - Error responses always use `{ error: string }` — match the shape in `types/common.schema.ts`.
