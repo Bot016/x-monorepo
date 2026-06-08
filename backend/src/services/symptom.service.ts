@@ -1,4 +1,3 @@
-// symptom.service.ts
 import {
   symptomRepository,
   type SexOption,

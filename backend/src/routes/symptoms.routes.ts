@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { symptomController } from "../controllers/symptom.controller.js";
 
-export const symtomRouter: Router = Router();
+export const symptomRouter: Router = Router();
 
-symtomRouter.get("/", symptomController.getBySex);
+symptomRouter.get("/", symptomController.getBySex);

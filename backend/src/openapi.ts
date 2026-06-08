@@ -1,5 +1,6 @@
 import { createDocument, type oas31 } from "zod-openapi";
 import { userPaths } from "./routes/user.docs.js";
+import { symptomPaths } from "./routes/symptoms.docs.js";
 
 export const openApiDocument: oas31.OpenAPIObject = createDocument({
   openapi: "3.1.0",
@@ -10,7 +11,9 @@ export const openApiDocument: oas31.OpenAPIObject = createDocument({
       "Backend API for the Fragile-X clinical screening application.",
   },
   servers: [{ url: "/", description: "Current host" }],
-  tags: [{ name: "Users", description: "User management and invitations." }],
+  tags: [{ name: "Users", description: "User management and invitations." },
+    { name: "Users", description: "User management and invitations." }
+  ],
   security: [{ bearerAuth: [] }],
   components: {
     securitySchemes: {
@@ -25,5 +28,6 @@ export const openApiDocument: oas31.OpenAPIObject = createDocument({
   },
   paths: {
     ...userPaths,
+    ...symptomPaths,
   },
 });
