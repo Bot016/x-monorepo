@@ -7,12 +7,13 @@ import {
 export const symptomPaths: ZodOpenApiPathsObject = {
   "/symptoms": {
     get: {
-      tags: ["Symptoms"], 
-      summary: "Symptoms list", 
-      description: "Returns the list of symptoms. If the query param `sex` is given ('m' ou 'f'), the `weight` property returns the unified weight, omitting `weightM` e `weightF`.",
-      
-      requestParams: { 
-        query: getSymptomsQuerySchema 
+      tags: ["Symptoms"],
+      summary: "Symptoms list",
+      description:
+        "Returns the list of symptoms. If the query param `sex` is given ('m' ou 'f'), the `weight` property returns the unified weight, omitting `weightM` e `weightF`.",
+
+      requestParams: {
+        query: getSymptomsQuerySchema,
       },
       responses: {
         "200": {
@@ -21,10 +22,10 @@ export const symptomPaths: ZodOpenApiPathsObject = {
             "application/json": { schema: symptomResponseSchema.array() },
           },
         },
-        "400": { 
-          description: "Parâmetro sex inválido" 
+        "400": {
+          description: "Parâmetro sex inválido",
         },
       },
     },
-  }
+  },
 };

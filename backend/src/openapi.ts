@@ -11,8 +11,9 @@ export const openApiDocument: oas31.OpenAPIObject = createDocument({
       "Backend API for the Fragile-X clinical screening application.",
   },
   servers: [{ url: "/", description: "Current host" }],
-  tags: [{ name: "Users", description: "User management and invitations." },
-    { name: "Users", description: "User management and invitations." }
+  tags: [
+    { name: "Users", description: "User management and invitations." },
+    { name: "Users", description: "User management and invitations." },
   ],
   security: [{ bearerAuth: [] }],
   components: {
