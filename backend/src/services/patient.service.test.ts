@@ -81,7 +81,7 @@ describe("patientService.list", () => {
 
     expect(result).toHaveLength(1);
     expect(result[0]).toMatchObject({ id: "p-1", name: "João da Silva" });
-    expect(result[0].guardian).not.toHaveProperty("cpf");
+    expect(result[0]?.guardian).not.toHaveProperty("cpf");
   });
 });
 
@@ -171,8 +171,8 @@ describe("patientService.create", () => {
       birthDate: "2018-04-10",
     });
 
-    const [data] = vi.mocked(patientRepository.create).mock.calls[0];
-    expect(data.birthDate).toBeInstanceOf(Date);
+    const call = vi.mocked(patientRepository.create).mock.calls[0];
+    expect(call?.[0].birthDate).toBeInstanceOf(Date);
   });
 });
 
@@ -196,10 +196,10 @@ describe("patientService.update", () => {
 
     await patientService.update("p-1", { name: "Novo Nome" });
 
-    const [, data] = vi.mocked(patientRepository.update).mock.calls[0];
-    expect(data).toEqual({ name: "Novo Nome" });
-    expect(data).not.toHaveProperty("sex");
-    expect(data).not.toHaveProperty("birthDate");
+    const call = vi.mocked(patientRepository.update).mock.calls[0];
+    expect(call?.[1]).toEqual({ name: "Novo Nome" });
+    expect(call?.[1]).not.toHaveProperty("sex");
+    expect(call?.[1]).not.toHaveProperty("birthDate");
   });
 
   it("allows unlinking a guardian by passing guardianId: null", async () => {
@@ -213,8 +213,8 @@ describe("patientService.update", () => {
     const result = await patientService.update("p-1", { guardianId: null });
 
     expect(result?.guardianId).toBeNull();
-    const [, data] = vi.mocked(patientRepository.update).mock.calls[0];
-    expect(data.guardianId).toBeNull();
+    const call = vi.mocked(patientRepository.update).mock.calls[0];
+    expect(call?.[1].guardianId).toBeNull();
   });
 });
 
