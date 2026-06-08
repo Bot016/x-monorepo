@@ -1,4 +1,3 @@
-// symptom.routes.ts
 import { Router } from "express";
 import { symptomController } from "../controllers/symptom.controller.js";
 
