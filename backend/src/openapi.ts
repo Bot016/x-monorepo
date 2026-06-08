@@ -13,7 +13,7 @@ export const openApiDocument: oas31.OpenAPIObject = createDocument({
   servers: [{ url: "/", description: "Current host" }],
   tags: [
     { name: "Users", description: "User management and invitations." },
-    { name: "Users", description: "User management and invitations." },
+    { name: "Symptoms", description: "Symptoms filtering." },
   ],
   security: [{ bearerAuth: [] }],
   components: {
