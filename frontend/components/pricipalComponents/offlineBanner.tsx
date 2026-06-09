@@ -3,14 +3,34 @@ import { StyleSheet } from 'react-native';
 import { ThemedView } from '@/components/themed-view';
 import { ThemedText } from '@/components/themed-text';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import type { DashboardSyncStatus } from '@/services/dashboard';
 
-export function DashboardOfflineBanner() {
-return (
+type DashboardOfflineBannerProps = {
+  status: DashboardSyncStatus;
+  message?: string | null;
+};
+
+export function DashboardOfflineBanner({ status, message }: DashboardOfflineBannerProps) {
+  if (status === 'synced') {
+    return null;
+  }
+
+  const isLoading = status === 'loading';
+
+  return (
     <ThemedView style={styles.container}>
-    <IconSymbol name="wifi.slash" size={14} color="#64748B" />
-    <ThemedText style={styles.text}>Sincronizado em Modo Offline</ThemedText>
+      <IconSymbol
+        name={isLoading ? 'arrow.clockwise' : 'wifi.slash'}
+        size={14}
+        color="#64748B"
+      />
+      <ThemedText style={styles.text}>
+        {isLoading
+          ? 'Sincronizando dados...'
+          : (message ?? 'Não foi possível sincronizar com o servidor.')}
+      </ThemedText>
     </ThemedView>
-);
+  );
 }
 
 const styles = StyleSheet.create({

@@ -22,6 +22,10 @@ const MAPPING = {
   'person.2.fill': 'people',
   'doc.text.fill': 'description',
   'cross.case.fill': 'medical-services',
+  calendar: 'calendar-today',
+  'exclamationmark.triangle.fill': 'warning',
+  'wifi.slash': 'wifi-off',
+  'arrow.clockwise': 'sync',
 } as IconMapping;
 
 /**

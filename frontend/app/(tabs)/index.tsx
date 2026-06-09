@@ -5,28 +5,48 @@ import { DashboardOfflineBanner } from '@/components/pricipalComponents/offlineB
 import { NovaAvaliacaoButton } from '@/components/pricipalComponents/novaAvaliacaoButton';
 import { RecentesPrincipal } from '@/components/pricipalComponents/recentsPrincipal';
 import { ThemedView } from '@/components/themed-view';
+import { useDashboard } from '@/hooks/useDashboard';
+
+function formatStatValue(value: number, isLoading: boolean): string {
+  if (isLoading) return '—';
+  return String(value);
+}
 
 export default function PrincipalScreen() {
+  const { data, status, errorMessage } = useDashboard();
+  const isLoading = status === 'loading';
+
   return (
     <ThemedView style={styles.container}>
       <ScrollView
         contentContainerStyle={styles.scroll}
         showsVerticalScrollIndicator={false}>
-        <DashboardOfflineBanner />
+        <DashboardOfflineBanner status={status} message={errorMessage} />
         <NovaAvaliacaoButton onPress={() => console.log('Nova Avaliação')} />
 
         <ThemedView style={styles.statsRow}>
-          <CardPrincipal label="AVALIAÇÕES HOJE" value="12" icon="calendar" />
+          <CardPrincipal
+            label="AVALIAÇÕES HOJE"
+            value={formatStatValue(data.assessmentsToday, isLoading)}
+            icon="calendar"
+          />
           <CardPrincipal
             label="SUSPEITAS"
-            value="03"
+            value={formatStatValue(data.suspectedCount, isLoading)}
             icon="exclamationmark.triangle.fill"
             valueColor="#E53E3E"
           />
-          <CardPrincipal label="TOTAL DE PACIENTES" value="148" icon="person.2.fill" />
+          <CardPrincipal
+            label="TOTAL DE PACIENTES"
+            value={formatStatValue(data.totalPatients, isLoading)}
+            icon="person.2.fill"
+          />
         </ThemedView>
 
-        <RecentesPrincipal data={[]} onVerTodos={() => console.log('Ver todos')} />
+        <RecentesPrincipal
+          data={isLoading ? [] : data.recentAssessments}
+          onVerTodos={() => console.log('Ver todos')}
+        />
       </ScrollView>
     </ThemedView>
   );
