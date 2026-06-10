@@ -3,6 +3,8 @@ import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-na
 
 import { LoginForm } from '@/components/loginComponents/login_form';
 import { LoginHeader } from '@/components/authComponents/auth_header';
+import { useAuth } from '@/hooks/useAuth';
+import { AuthError } from '@/services/auth';
 import { ThemedView } from '@/components/themed-view';
 
 export default function LoginScreen() {

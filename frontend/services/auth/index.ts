@@ -1,7 +1,13 @@
 export { createMockAuthService, mockAuthService } from './mockAuthService';
-export { AuthError, type AuthService, type AuthUser, type LoginCredentials } from './types';
+export { createSupabaseAuthService, getSupabaseAuthService } from './supabaseAuthService';
+export {
+  AuthError,
+  type AuthService,
+  type AuthUser,
+  type LoginCredentials,
+  type RegisterCredentials,
+} from './types';
 
-import { mockAuthService } from './mockAuthService';
+import { getSupabaseAuthService } from './supabaseAuthService';
 
-/** Serviço padrão injetado no AuthProvider. Substitua quando integrar Supabase. */
-export const defaultAuthService = mockAuthService;
+export const defaultAuthService = getSupabaseAuthService();
