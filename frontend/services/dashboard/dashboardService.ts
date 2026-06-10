@@ -1,14 +1,7 @@
-import { getApiBaseUrl } from '@/config/env';
-import { createApiClient } from '@/services/api/client';
-import { ApiError } from '@/services/api/client';
-import { getAccessToken } from '@/services/api/session';
-import type {
-  DashboardData,
-  EvaluationDto,
-  PatientDto,
-  RecentEvaluation,
-  ScreeningResult,
-} from './types';
+import { listEvaluations } from '@/services/evaluations';
+import { listPatients } from '@/services/patients';
+import type { EvaluationDto, ScreeningResult } from '@/services/types/api';
+import type { DashboardData, RecentEvaluation } from './types';
 
 const RECENT_LIMIT = 5;
 
@@ -36,7 +29,7 @@ function mapScreeningResult(result: ScreeningResult): RecentEvaluation['status']
 }
 
 function buildDashboardData(
-  patients: PatientDto[],
+  patients: Awaited<ReturnType<typeof listPatients>>,
   evaluations: EvaluationDto[],
 ): DashboardData {
   const patientNames = new Map(patients.map((patient) => [patient.id, patient.name]));
@@ -70,28 +63,7 @@ function buildDashboardData(
   };
 }
 
-async function fetchEvaluations(accessToken: string): Promise<EvaluationDto[]> {
-  const api = createApiClient({ baseUrl: getApiBaseUrl() });
-
-  try {
-    return await api.get<EvaluationDto[]>('/evaluations', accessToken);
-  } catch (error) {
-    if (error instanceof ApiError && error.status === 404) {
-      return [];
-    }
-
-    throw error;
-  }
-}
-
 export async function fetchDashboardData(): Promise<DashboardData> {
-  const accessToken = await getAccessToken();
-  const api = createApiClient({ baseUrl: getApiBaseUrl() });
-
-  const [patients, evaluations] = await Promise.all([
-    api.get<PatientDto[]>('/patients', accessToken),
-    fetchEvaluations(accessToken),
-  ]);
-
+  const [patients, evaluations] = await Promise.all([listPatients(), listEvaluations()]);
   return buildDashboardData(patients, evaluations);
 }

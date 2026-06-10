@@ -70,5 +70,23 @@ export function createApiClient({ baseUrl }: ApiClientOptions) {
     get<T>(path: string, accessToken: string) {
       return request<T>('GET', path, accessToken);
     },
+    post<T>(path: string, accessToken: string, body: unknown) {
+      return request<T>('POST', path, accessToken, body);
+    },
   };
+}
+
+export async function publicGet<T>(path: string): Promise<T> {
+  const { getApiBaseUrl } = await import('@/config/env');
+  const baseUrl = getApiBaseUrl().replace(/\/$/, '');
+  const response = await fetch(`${baseUrl}${path}`, {
+    headers: { Accept: 'application/json' },
+  });
+
+  if (!response.ok) {
+    const payload = await response.json().catch(() => null);
+    throw new ApiError(response.status, parseErrorMessage(payload));
+  }
+
+  return response.json() as Promise<T>;
 }

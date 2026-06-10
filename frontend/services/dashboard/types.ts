@@ -1,22 +1,6 @@
-export type ScreeningResult = 'SUSPEITO' | 'BAIXO_RISCO';
+import type { EvaluationDto, PatientDto, ScreeningResult } from '@/services/types/api';
 
-export type EvaluationDto = {
-  id: string;
-  userId: string;
-  patientId: string;
-  score: number;
-  screeningResult: ScreeningResult;
-  assessmentDate: string;
-  appliedThreshold: number;
-};
-
-export type PatientDto = {
-  id: string;
-  name: string;
-  sex: 'm' | 'f';
-  birthDate: string;
-  guardianId: string | null;
-};
+export type { EvaluationDto, PatientDto, ScreeningResult };
 
 export type RecentEvaluation = {
   id: string;

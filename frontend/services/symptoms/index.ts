@@ -1,0 +1,1 @@
+export { fetchSymptoms } from './symptomService';

@@ -1,4 +1,4 @@
-import { useRouter } from 'expo-router';
+import { useState } from 'react';
 import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native';
 
 import { LoginForm } from '@/components/loginComponents/login_form';
@@ -8,48 +8,60 @@ import { AuthError } from '@/services/auth';
 import { ThemedView } from '@/components/themed-view';
 
 export default function LoginScreen() {
-    const router = useRouter();
+  const { signIn, isSigningIn } = useAuth();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    const handleLogin = (email: string, password: string) => {
-        // sua lógica de autenticação aqui
-        console.log('Login:', email, password);
-        router.replace('/(tabs)');
-    };
+  const handleLogin = async (email: string, password: string) => {
+    setErrorMessage(null);
 
-    const handleForgotPassword = () => {
-        console.log('Esqueci minha senha');
-    };
+    try {
+      await signIn({ email, password });
+    } catch (error) {
+      if (error instanceof AuthError) {
+        setErrorMessage(error.message);
+        return;
+      }
 
-    return (
-        <ThemedView style={styles.screen}>
-            <KeyboardAvoidingView
-                style={styles.keyboard}
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            >
-                <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-                    <LoginHeader />
-                    <LoginForm
-                        onSubmit={handleLogin}
-                        onForgotPassword={handleForgotPassword}
-                    />
-                </ScrollView>
-            </KeyboardAvoidingView>
-        </ThemedView>
-    );
+      setErrorMessage('Não foi possível entrar. Tente novamente.');
+    }
+  };
+
+  const handleForgotPassword = () => {
+    console.log('Esqueci minha senha');
+  };
+
+  return (
+    <ThemedView style={styles.screen}>
+      <KeyboardAvoidingView
+        style={styles.keyboard}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
+          <LoginHeader />
+          <LoginForm
+            onSubmit={handleLogin}
+            onForgotPassword={handleForgotPassword}
+            isLoading={isSigningIn}
+            errorMessage={errorMessage}
+          />
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </ThemedView>
+  );
 }
 
 const styles = StyleSheet.create({
-    screen: {
-        flex: 1,
-    },
-    keyboard: {
-        flex: 1,
-    },
-    container: {
-        flexGrow: 1,
-        justifyContent: 'center',
-        padding: 24,
-        paddingHorizontal: 40,
-        gap: 20,
-    },
+  screen: {
+    flex: 1,
+  },
+  keyboard: {
+    flex: 1,
+  },
+  container: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    padding: 24,
+    paddingHorizontal: 40,
+    gap: 20,
+  },
 });
