@@ -26,6 +26,15 @@ const MAPPING = {
   'exclamationmark.triangle.fill': 'warning',
   'wifi.slash': 'wifi-off',
   'arrow.clockwise': 'sync',
+  'envelope.fill': 'email',
+  'lock.fill': 'lock',
+  'eye.fill': 'visibility',
+  'eye.slash.fill': 'visibility-off',
+  'checkmark.circle.fill': 'check-circle',
+  'plus.circle.fill': 'add-circle',
+  'arrow.down.circle.fill': 'download',
+  'figure.stand': 'man',
+  figure: 'woman',
 } as IconMapping;
 
 /**
