@@ -4,25 +4,29 @@ import { ThemedText } from '@/components/themed-text';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useThemeColor } from '@/hooks/use-theme-color';
 
-type RegisterButtonProps = {
+type CadastroButtonProps = {
   onPress: () => void;
-  label?: string;
+  label: string;
   disabled?: boolean;
 };
 
-export function RegisterButton({
+export function CadastroButton({
   onPress,
-  label = 'Cadastrar',
+  label,
   disabled = false,
-}: RegisterButtonProps) {
-  const tint = useThemeColor({}, 'buttonColor');
+}: CadastroButtonProps) {
+  const buttonColor = useThemeColor({}, 'buttonColor');
 
   return (
     <TouchableOpacity
-      style={[styles.button, { backgroundColor: tint, opacity: disabled ? 0.7 : 1 }]}
+      style={[
+        styles.button,
+        { backgroundColor: buttonColor },
+        disabled && styles.buttonDisabled,
+      ]}
       onPress={onPress}
-      activeOpacity={0.85}
       disabled={disabled}
+      activeOpacity={0.85}
     >
       <ThemedText style={styles.label}>{label}</ThemedText>
       <IconSymbol name="arrow.right.circle.fill" size={20} color="#FFFFFF" />
@@ -50,5 +54,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     letterSpacing: 0.3,
+  },
+  buttonDisabled: {
+    opacity: 0.6,
   },
 });

@@ -4,22 +4,26 @@ import { ThemedText } from '@/components/themed-text';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useThemeColor } from '@/hooks/use-theme-color';
 
-type RegisterButtonProps = {
+type ChecklistButtonProps = {
   onPress: () => void;
   label?: string;
   disabled?: boolean;
 };
 
-export function RegisterButton({
+export function ChecklistButton({
   onPress,
-  label = 'Cadastrar',
+  label = 'Finalizar Avaliação',
   disabled = false,
-}: RegisterButtonProps) {
-  const tint = useThemeColor({}, 'buttonColor');
+}: ChecklistButtonProps) {
+  const buttonColor = useThemeColor({}, 'buttonColor');
 
   return (
     <TouchableOpacity
-      style={[styles.button, { backgroundColor: tint, opacity: disabled ? 0.7 : 1 }]}
+      style={[
+        styles.button,
+        { backgroundColor: buttonColor },
+        disabled && styles.buttonDisabled,
+      ]}
       onPress={onPress}
       activeOpacity={0.85}
       disabled={disabled}
@@ -50,5 +54,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     letterSpacing: 0.3,
+  },
+  buttonDisabled: {
+    opacity: 0.6,
   },
 });
