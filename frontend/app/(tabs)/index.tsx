@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import { ScrollView, StyleSheet } from 'react-native';
 
 import { CardPrincipal } from '@/components/pricipalComponents/cardPrincipal';
@@ -13,6 +14,7 @@ function formatStatValue(value: number, isLoading: boolean): string {
 }
 
 export default function PrincipalScreen() {
+  const router = useRouter();
   const { data, status, errorMessage } = useDashboard();
   const isLoading = status === 'loading';
 
@@ -22,7 +24,7 @@ export default function PrincipalScreen() {
         contentContainerStyle={styles.scroll}
         showsVerticalScrollIndicator={false}>
         <DashboardOfflineBanner status={status} message={errorMessage} />
-        <NovaAvaliacaoButton onPress={() => console.log('Nova Avaliação')} />
+        <NovaAvaliacaoButton onPress={() => router.push('/Cadastro')} />
 
         <ThemedView style={styles.statsRow}>
           <CardPrincipal
@@ -45,7 +47,7 @@ export default function PrincipalScreen() {
 
         <RecentesPrincipal
           data={isLoading ? [] : data.recentAssessments}
-          onVerTodos={() => console.log('Ver todos')}
+          onVerTodos={() => router.push('/(tabs)/relatorios')}
         />
       </ScrollView>
     </ThemedView>

@@ -44,7 +44,7 @@ export function CadastroForm({
 
   return (
     <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-      <CadastroHeader step={1} totalSteps={2} />
+      <CadastroHeader step={1} totalSteps={4} />
 
       <ThemedView style={formStyles.container}>
         <ThemedText style={[formStyles.label, { color: labelColor }]}>

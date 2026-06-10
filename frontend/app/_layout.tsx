@@ -28,12 +28,13 @@ function RootLayoutNav() {
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Protected guard={!!user}>
           <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="Cadastro" />
           <Stack.Screen name="checklistClinico" />
+          <Stack.Screen name="resultadoAvaliacao" />
         </Stack.Protected>
 
         <Stack.Protected guard={!user}>
           <Stack.Screen name="login" />
-          <Stack.Screen name="Cadastro" />
           <Stack.Screen name="register" />
         </Stack.Protected>
       </Stack>
