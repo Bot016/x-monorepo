@@ -1,37 +1,59 @@
+import { useRouter } from 'expo-router';
 import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 import { useState } from 'react';
 
-import { ThemedView } from '@/components/themed-view';
 import { CadastroForm } from '@/components/cadastroComponents/cadastro_form';
+import { ThemedView } from '@/components/themed-view';
+import { createPatient } from '@/services/patients';
+import { ageFromBirthDate, birthDateFromAge, mapBiologicalSex } from '@/utils/patient';
 
 export default function CadastroScreen() {
+  const router = useRouter();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleCadastro = async (
     nomeCompleto: string,
     idade: string,
     sexoBiologico: string,
-    nomeResponsavel: string
+    nomeResponsavel: string,
   ) => {
     setErrorMessage(null);
 
     try {
-      // Validate
       if (!nomeCompleto.trim() || !idade.trim() || !sexoBiologico) {
         setErrorMessage('Por favor, preencha todos os campos obrigatórios.');
         return;
       }
 
-      console.log('Dados do cadastro:', {
-        nomeCompleto,
-        idade,
-        sexoBiologico,
-        nomeResponsavel,
+      setIsLoading(true);
+
+      const patient = await createPatient({
+        name: nomeCompleto.trim(),
+        sex: mapBiologicalSex(sexoBiologico),
+        birthDate: birthDateFromAge(idade),
+        ...(nomeResponsavel.trim()
+          ? { guardian: { name: nomeResponsavel.trim() } }
+          : {}),
       });
 
-      // Navigate to next step
+      router.push({
+        pathname: '/checklistClinico',
+        params: {
+          patientId: patient.id,
+          patientName: patient.name,
+          patientAge: String(ageFromBirthDate(patient.birthDate)),
+          sex: patient.sex,
+        },
+      });
     } catch (error) {
-      setErrorMessage('Não foi possível completar o cadastro. Tente novamente.');
+      setErrorMessage(
+        error instanceof Error
+          ? error.message
+          : 'Não foi possível completar o cadastro. Tente novamente.',
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -43,6 +65,7 @@ export default function CadastroScreen() {
       >
         <CadastroForm
           onSubmit={handleCadastro}
+          isLoading={isLoading}
           errorMessage={errorMessage}
         />
       </KeyboardAvoidingView>

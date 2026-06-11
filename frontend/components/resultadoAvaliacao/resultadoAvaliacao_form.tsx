@@ -9,68 +9,83 @@ import { ResultadoAvaliacao_Details } from '@/components/resultadoAvaliacao/resu
 import { ResultadoAvaliacao_Actions } from '@/components/resultadoAvaliacao/resultadoAvaliacao_actions';
 import { useThemeColor } from '@/hooks/use-theme-color';
 import { formStyles } from '@/components/authComponents/formStyles';
+import type { ScreeningResult } from '@/services/types/api';
 
 type ResultadoAvaliacao_FormProps = {
-    score?: number;
-    maxScore?: number;
-    alertMessage?: string;
-    detailItems?: Array<{
-        label: string;
-        value: string | number;
-    }>;
+  patientName?: string;
+  score?: number;
+  maxScore?: number;
+  screeningResult?: ScreeningResult;
+  alertMessage?: string;
+  detailItems?: Array<{
+    label: string;
+    value: string | number;
+  }>;
+  onGoHome?: () => void;
+  onNewEvaluation?: () => void;
 };
 
 export function ResultadoAvaliacao_Form({
-    score = 0.68,
-    maxScore = 1.0,
-    alertMessage = 'O resultado sugere possível manifestação de características relacionadas à Síndrome de X Frágil.',
-    detailItems = [
-        { label: 'Características Fenotípicas', value: 0.45 },
-        { label: 'Comportamento e Cognição', value: 0.50 },
-        { label: 'Características Físicas', value: 0.68 },
-        { label: 'Padrões Espaçotempo', value: 0.42 },
-    ],
+  patientName,
+  score = 0,
+  maxScore = 1,
+  screeningResult = 'BAIXO_RISCO',
+  alertMessage = 'O resultado sugere possível manifestação de características relacionadas à Síndrome de X Frágil.',
+  detailItems = [],
+  onGoHome,
+  onNewEvaluation,
 }: ResultadoAvaliacao_FormProps) {
-    const labelColor = useThemeColor({}, 'label');
+  const labelColor = useThemeColor({}, 'label');
+  const isSuspected = screeningResult === 'SUSPEITO';
 
-    return (
-        <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-            <ResultadoAvaliacao_Header />
+  return (
+    <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
+      <ResultadoAvaliacao_Header />
 
-            <ThemedView style={formStyles.container}>
-                <ResultadoAvaliacao_ScoreCard
-                    score={score}
-                    maxScore={maxScore}
-                />
+      <ThemedView style={formStyles.container}>
+        {patientName ? (
+          <ThemedText style={[formStyles.label, { color: labelColor }]}>
+            PACIENTE: {patientName.toUpperCase()}
+          </ThemedText>
+        ) : null}
 
-                <ResultadoAvaliacao_AlertCard
-                    title="SUSPEITA DE X FRÁGIL"
-                    description={alertMessage}
-                    type="warning"
-                />
+        <ResultadoAvaliacao_ScoreCard score={score} maxScore={maxScore} />
 
-                <ThemedText style={[formStyles.label, { color: labelColor }]}>
-                    RECOMENDAÇÃO CLÍNICA
-                </ThemedText>
+        <ResultadoAvaliacao_AlertCard
+          title={isSuspected ? 'SUSPEITA DE X FRÁGIL' : 'BAIXO RISCO'}
+          description={alertMessage}
+          type={isSuspected ? 'warning' : 'info'}
+        />
 
-                <ResultadoAvaliacao_AlertCard
-                    title="ENCAMINHAMENTO INDICADO"
-                    description="Exame molecular para confirmação diagnóstica. Recomenda-se referência para serviço de genética clínica para avaliação especializada."
-                    type="info"
-                />
+        <ThemedText style={[formStyles.label, { color: labelColor }]}>
+          RECOMENDAÇÃO CLÍNICA
+        </ThemedText>
 
-                <ResultadoAvaliacao_Details items={detailItems} />
+        <ResultadoAvaliacao_AlertCard
+          title={isSuspected ? 'ENCAMINHAMENTO INDICADO' : 'ACOMPANHAMENTO DE ROTINA'}
+          description={
+            isSuspected
+              ? 'Exame molecular para confirmação diagnóstica. Recomenda-se referência para serviço de genética clínica para avaliação especializada.'
+              : 'Continue o acompanhamento clínico de rotina. Reavalie se novos sintomas surgirem.'
+          }
+          type="info"
+        />
 
-                <ResultadoAvaliacao_Actions />
-            </ThemedView>
-        </ScrollView>
-    );
+        <ResultadoAvaliacao_Details items={detailItems} />
+
+        <ResultadoAvaliacao_Actions
+          onGoHome={onGoHome}
+          onNewEvaluation={onNewEvaluation}
+        />
+      </ThemedView>
+    </ScrollView>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flexGrow: 1,
-        padding: 24,
-        paddingHorizontal: 24,
-    },
+  container: {
+    flexGrow: 1,
+    padding: 24,
+    paddingHorizontal: 24,
+  },
 });
