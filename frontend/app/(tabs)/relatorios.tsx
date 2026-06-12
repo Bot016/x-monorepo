@@ -1,5 +1,4 @@
-import { useFocusEffect } from 'expo-router';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -9,6 +8,7 @@ import {
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { useAsyncList } from '@/hooks/useAsyncList';
 import { listEvaluations } from '@/services/evaluations';
 import { listPatients } from '@/services/patients';
 import type { EvaluationDto } from '@/services/types/api';
@@ -26,46 +26,19 @@ function formatDate(isoDate: string): string {
 }
 
 export default function RelatoriosScreen() {
-  const [reports, setReports] = useState<ReportItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const loadReports = useCallback(async (): Promise<ReportItem[]> => {
+    const [evaluations, patients] = await Promise.all([listEvaluations(), listPatients()]);
+    const patientNames = new Map(patients.map((patient) => [patient.id, patient.name]));
 
-  const loadReports = useCallback(async (refreshing = false) => {
-    if (refreshing) {
-      setIsRefreshing(true);
-    } else {
-      setIsLoading(true);
-    }
-
-    setErrorMessage(null);
-
-    try {
-      const [evaluations, patients] = await Promise.all([listEvaluations(), listPatients()]);
-      const patientNames = new Map(patients.map((patient) => [patient.id, patient.name]));
-
-      setReports(
-        evaluations.map((evaluation) => ({
-          ...evaluation,
-          patientName: patientNames.get(evaluation.patientId) ?? 'Paciente',
-        })),
-      );
-    } catch (error) {
-      setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : 'Não foi possível carregar os relatórios.',
-      );
-    } finally {
-      setIsLoading(false);
-      setIsRefreshing(false);
-    }
+    return evaluations.map((evaluation) => ({
+      ...evaluation,
+      patientName: patientNames.get(evaluation.patientId) ?? 'Paciente',
+    }));
   }, []);
 
-  useFocusEffect(
-    useCallback(() => {
-      void loadReports();
-    }, [loadReports]),
+  const { items: reports, isLoading, isRefreshing, errorMessage, reload } = useAsyncList(
+    loadReports,
+    { errorMessage: 'Não foi possível carregar os relatórios.' },
   );
 
   const summary = useMemo(() => {
@@ -94,7 +67,7 @@ export default function RelatoriosScreen() {
         data={reports}
         keyExtractor={(item) => item.id}
         refreshControl={
-          <RefreshControl refreshing={isRefreshing} onRefresh={() => void loadReports(true)} />
+          <RefreshControl refreshing={isRefreshing} onRefresh={() => void reload(true)} />
         }
         contentContainerStyle={styles.list}
         ListEmptyComponent={

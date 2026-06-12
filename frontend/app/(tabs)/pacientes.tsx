@@ -1,5 +1,3 @@
-import { useFocusEffect } from 'expo-router';
-import { useCallback, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -10,44 +8,15 @@ import {
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { useAsyncList } from '@/hooks/useAsyncList';
 import { listPatients } from '@/services/patients';
 import type { PatientDto } from '@/services/types/api';
 import { ageFromBirthDate } from '@/utils/patient';
 
 export default function PacientesScreen() {
-  const [patients, setPatients] = useState<PatientDto[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-  const loadPatients = useCallback(async (refreshing = false) => {
-    if (refreshing) {
-      setIsRefreshing(true);
-    } else {
-      setIsLoading(true);
-    }
-
-    setErrorMessage(null);
-
-    try {
-      const data = await listPatients();
-      setPatients(data);
-    } catch (error) {
-      setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : 'Não foi possível carregar os pacientes.',
-      );
-    } finally {
-      setIsLoading(false);
-      setIsRefreshing(false);
-    }
-  }, []);
-
-  useFocusEffect(
-    useCallback(() => {
-      void loadPatients();
-    }, [loadPatients]),
+  const { items: patients, isLoading, isRefreshing, errorMessage, reload } = useAsyncList(
+    listPatients,
+    { errorMessage: 'Não foi possível carregar os pacientes.' },
   );
 
   if (isLoading) {
@@ -71,7 +40,7 @@ export default function PacientesScreen() {
         data={patients}
         keyExtractor={(item) => item.id}
         refreshControl={
-          <RefreshControl refreshing={isRefreshing} onRefresh={() => void loadPatients(true)} />
+          <RefreshControl refreshing={isRefreshing} onRefresh={() => void reload(true)} />
         }
         contentContainerStyle={styles.list}
         ListEmptyComponent={
