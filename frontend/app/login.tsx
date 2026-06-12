@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native';
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native';
 
-import { LoginForm } from '@/components/loginComponents/login_form';
-import { LoginHeader } from '@/components/authComponents/auth_header';
+import { AuthHeader } from '@/components/authComponents/auth_header';
+import { LoginForm } from '@/components/authComponents/login_form';
 import { useAuth } from '@/hooks/useAuth';
 import { AuthError } from '@/services/auth';
 import { ThemedView } from '@/components/themed-view';
@@ -27,7 +27,10 @@ export default function LoginScreen() {
   };
 
   const handleForgotPassword = () => {
-    console.log('Esqueci minha senha');
+    Alert.alert(
+      'Recuperação de senha',
+      'Entre em contato com o administrador do sistema para redefinir sua senha.',
+    );
   };
 
   return (
@@ -37,7 +40,7 @@ export default function LoginScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-          <LoginHeader />
+          <AuthHeader />
           <LoginForm
             onSubmit={handleLogin}
             onForgotPassword={handleForgotPassword}

@@ -2,10 +2,10 @@ import { useState } from 'react';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { RegisterInput } from '@/components/authComponents/registerComponents/register_input';
-import { RegisterButton } from '@/components/authComponents/registerComponents/register_button';
-import { useThemeColor } from '@/hooks/use-theme-color';
 import { formStyles } from '@/components/authComponents/formStyles';
+import { FormButton } from '@/components/ui/form-button';
+import { FormInput } from '@/components/ui/form-input';
+import { useThemeColor } from '@/hooks/use-theme-color';
 
 type RegisterFormProps = {
   onSubmit: (
@@ -33,10 +33,10 @@ export function RegisterForm({
 
   return (
     <ThemedView style={formStyles.container}>
-      <ThemedText style={[formStyles.label, { color: labelColor }]}> 
+      <ThemedText style={[formStyles.label, { color: labelColor }]}>
         NOME
       </ThemedText>
-      <RegisterInput
+      <FormInput
         value={name}
         onChangeText={setName}
         placeholder="Digite seu nome"
@@ -45,10 +45,10 @@ export function RegisterForm({
         iconName="person.fill"
       />
 
-      <ThemedText style={[formStyles.label, { color: labelColor }]}> 
+      <ThemedText style={[formStyles.label, { color: labelColor }]}>
         E-MAIL PROFISSIONAL
       </ThemedText>
-      <RegisterInput
+      <FormInput
         value={email}
         onChangeText={setEmail}
         placeholder="nome@hospital.com"
@@ -59,10 +59,10 @@ export function RegisterForm({
         iconName="envelope.fill"
       />
 
-      <ThemedText style={[formStyles.label, { color: labelColor }]}> 
+      <ThemedText style={[formStyles.label, { color: labelColor }]}>
         SENHA
       </ThemedText>
-      <RegisterInput
+      <FormInput
         value={password}
         onChangeText={setPassword}
         placeholder="Digite sua senha"
@@ -71,10 +71,10 @@ export function RegisterForm({
         iconName="lock.fill"
       />
 
-      <ThemedText style={[formStyles.label, { color: labelColor }]}> 
+      <ThemedText style={[formStyles.label, { color: labelColor }]}>
         CONFIRMAR SENHA
       </ThemedText>
-      <RegisterInput
+      <FormInput
         value={confirmPassword}
         onChangeText={setConfirmPassword}
         placeholder="Digite a senha novamente"
@@ -89,7 +89,7 @@ export function RegisterForm({
         </ThemedText>
       ) : null}
 
-      <RegisterButton
+      <FormButton
         onPress={() => void onSubmit(name, email, password, confirmPassword)}
         disabled={isLoading}
         label={isLoading ? 'Cadastrando...' : 'Cadastrar'}

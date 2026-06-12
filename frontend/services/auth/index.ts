@@ -1,3 +1,5 @@
+import { getSupabaseAuthService } from './supabaseAuthService';
+
 export { createMockAuthService, mockAuthService } from './mockAuthService';
 export { createSupabaseAuthService, getSupabaseAuthService } from './supabaseAuthService';
 export {
@@ -7,7 +9,5 @@ export {
   type LoginCredentials,
   type RegisterCredentials,
 } from './types';
-
-import { getSupabaseAuthService } from './supabaseAuthService';
 
 export const defaultAuthService = getSupabaseAuthService();

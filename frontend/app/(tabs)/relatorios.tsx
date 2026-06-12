@@ -1,5 +1,4 @@
-import { useFocusEffect } from 'expo-router';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -9,6 +8,8 @@ import {
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { useAsyncList } from '@/hooks/useAsyncList';
+import { useThemeColor } from '@/hooks/use-theme-color';
 import { listEvaluations } from '@/services/evaluations';
 import { listPatients } from '@/services/patients';
 import type { EvaluationDto } from '@/services/types/api';
@@ -26,46 +27,26 @@ function formatDate(isoDate: string): string {
 }
 
 export default function RelatoriosScreen() {
-  const [reports, setReports] = useState<ReportItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const cardBorderColor = useThemeColor({}, 'cardBorder');
+  const errorColor = useThemeColor({}, 'error');
+  const badgeSuspectBackground = useThemeColor({}, 'badgeSuspectBackground');
+  const badgeSuspectText = useThemeColor({}, 'badgeSuspectText');
+  const badgeNormalBackground = useThemeColor({}, 'badgeNormalBackground');
+  const badgeNormalText = useThemeColor({}, 'badgeNormalText');
 
-  const loadReports = useCallback(async (refreshing = false) => {
-    if (refreshing) {
-      setIsRefreshing(true);
-    } else {
-      setIsLoading(true);
-    }
+  const loadReports = useCallback(async (): Promise<ReportItem[]> => {
+    const [evaluations, patients] = await Promise.all([listEvaluations(), listPatients()]);
+    const patientNames = new Map(patients.map((patient) => [patient.id, patient.name]));
 
-    setErrorMessage(null);
-
-    try {
-      const [evaluations, patients] = await Promise.all([listEvaluations(), listPatients()]);
-      const patientNames = new Map(patients.map((patient) => [patient.id, patient.name]));
-
-      setReports(
-        evaluations.map((evaluation) => ({
-          ...evaluation,
-          patientName: patientNames.get(evaluation.patientId) ?? 'Paciente',
-        })),
-      );
-    } catch (error) {
-      setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : 'Não foi possível carregar os relatórios.',
-      );
-    } finally {
-      setIsLoading(false);
-      setIsRefreshing(false);
-    }
+    return evaluations.map((evaluation) => ({
+      ...evaluation,
+      patientName: patientNames.get(evaluation.patientId) ?? 'Paciente',
+    }));
   }, []);
 
-  useFocusEffect(
-    useCallback(() => {
-      void loadReports();
-    }, [loadReports]),
+  const { items: reports, isLoading, isRefreshing, errorMessage, reload } = useAsyncList(
+    loadReports,
+    { errorMessage: 'Não foi possível carregar os relatórios.' },
   );
 
   const summary = useMemo(() => {
@@ -88,13 +69,15 @@ export default function RelatoriosScreen() {
         {summary.total} avaliações · {summary.suspected} suspeitas
       </ThemedText>
 
-      {errorMessage ? <ThemedText style={styles.error}>{errorMessage}</ThemedText> : null}
+      {errorMessage ? (
+        <ThemedText style={[styles.error, { color: errorColor }]}>{errorMessage}</ThemedText>
+      ) : null}
 
       <FlatList
         data={reports}
         keyExtractor={(item) => item.id}
         refreshControl={
-          <RefreshControl refreshing={isRefreshing} onRefresh={() => void loadReports(true)} />
+          <RefreshControl refreshing={isRefreshing} onRefresh={() => void reload(true)} />
         }
         contentContainerStyle={styles.list}
         ListEmptyComponent={
@@ -103,21 +86,29 @@ export default function RelatoriosScreen() {
           </ThemedText>
         }
         renderItem={({ item }) => (
-          <ThemedView style={styles.card}>
+          <ThemedView style={[styles.card, { borderColor: cardBorderColor }]}>
             <ThemedView style={styles.cardHeader}>
               <ThemedText style={styles.patientName}>{item.patientName}</ThemedText>
               <ThemedView
                 style={[
                   styles.badge,
-                  item.screeningResult === 'SUSPEITO' ? styles.badgeSuspect : styles.badgeNormal,
+                  {
+                    backgroundColor:
+                      item.screeningResult === 'SUSPEITO'
+                        ? badgeSuspectBackground
+                        : badgeNormalBackground,
+                  },
                 ]}
               >
                 <ThemedText
                   style={[
                     styles.badgeText,
-                    item.screeningResult === 'SUSPEITO'
-                      ? styles.badgeTextSuspect
-                      : styles.badgeTextNormal,
+                    {
+                      color:
+                        item.screeningResult === 'SUSPEITO'
+                          ? badgeSuspectText
+                          : badgeNormalText,
+                    },
                   ]}
                 >
                   {item.screeningResult === 'SUSPEITO' ? 'SUSPEITA' : 'NORMAL'}
@@ -155,7 +146,6 @@ const styles = StyleSheet.create({
   },
   card: {
     borderWidth: 1,
-    borderColor: '#DDE4EE',
     borderRadius: 12,
     padding: 16,
     gap: 8,
@@ -180,22 +170,10 @@ const styles = StyleSheet.create({
     paddingVertical: 4,
     borderRadius: 6,
   },
-  badgeSuspect: {
-    backgroundColor: '#FEE2E2',
-  },
-  badgeNormal: {
-    backgroundColor: '#D1FAE5',
-  },
   badgeText: {
     fontSize: 11,
     fontWeight: '700',
     letterSpacing: 0.5,
-  },
-  badgeTextSuspect: {
-    color: '#C53030',
-  },
-  badgeTextNormal: {
-    color: '#065F46',
   },
   empty: {
     opacity: 0.6,
@@ -203,7 +181,6 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   error: {
-    color: '#DC2626',
     fontSize: 14,
   },
 });

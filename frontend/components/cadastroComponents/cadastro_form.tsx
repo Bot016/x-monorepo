@@ -3,11 +3,11 @@ import { ScrollView, StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { CadastroInput } from '@/components/cadastroComponents/cadastro_input';
 import { CadastroHeader } from '@/components/cadastroComponents/cadastro_header';
 import { BiologicoSelector } from '@/components/cadastroComponents/biologico_selector';
-import { CadastroButton } from '@/components/cadastroComponents/cadastro_button';
 import { InfoBox } from '@/components/cadastroComponents/info_box';
+import { FormButton } from '@/components/ui/form-button';
+import { FormInput } from '@/components/ui/form-input';
 import { useThemeColor } from '@/hooks/use-theme-color';
 import { formStyles } from '@/components/authComponents/formStyles';
 
@@ -50,7 +50,7 @@ export function CadastroForm({
         <ThemedText style={[formStyles.label, { color: labelColor }]}>
           NOME COMPLETO
         </ThemedText>
-        <CadastroInput
+        <FormInput
           placeholder="Digite o nome completo"
           value={nomeCompleto}
           onChangeText={setNomeCompleto}
@@ -60,7 +60,7 @@ export function CadastroForm({
         <ThemedText style={[formStyles.label, { color: labelColor }]}>
           IDADE
         </ThemedText>
-        <CadastroInput
+        <FormInput
           placeholder="Ex: 8"
           keyboardType="numeric"
           value={idade}
@@ -78,7 +78,7 @@ export function CadastroForm({
         <ThemedText style={[formStyles.label, { color: labelColor }]}>
           NOME DO RESPONSÁVEL
         </ThemedText>
-        <CadastroInput
+        <FormInput
           placeholder="Nome do pai, mãe ou tutor"
           value={nomeResponsavel}
           onChangeText={setNomeResponsavel}
@@ -98,7 +98,7 @@ export function CadastroForm({
           </ThemedText>
         ) : null}
 
-        <CadastroButton
+        <FormButton
           label={isLoading ? 'Salvando...' : 'Ir para Checklist'}
           onPress={() =>
             void onSubmit(nomeCompleto, idade, sexoBiologico, nomeResponsavel)

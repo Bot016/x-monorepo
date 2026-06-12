@@ -1,5 +1,3 @@
-import { useFocusEffect } from 'expo-router';
-import { useCallback, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -10,44 +8,17 @@ import {
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { useAsyncList } from '@/hooks/useAsyncList';
+import { useThemeColor } from '@/hooks/use-theme-color';
 import { listPatients } from '@/services/patients';
-import type { PatientDto } from '@/services/types/api';
 import { ageFromBirthDate } from '@/utils/patient';
 
 export default function PacientesScreen() {
-  const [patients, setPatients] = useState<PatientDto[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isRefreshing, setIsRefreshing] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
-  const loadPatients = useCallback(async (refreshing = false) => {
-    if (refreshing) {
-      setIsRefreshing(true);
-    } else {
-      setIsLoading(true);
-    }
-
-    setErrorMessage(null);
-
-    try {
-      const data = await listPatients();
-      setPatients(data);
-    } catch (error) {
-      setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : 'Não foi possível carregar os pacientes.',
-      );
-    } finally {
-      setIsLoading(false);
-      setIsRefreshing(false);
-    }
-  }, []);
-
-  useFocusEffect(
-    useCallback(() => {
-      void loadPatients();
-    }, [loadPatients]),
+  const cardBorderColor = useThemeColor({}, 'cardBorder');
+  const errorColor = useThemeColor({}, 'error');
+  const { items: patients, isLoading, isRefreshing, errorMessage, reload } = useAsyncList(
+    listPatients,
+    { errorMessage: 'Não foi possível carregar os pacientes.' },
   );
 
   if (isLoading) {
@@ -65,13 +36,15 @@ export default function PacientesScreen() {
         Pacientes cadastrados e avaliados por você.
       </ThemedText>
 
-      {errorMessage ? <ThemedText style={styles.error}>{errorMessage}</ThemedText> : null}
+      {errorMessage ? (
+        <ThemedText style={[styles.error, { color: errorColor }]}>{errorMessage}</ThemedText>
+      ) : null}
 
       <FlatList
         data={patients}
         keyExtractor={(item) => item.id}
         refreshControl={
-          <RefreshControl refreshing={isRefreshing} onRefresh={() => void loadPatients(true)} />
+          <RefreshControl refreshing={isRefreshing} onRefresh={() => void reload(true)} />
         }
         contentContainerStyle={styles.list}
         ListEmptyComponent={
@@ -81,7 +54,7 @@ export default function PacientesScreen() {
         }
         renderItem={({ item }) => (
           <TouchableOpacity activeOpacity={0.8}>
-            <ThemedView style={styles.card}>
+            <ThemedView style={[styles.card, { borderColor: cardBorderColor }]}>
               <ThemedText style={styles.patientName}>{item.name}</ThemedText>
               <ThemedText style={styles.patientMeta}>
                 {item.sex === 'm' ? 'Masculino' : 'Feminino'} · {ageFromBirthDate(item.birthDate)} anos
@@ -120,7 +93,6 @@ const styles = StyleSheet.create({
   },
   card: {
     borderWidth: 1,
-    borderColor: '#DDE4EE',
     borderRadius: 12,
     padding: 16,
     gap: 4,
@@ -143,7 +115,6 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
   error: {
-    color: '#DC2626',
     fontSize: 14,
   },
 });

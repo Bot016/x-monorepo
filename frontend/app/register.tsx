@@ -7,7 +7,7 @@ import { ThemedView } from '@/components/themed-view';
 import { useAuth } from '@/hooks/useAuth';
 import { AuthError } from '@/services/auth';
 
-export default function CadastroScreen() {
+export default function RegisterScreen() {
   const { register, isRegistering } = useAuth();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 

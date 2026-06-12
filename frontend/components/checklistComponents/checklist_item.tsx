@@ -1,7 +1,6 @@
 import { TouchableOpacity, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useThemeColor } from '@/hooks/use-theme-color';
 
@@ -23,6 +22,7 @@ export function ChecklistItem({
   const borderColor = useThemeColor({}, 'inputBorder');
   const checkboxBackground = useThemeColor({}, 'inputBackground');
   const buttonColor = useThemeColor({}, 'buttonColor');
+  const onPrimaryColor = useThemeColor({}, 'onPrimary');
   const textColor = useThemeColor({}, 'text');
 
   return (
@@ -45,7 +45,7 @@ export function ChecklistItem({
           <IconSymbol
             name="checkmark.circle.fill"
             size={16}
-            color="#FFFFFF"
+            color={onPrimaryColor}
           />
         )}
       </View>

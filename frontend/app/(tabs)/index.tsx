@@ -1,12 +1,13 @@
 import { useRouter } from 'expo-router';
 import { ScrollView, StyleSheet } from 'react-native';
 
-import { CardPrincipal } from '@/components/pricipalComponents/cardPrincipal';
-import { DashboardOfflineBanner } from '@/components/pricipalComponents/offlineBanner';
-import { NovaAvaliacaoButton } from '@/components/pricipalComponents/novaAvaliacaoButton';
-import { RecentesPrincipal } from '@/components/pricipalComponents/recentsPrincipal';
+import { CardPrincipal } from '@/components/principalComponents/cardPrincipal';
+import { DashboardOfflineBanner } from '@/components/principalComponents/offlineBanner';
+import { NovaAvaliacaoButton } from '@/components/principalComponents/novaAvaliacaoButton';
+import { RecentesPrincipal } from '@/components/principalComponents/recentsPrincipal';
 import { ThemedView } from '@/components/themed-view';
 import { useDashboard } from '@/hooks/useDashboard';
+import { useThemeColor } from '@/hooks/use-theme-color';
 
 function formatStatValue(value: number, isLoading: boolean): string {
   if (isLoading) return '—';
@@ -15,6 +16,7 @@ function formatStatValue(value: number, isLoading: boolean): string {
 
 export default function PrincipalScreen() {
   const router = useRouter();
+  const suspectValueColor = useThemeColor({}, 'suspectValue');
   const { data, status, errorMessage } = useDashboard();
   const isLoading = status === 'loading';
 
@@ -24,7 +26,7 @@ export default function PrincipalScreen() {
         contentContainerStyle={styles.scroll}
         showsVerticalScrollIndicator={false}>
         <DashboardOfflineBanner status={status} message={errorMessage} />
-        <NovaAvaliacaoButton onPress={() => router.push('/Cadastro')} />
+        <NovaAvaliacaoButton onPress={() => router.push('/cadastro-paciente')} />
 
         <ThemedView style={styles.statsRow}>
           <CardPrincipal
@@ -36,7 +38,7 @@ export default function PrincipalScreen() {
             label="SUSPEITAS"
             value={formatStatValue(data.suspectedCount, isLoading)}
             icon="exclamationmark.triangle.fill"
-            valueColor="#E53E3E"
+            valueColor={suspectValueColor}
           />
           <CardPrincipal
             label="TOTAL DE PACIENTES"

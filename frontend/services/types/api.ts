@@ -46,8 +46,8 @@ export type EvaluationDto = {
 
 export type CreateEvaluationInput = {
   patientId: string;
-  sintomas: Array<{
+  sintomas: {
     id: string;
     presente: boolean;
-  }>;
+  }[];
 };
