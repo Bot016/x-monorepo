@@ -16,7 +16,7 @@ export default function ResultadoAvaliacaoScreen() {
 
   const score = Number.parseFloat(params.score ?? '0');
   const appliedThreshold = Number.parseFloat(params.appliedThreshold ?? '0');
-  const isSuspected = params.screeningResult === 'SUSPEITO';
+  const isSuspected = params.screeningResult === 'suspected';
 
   return (
     <Screen topAppBar>

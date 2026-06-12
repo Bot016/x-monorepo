@@ -32,7 +32,7 @@ export type SymptomDto = {
   weight?: number | string;
 };
 
-export type ScreeningResult = 'SUSPEITO' | 'BAIXO_RISCO';
+export type ScreeningResult = 'suspected' | 'low_risk';
 
 export type EvaluationDto = {
   id: string;

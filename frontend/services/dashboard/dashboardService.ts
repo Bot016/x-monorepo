@@ -25,7 +25,7 @@ function formatAssessmentDate(isoDate: string): string {
 }
 
 function mapScreeningResult(result: ScreeningResult): RecentEvaluation['status'] {
-  return result === 'SUSPEITO' ? 'SUSPEITA' : 'NORMAL';
+  return result === 'suspected' ? 'SUSPEITA' : 'NORMAL';
 }
 
 function buildDashboardData(
@@ -39,7 +39,7 @@ function buildDashboardData(
   ).length;
 
   const suspectedCount = evaluations.filter(
-    (evaluation) => evaluation.screeningResult === 'SUSPEITO',
+    (evaluation) => evaluation.screeningResult === 'suspected',
   ).length;
 
   const recentAssessments = [...evaluations]
