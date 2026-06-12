@@ -3,6 +3,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet } from 'react-native';
 
 import { Screen } from '@/components/Screen';
+import { ScreenContent } from '@/components/ScreenContent';
+import { LAYOUT } from '@/constants/layout';
 import { ChecklistButton } from '@/components/checklistComponents/checklist_button';
 import { ChecklistHeader } from '@/components/checklistComponents/checklist_header';
 import { ChecklistItem } from '@/components/checklistComponents/checklist_item';
@@ -74,6 +76,21 @@ export default function ChecklistClinicoScreen() {
     }));
   };
 
+  const handleBack = () => {
+    if (currentStep > 0) {
+      setCurrentStep((previous) => previous - 1);
+      setErrorMessage(null);
+      return;
+    }
+
+    if (router.canGoBack()) {
+      router.back();
+      return;
+    }
+
+    router.replace('/cadastro-paciente');
+  };
+
   const handleContinue = async () => {
     setErrorMessage(null);
 
@@ -120,7 +137,7 @@ export default function ChecklistClinicoScreen() {
 
   if (isLoadingSymptoms) {
     return (
-      <Screen topAppBar={{ variant: 'back' }} style={styles.centered}>
+      <Screen topAppBar={{ variant: 'back', onBack: handleBack }} style={styles.centered}>
         <ActivityIndicator size="large" />
         <ThemedText style={styles.loadingText}>Carregando sintomas...</ThemedText>
       </Screen>
@@ -128,8 +145,9 @@ export default function ChecklistClinicoScreen() {
   }
 
   return (
-    <Screen topAppBar={{ variant: 'back' }}>
+    <Screen topAppBar={{ variant: 'back', onBack: handleBack }}>
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
+        <ScreenContent maxWidth={LAYOUT.formMaxWidth} style={styles.content}>
         <ThemedText style={styles.stepLabel}>
           PASSO {currentStep + 2} DE 4
         </ThemedText>
@@ -169,6 +187,7 @@ export default function ChecklistClinicoScreen() {
           onPress={() => void handleContinue()}
           disabled={isSubmitting || stepSymptoms.length === 0}
         />
+        </ScreenContent>
       </ScrollView>
     </Screen>
   );
@@ -177,8 +196,11 @@ export default function ChecklistClinicoScreen() {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
+    alignItems: 'center',
     padding: 24,
     paddingBottom: 40,
+  },
+  content: {
     gap: 16,
   },
   centered: {

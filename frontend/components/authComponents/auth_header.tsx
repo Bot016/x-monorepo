@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -13,13 +13,12 @@ type AuthHeaderProps = {
 
 export function AuthHeader({ subtitle }: AuthHeaderProps) {
   const colorScheme = useColorScheme();
-  const backgroundColor = useThemeColor({}, 'background');
   const titleColor = useThemeColor({}, 'text');
   const subtitleColor = useThemeColor({}, 'label');
   const iconBoxColor = useThemeColor({}, 'iconBoxColor');
 
   return (
-    <ThemedView lightColor={backgroundColor} darkColor={backgroundColor} style={styles.container}>
+    <View style={styles.container}>
       <ThemedView
         lightColor={iconBoxColor}
         darkColor={iconBoxColor}
@@ -32,13 +31,13 @@ export function AuthHeader({ subtitle }: AuthHeaderProps) {
         />
       </ThemedView>
 
-      <ThemedView style={styles.titles}>
+      <View style={styles.titles}>
         <ThemedText type="title" style={[styles.title, { color: titleColor }]}>
           Triagem X
         </ThemedText>
         <ThemedText style={[styles.subtitle, { color: subtitleColor }]}>{subtitle}</ThemedText>
-      </ThemedView>
-    </ThemedView>
+      </View>
+    </View>
   );
 }
 

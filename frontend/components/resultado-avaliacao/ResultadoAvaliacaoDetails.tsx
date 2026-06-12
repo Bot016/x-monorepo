@@ -1,7 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useThemeColor } from '@/hooks/use-theme-color';
@@ -19,18 +18,21 @@ export function ResultadoAvaliacaoDetails({ items }: ResultadoAvaliacaoDetailsPr
   const colorScheme = useColorScheme();
   const labelColor = useThemeColor({}, 'label');
   const buttonColor = useThemeColor({}, 'buttonColor');
-  const backgroundColor = useThemeColor(
-    { light: '#F8FAFC', dark: '#0F172A' },
-    'background',
-  );
+  const backgroundColor = useThemeColor({}, 'background');
+  const cardBorderColor = useThemeColor({}, 'cardBorder');
 
   return (
-    <ThemedView style={styles.container}>
+    <View style={styles.container}>
       <ThemedText style={[styles.title, { color: labelColor }]}>
         DETALHES DA AVALIAÇÃO
       </ThemedText>
 
-      <View style={[styles.detailsBox, { backgroundColor }]}>
+      <View
+        style={[
+          styles.detailsBox,
+          { backgroundColor, borderColor: cardBorderColor },
+        ]}
+      >
         {items.map((item, index) => (
           <View key={index}>
             <View style={styles.detailRow}>
@@ -52,7 +54,7 @@ export function ResultadoAvaliacaoDetails({ items }: ResultadoAvaliacaoDetailsPr
           </View>
         ))}
       </View>
-    </ThemedView>
+    </View>
   );
 }
 
@@ -68,6 +70,7 @@ const styles = StyleSheet.create({
   },
   detailsBox: {
     borderRadius: 10,
+    borderWidth: 1,
     padding: 12,
     gap: 0,
   },

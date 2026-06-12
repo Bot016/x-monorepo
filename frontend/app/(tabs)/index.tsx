@@ -1,14 +1,15 @@
 import { useRouter } from 'expo-router';
-import { ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
+import { HeaderActionButton } from '@/components/HeaderActionButton';
 import { Screen } from '@/components/Screen';
+import { ScreenContent } from '@/components/ScreenContent';
+import { ScreenPageHeader } from '@/components/ScreenPageHeader';
 import { CardPrincipal } from '@/components/principalComponents/cardPrincipal';
 import { DashboardOfflineBanner } from '@/components/principalComponents/offlineBanner';
-import { NovaAvaliacaoButton } from '@/components/principalComponents/novaAvaliacaoButton';
 import { RecentesPrincipal } from '@/components/principalComponents/recentsPrincipal';
-import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { LAYOUT } from '@/constants/layout';
+import { useBreakpointLayout } from '@/hooks/useBreakpointLayout';
 import { useDashboard } from '@/hooks/useDashboard';
 import { useThemeColor } from '@/hooks/use-theme-color';
 
@@ -19,13 +20,10 @@ function formatStatValue(value: number, isLoading: boolean): string {
 
 export default function PrincipalScreen() {
   const router = useRouter();
-  const { width } = useWindowDimensions();
   const suspectValueColor = useThemeColor({}, 'suspectValue');
+  const { isStatsRow, isWide: isWideDashboard } = useBreakpointLayout();
   const { data, status, errorMessage } = useDashboard();
   const isLoading = status === 'loading';
-
-  const isStatsRow = width >= LAYOUT.statsRowMinWidth;
-  const isWideDashboard = width >= LAYOUT.dashboardWideMinWidth;
 
   const statsCards = [
     {
@@ -55,35 +53,22 @@ export default function PrincipalScreen() {
         contentContainerStyle={styles.scroll}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.content}>
-          {isWideDashboard ? (
-            <View style={styles.headerRow}>
-              <View style={styles.headerText}>
-                <ThemedText type="title">Principal</ThemedText>
-                <ThemedText style={styles.subtitle}>
-                  Visão geral das avaliações e pacientes cadastrados.
-                </ThemedText>
-              </View>
-
-              <NovaAvaliacaoButton
-                fullWidth={false}
+        <ScreenContent style={styles.content}>
+          <ScreenPageHeader
+            title="Principal"
+            subtitle="Visão geral das avaliações e pacientes cadastrados."
+            wide={isWideDashboard}
+            action={
+              <HeaderActionButton
+                label="Nova Avaliação"
+                icon="plus.circle.fill"
                 onPress={() => router.push('/cadastro-paciente')}
+                fullWidth={!isWideDashboard}
               />
-            </View>
-          ) : (
-            <>
-              <ThemedText type="title">Principal</ThemedText>
-              <ThemedText style={styles.subtitle}>
-                Visão geral das avaliações e pacientes cadastrados.
-              </ThemedText>
-            </>
-          )}
+            }
+          />
 
           <DashboardOfflineBanner status={status} message={errorMessage} />
-
-          {!isWideDashboard ? (
-            <NovaAvaliacaoButton onPress={() => router.push('/cadastro-paciente')} />
-          ) : null}
 
           <ThemedView style={[styles.statsRow, isStatsRow && styles.statsRowHorizontal]}>
             {statsCards.map((card) => (
@@ -105,7 +90,7 @@ export default function PrincipalScreen() {
             data={isLoading ? [] : data.recentAssessments}
             onVerTodos={() => router.push('/(tabs)/relatorios')}
           />
-        </View>
+        </ScreenContent>
       </ScrollView>
     </Screen>
   );
@@ -120,23 +105,7 @@ const styles = StyleSheet.create({
     paddingBottom: 32,
   },
   content: {
-    width: '100%',
-    maxWidth: LAYOUT.contentMaxWidth,
     gap: 12,
-  },
-  headerRow: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-    gap: 24,
-  },
-  headerText: {
-    flex: 1,
-    gap: 4,
-    paddingRight: 8,
-  },
-  subtitle: {
-    opacity: 0.7,
   },
   statsRow: {
     gap: 12,

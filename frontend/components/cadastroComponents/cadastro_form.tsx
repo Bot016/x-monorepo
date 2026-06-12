@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 
+import { ScreenContent } from '@/components/ScreenContent';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { LAYOUT } from '@/constants/layout';
 import { CadastroHeader } from '@/components/cadastroComponents/cadastro_header';
 import { BiologicoSelector } from '@/components/cadastroComponents/biologico_selector';
-import { InfoBox } from '@/components/cadastroComponents/info_box';
 import { FormButton } from '@/components/ui/form-button';
 import { FormInput } from '@/components/ui/form-input';
 import { useThemeColor } from '@/hooks/use-theme-color';
@@ -44,9 +45,10 @@ export function CadastroForm({
 
   return (
     <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-      <CadastroHeader step={1} totalSteps={4} />
+      <ScreenContent maxWidth={LAYOUT.formMaxWidth} style={styles.form}>
+        <CadastroHeader step={1} totalSteps={4} />
 
-      <ThemedView style={formStyles.container}>
+        <ThemedView style={formStyles.container}>
         <ThemedText style={[formStyles.label, { color: labelColor }]}>
           NOME COMPLETO
         </ThemedText>
@@ -87,13 +89,6 @@ export function CadastroForm({
           iconName="person.fill"
         />
 
-        <ThemedView style={styles.infoBox}>
-          <InfoBox
-            title="Seção Biológica"
-            description="O protocolo de triagem baseada-se em critérios físicos e comportamentais para suspeita de TEA."
-          />
-        </ThemedView>
-
         {errorMessage ? (
           <ThemedText style={[formStyles.errorText, { color: errorColor }]}>
             {errorMessage}
@@ -107,7 +102,8 @@ export function CadastroForm({
           }
           disabled={!isFormValid() || isLoading}
         />
-      </ThemedView>
+        </ThemedView>
+      </ScreenContent>
     </ScrollView>
   );
 }
@@ -115,11 +111,11 @@ export function CadastroForm({
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
+    alignItems: 'center',
     padding: 24,
     paddingHorizontal: 40,
-    gap: 20,
   },
-  infoBox: {
-    marginVertical: 8,
+  form: {
+    gap: 20,
   },
 });

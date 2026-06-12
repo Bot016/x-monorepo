@@ -1,19 +1,17 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { useThemeColor } from '@/hooks/use-theme-color';
 
 export function ResultadoAvaliacaoHeader() {
-  const backgroundColor = useThemeColor({}, 'background');
   const titleColor = useThemeColor({}, 'text');
 
   return (
-    <ThemedView lightColor={backgroundColor} darkColor={backgroundColor} style={styles.container}>
+    <View style={styles.container}>
       <ThemedText type="title" style={[styles.title, { color: titleColor }]}>
         Resultado da Avaliação
       </ThemedText>
-    </ThemedView>
+    </View>
   );
 }
 

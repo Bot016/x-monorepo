@@ -1,5 +1,6 @@
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
+import { ScreenContent } from '@/components/ScreenContent';
 import { formStyles } from '@/components/authComponents/formStyles';
 import { ResultadoAvaliacaoActions } from '@/components/resultado-avaliacao/ResultadoAvaliacaoActions';
 import { ResultadoAvaliacaoAlertCard } from '@/components/resultado-avaliacao/ResultadoAvaliacaoAlertCard';
@@ -7,7 +8,6 @@ import { ResultadoAvaliacaoDetails } from '@/components/resultado-avaliacao/Resu
 import { ResultadoAvaliacaoHeader } from '@/components/resultado-avaliacao/ResultadoAvaliacaoHeader';
 import { ResultadoAvaliacaoScoreCard } from '@/components/resultado-avaliacao/ResultadoAvaliacaoScoreCard';
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { useThemeColor } from '@/hooks/use-theme-color';
 import type { ScreeningResult } from '@/services/types/api';
 
@@ -40,9 +40,10 @@ export function ResultadoAvaliacaoForm({
 
   return (
     <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
+      <ScreenContent style={styles.content}>
       <ResultadoAvaliacaoHeader />
 
-      <ThemedView style={formStyles.container}>
+      <View style={formStyles.container}>
         {patientName ? (
           <ThemedText style={[formStyles.label, { color: labelColor }]}>
             PACIENTE: {patientName.toUpperCase()}
@@ -77,7 +78,8 @@ export function ResultadoAvaliacaoForm({
           onGoHome={onGoHome}
           onNewEvaluation={onNewEvaluation}
         />
-      </ThemedView>
+      </View>
+      </ScreenContent>
     </ScrollView>
   );
 }
@@ -85,7 +87,11 @@ export function ResultadoAvaliacaoForm({
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
+    alignItems: 'center',
     padding: 24,
     paddingHorizontal: 24,
+  },
+  content: {
+    gap: 12,
   },
 });

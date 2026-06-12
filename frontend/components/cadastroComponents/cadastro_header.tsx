@@ -40,13 +40,12 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
   title: {
-    fontSize: 28,
+    fontSize: 24,
     fontWeight: '700',
-    letterSpacing: 0.3,
+    lineHeight: 32,
   },
   description: {
     fontSize: 14,
     lineHeight: 20,
-    marginTop: 4,
   },
 });

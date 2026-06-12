@@ -11,11 +11,10 @@ type AuthOutlineButtonProps = {
 export function AuthOutlineButton({ label, onPress }: AuthOutlineButtonProps) {
   const borderColor = useThemeColor({}, 'cardBorder');
   const textColor = useThemeColor({}, 'buttonColor');
-  const backgroundColor = useThemeColor({}, 'background');
 
   return (
     <TouchableOpacity
-      style={[styles.button, { borderColor, backgroundColor }]}
+      style={[styles.button, { borderColor }]}
       onPress={onPress}
       activeOpacity={0.85}
     >

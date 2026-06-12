@@ -31,7 +31,7 @@ export function Screen({
   backgroundColor,
   style,
 }: ScreenProps) {
-  const themeBackground = useThemeColor({}, 'background');
+  const themeBackground = useThemeColor({}, 'pageBackground');
   const topAppBarConfig = resolveTopAppBarConfig(topAppBar);
   const edges: Edge[] = withTabBar
     ? ['top', 'left', 'right']

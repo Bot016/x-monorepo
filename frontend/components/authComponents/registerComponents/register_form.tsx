@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { AuthDivider } from '@/components/authComponents/auth_divider';
 import { AuthOutlineButton } from '@/components/authComponents/auth_outline_button';
 import { formStyles } from '@/components/authComponents/formStyles';
@@ -37,7 +36,7 @@ export function RegisterForm({
   const errorColor = useThemeColor({}, 'error');
 
   return (
-    <ThemedView style={formStyles.container}>
+    <View style={formStyles.container}>
       <ThemedText style={[formStyles.label, { color: labelColor }]}>
         NOME
       </ThemedText>
@@ -104,6 +103,6 @@ export function RegisterForm({
         <AuthDivider />
         <AuthOutlineButton label="Entrar" onPress={onGoToLogin} />
       </View>
-    </ThemedView>
+    </View>
   );
 }

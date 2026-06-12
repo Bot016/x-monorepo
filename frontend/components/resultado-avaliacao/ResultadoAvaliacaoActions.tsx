@@ -1,7 +1,6 @@
 import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useThemeColor } from '@/hooks/use-theme-color';
 
@@ -17,14 +16,11 @@ export function ResultadoAvaliacaoActions({
   const buttonColor = useThemeColor({}, 'buttonColor');
   const labelColor = useThemeColor({}, 'label');
   const onPrimaryColor = useThemeColor({}, 'onPrimary');
-  const backgroundColor = useThemeColor(
-    { light: '#FFFFFF', dark: '#1F2426' },
-    'background',
-  );
+  const backgroundColor = useThemeColor({}, 'background');
   const greenColor = '#10B981';
 
   return (
-    <ThemedView style={styles.container}>
+    <View style={styles.container}>
       <TouchableOpacity
         style={[styles.primaryButton, { backgroundColor: buttonColor }]}
         activeOpacity={0.85}
@@ -64,7 +60,7 @@ export function ResultadoAvaliacaoActions({
           </ThemedText>
         </TouchableOpacity>
       </View>
-    </ThemedView>
+    </View>
   );
 }
 

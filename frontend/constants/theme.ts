@@ -11,7 +11,8 @@ const tintColorDark = '#fff';
 export const Colors = {
   light: {
     text: '#11181C',
-    background: '#fff',
+    background: '#FFFFFF',
+    pageBackground: '#F8F9FF',
     tint: tintColorLight,
     icon: '#687076',
     tabIconDefault: '#687076',
@@ -25,7 +26,7 @@ export const Colors = {
     inputBorder: '#DDE4EE',
     inputText: '#0F172A',
     error: '#DC2626',
-    cardBorder: '#DDE4EE',
+    cardBorder: '#C2C6D4',
     onPrimary: '#FFFFFF',
     suspectValue: '#E53E3E',
     badgeSuspectBackground: '#FEE2E2',
@@ -37,6 +38,7 @@ export const Colors = {
   dark: {
     text: '#ECEDEE',
     background: '#151718',
+    pageBackground: '#151718',
     tint: tintColorDark,
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
