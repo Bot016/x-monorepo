@@ -1,10 +1,10 @@
 import { useRouter } from 'expo-router';
 import { ScrollView, StyleSheet } from 'react-native';
 
-import { CardPrincipal } from '@/components/pricipalComponents/cardPrincipal';
-import { DashboardOfflineBanner } from '@/components/pricipalComponents/offlineBanner';
-import { NovaAvaliacaoButton } from '@/components/pricipalComponents/novaAvaliacaoButton';
-import { RecentesPrincipal } from '@/components/pricipalComponents/recentsPrincipal';
+import { CardPrincipal } from '@/components/principalComponents/cardPrincipal';
+import { DashboardOfflineBanner } from '@/components/principalComponents/offlineBanner';
+import { NovaAvaliacaoButton } from '@/components/principalComponents/novaAvaliacaoButton';
+import { RecentesPrincipal } from '@/components/principalComponents/recentsPrincipal';
 import { ThemedView } from '@/components/themed-view';
 import { useDashboard } from '@/hooks/useDashboard';
 
