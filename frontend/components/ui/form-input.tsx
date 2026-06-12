@@ -1,21 +1,22 @@
-import { TextInput, TextInputProps, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TextInput, TextInputProps, TouchableOpacity } from 'react-native';
 
 import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useThemeColor } from '@/hooks/use-theme-color';
 
-type LoginInputProps = TextInputProps & {
-iconName: string;
-rightIconName?: string;
-onRightIconPress?: () => void;
+type FormInputProps = TextInputProps & {
+  iconName?: string;
+  rightIconName?: string;
+  onRightIconPress?: () => void;
 };
 
-export function LoginInput({
-iconName,
-rightIconName,
-onRightIconPress,
-...textInputProps
-}: LoginInputProps) {
+export function FormInput({
+  iconName,
+  rightIconName,
+  onRightIconPress,
+  style,
+  ...textInputProps
+}: FormInputProps) {
   const backgroundColor = useThemeColor({}, 'inputBackground');
   const borderColor = useThemeColor({}, 'inputBorder');
   const iconColor = useThemeColor({}, 'icon');
@@ -29,46 +30,46 @@ onRightIconPress,
       darkColor={backgroundColor}
       style={[styles.wrapper, { borderColor }]}
     >
-    <IconSymbol
-        name={iconName as any}
-        size={16}
-        color={iconColor}
-        style={styles.leftIcon}
-    />
-    <TextInput
-        style={[styles.input, { color: textColor }]}
+      {iconName ? (
+        <IconSymbol
+          name={iconName as never}
+          size={16}
+          color={iconColor}
+          style={styles.leftIcon}
+        />
+      ) : null}
+      <TextInput
+        style={[styles.input, { color: textColor }, style]}
         placeholderTextColor={placeholderTextColor}
         {...textInputProps}
-    />
-    {rightIconName && onRightIconPress && (
+      />
+      {rightIconName && onRightIconPress ? (
         <TouchableOpacity onPress={onRightIconPress} style={styles.rightIconBtn}>
-        <IconSymbol name={rightIconName as any} size={16} color={iconColor} />
+          <IconSymbol name={rightIconName as never} size={16} color={iconColor} />
         </TouchableOpacity>
-    )}
+      ) : null}
     </ThemedView>
-);
+  );
 }
 
 const styles = StyleSheet.create({
-wrapper: {
+  wrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#DDE4EE',
     borderRadius: 10,
     paddingHorizontal: 14,
     height: 50,
-},
-leftIcon: {
+  },
+  leftIcon: {
     marginRight: 10,
-},
-input: {
+  },
+  input: {
     flex: 1,
     fontSize: 15,
     height: '100%',
-    color: '#0F172A',
-},
-rightIconBtn: {
+  },
+  rightIconBtn: {
     paddingLeft: 10,
-},
+  },
 });

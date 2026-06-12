@@ -1,31 +1,43 @@
-import { TouchableOpacity, StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import { Colors } from '@/constants/theme';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useThemeColor } from '@/hooks/use-theme-color';
 
-type RegisterButtonProps = {
+type FormButtonProps = {
   onPress: () => void;
-  label?: string;
+  label: string;
   disabled?: boolean;
+  showIcon?: boolean;
 };
 
-export function RegisterButton({
+export function FormButton({
   onPress,
-  label = 'Cadastrar',
+  label,
   disabled = false,
-}: RegisterButtonProps) {
-  const tint = useThemeColor({}, 'buttonColor');
+  showIcon = true,
+}: FormButtonProps) {
+  const colorScheme = useColorScheme();
+  const buttonColor = useThemeColor({}, 'buttonColor');
+  const iconColor = Colors[colorScheme ?? 'light'].background;
 
   return (
     <TouchableOpacity
-      style={[styles.button, { backgroundColor: tint, opacity: disabled ? 0.7 : 1 }]}
+      style={[
+        styles.button,
+        { backgroundColor: buttonColor },
+        disabled && styles.buttonDisabled,
+      ]}
       onPress={onPress}
       activeOpacity={0.85}
       disabled={disabled}
     >
       <ThemedText style={styles.label}>{label}</ThemedText>
-      <IconSymbol name="arrow.right.circle.fill" size={20} color="#FFFFFF" />
+      {showIcon ? (
+        <IconSymbol name="arrow.right.circle.fill" size={20} color={iconColor} />
+      ) : null}
     </TouchableOpacity>
   );
 }
@@ -50,5 +62,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     letterSpacing: 0.3,
+  },
+  buttonDisabled: {
+    opacity: 0.6,
   },
 });

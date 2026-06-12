@@ -3,12 +3,12 @@ import { TouchableOpacity } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { LoginInput } from '@/components/loginComponents/login_input';
-import { LoginButton } from '@/components/loginComponents/login_button';
+import { formStyles } from '@/components/authComponents/formStyles';
+import { FormButton } from '@/components/ui/form-button';
+import { FormInput } from '@/components/ui/form-input';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useThemeColor } from '@/hooks/use-theme-color';
-import { formStyles } from '@/components/authComponents/formStyles';
 
 type LoginFormProps = {
   onSubmit: (email: string, password: string) => void | Promise<void>;
@@ -23,20 +23,20 @@ export function LoginForm({
   isLoading = false,
   errorMessage = null,
 }: LoginFormProps) {
-const [email, setEmail] = useState('');
-const [password, setPassword] = useState('');
-const [passwordVisible, setPasswordVisible] = useState(false);
-const colorScheme = useColorScheme();
-const placeholderTextColor = useThemeColor({}, 'placeholderTextColor');
-const labelColor = useThemeColor({}, 'label');
-const errorColor = useThemeColor({}, 'error');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const colorScheme = useColorScheme();
+  const placeholderTextColor = useThemeColor({}, 'placeholderTextColor');
+  const labelColor = useThemeColor({}, 'label');
+  const errorColor = useThemeColor({}, 'error');
 
-return (
+  return (
     <ThemedView style={formStyles.container}>
-    <ThemedText style={[formStyles.label, { color: labelColor }]}> 
+      <ThemedText style={[formStyles.label, { color: labelColor }]}>
         E-MAIL PROFISSIONAL
-    </ThemedText>
-    <LoginInput
+      </ThemedText>
+      <FormInput
         value={email}
         onChangeText={setEmail}
         placeholder="nome@hospital.com"
@@ -45,22 +45,22 @@ return (
         autoCapitalize="none"
         autoCorrect={false}
         iconName="envelope.fill"
-    />
+      />
 
-    <ThemedView style={formStyles.passwordLabelRow}>
-        <ThemedText style={[formStyles.label, { color: labelColor }]}> 
-        SENHA
+      <ThemedView style={formStyles.passwordLabelRow}>
+        <ThemedText style={[formStyles.label, { color: labelColor }]}>
+          SENHA
         </ThemedText>
         <TouchableOpacity onPress={onForgotPassword}>
-        <ThemedText
+          <ThemedText
             style={[formStyles.forgotText, { color: Colors[colorScheme ?? 'light'].tint }]}
-        >
+          >
             Esqueci minha senha
-        </ThemedText>
+          </ThemedText>
         </TouchableOpacity>
-    </ThemedView>
+      </ThemedView>
 
-    <LoginInput
+      <FormInput
         value={password}
         onChangeText={setPassword}
         placeholder="••••••••"
@@ -69,19 +69,19 @@ return (
         iconName="lock.fill"
         rightIconName={passwordVisible ? 'eye.slash.fill' : 'eye.fill'}
         onRightIconPress={() => setPasswordVisible(!passwordVisible)}
-    />
+      />
 
-    {errorMessage ? (
-      <ThemedText style={[formStyles.errorText, { color: errorColor }]}> 
-        {errorMessage}
-      </ThemedText>
-    ) : null}
+      {errorMessage ? (
+        <ThemedText style={[formStyles.errorText, { color: errorColor }]}>
+          {errorMessage}
+        </ThemedText>
+      ) : null}
 
-    <LoginButton
-      onPress={() => void onSubmit(email, password)}
-      disabled={isLoading}
-      label={isLoading ? 'Entrando...' : 'Entrar'}
-    />
+      <FormButton
+        onPress={() => void onSubmit(email, password)}
+        disabled={isLoading}
+        label={isLoading ? 'Entrando...' : 'Entrar'}
+      />
     </ThemedView>
-);
+  );
 }
