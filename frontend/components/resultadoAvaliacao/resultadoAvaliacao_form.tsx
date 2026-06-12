@@ -17,10 +17,10 @@ type ResultadoAvaliacao_FormProps = {
   maxScore?: number;
   screeningResult?: ScreeningResult;
   alertMessage?: string;
-  detailItems?: Array<{
+  detailItems?: {
     label: string;
     value: string | number;
-  }>;
+  }[];
   onGoHome?: () => void;
   onNewEvaluation?: () => void;
 };

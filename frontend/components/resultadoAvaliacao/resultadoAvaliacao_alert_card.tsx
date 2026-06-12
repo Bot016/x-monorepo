@@ -3,8 +3,6 @@
     import { ThemedView } from '@/components/themed-view';
     import { ThemedText } from '@/components/themed-text';
     import { IconSymbol } from '@/components/ui/icon-symbol';
-    import { useThemeColor } from '@/hooks/use-theme-color';
-
     type AlertType = 'warning' | 'danger' | 'info';
 
     type ResultadoAvaliacao_AlertCardProps = {
@@ -18,11 +16,6 @@
         description,
         type = 'info',
     }: ResultadoAvaliacao_AlertCardProps) {
-        const iconBoxColor = useThemeColor(
-            { light: '#FEF3C7', dark: '#332E1B' },
-            'background'
-        );
-
         const getAlertColors = () => {
             switch (type) {
                 case 'danger':

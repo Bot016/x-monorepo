@@ -20,7 +20,6 @@ export function ResultadoAvaliacao_Details({
 }: ResultadoAvaliacao_DetailsProps) {
     const colorScheme = useColorScheme();
     const labelColor = useThemeColor({}, 'label');
-    const textColor = useThemeColor({}, 'text');
     const buttonColor = useThemeColor({}, 'buttonColor');
     const backgroundColor = useThemeColor(
         { light: '#F8FAFC', dark: '#0F172A' },

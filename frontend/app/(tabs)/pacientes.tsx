@@ -11,7 +11,6 @@ import { ThemedView } from '@/components/themed-view';
 import { useAsyncList } from '@/hooks/useAsyncList';
 import { useThemeColor } from '@/hooks/use-theme-color';
 import { listPatients } from '@/services/patients';
-import type { PatientDto } from '@/services/types/api';
 import { ageFromBirthDate } from '@/utils/patient';
 
 export default function PacientesScreen() {

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native';
+import { Alert, KeyboardAvoidingView, Platform, ScrollView, StyleSheet } from 'react-native';
 
 import { AuthHeader } from '@/components/authComponents/auth_header';
 import { LoginForm } from '@/components/authComponents/login_form';
@@ -27,7 +27,10 @@ export default function LoginScreen() {
   };
 
   const handleForgotPassword = () => {
-    console.log('Esqueci minha senha');
+    Alert.alert(
+      'Recuperação de senha',
+      'Entre em contato com o administrador do sistema para redefinir sua senha.',
+    );
   };
 
   return (

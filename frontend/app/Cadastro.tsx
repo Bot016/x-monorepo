@@ -21,11 +21,6 @@ export default function CadastroScreen() {
     setErrorMessage(null);
 
     try {
-      if (!nomeCompleto.trim() || !idade.trim() || !sexoBiologico) {
-        setErrorMessage('Por favor, preencha todos os campos obrigatórios.');
-        return;
-      }
-
       setIsLoading(true);
 
       const patient = await createPatient({

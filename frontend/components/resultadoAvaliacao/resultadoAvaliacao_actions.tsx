@@ -1,4 +1,4 @@
-import { TouchableOpacity, StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -27,6 +27,12 @@ export function ResultadoAvaliacao_Actions({
       <TouchableOpacity
         style={[styles.primaryButton, { backgroundColor: buttonColor }]}
         activeOpacity={0.85}
+        onPress={() => {
+          Alert.alert(
+            'Relatório em PDF',
+            'A exportação de relatórios estará disponível em uma versão futura.',
+          );
+        }}
       >
         <IconSymbol name="arrow.down.circle.fill" size={20} color="#FFFFFF" />
         <ThemedText style={styles.primaryLabel}>Baixar Relatório (PDF)</ThemedText>

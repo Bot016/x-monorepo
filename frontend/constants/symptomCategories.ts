@@ -1,10 +1,10 @@
 import type { SymptomCategory } from '@/services/types/api';
 
-export const SYMPTOM_CATEGORY_STEPS: Array<{
+export const SYMPTOM_CATEGORY_STEPS: {
   key: SymptomCategory;
   title: string;
   description: string;
-}> = [
+}[] = [
   {
     key: 'behavioral',
     title: 'Comportamento',
