@@ -9,6 +9,7 @@ import { ChecklistSection } from '@/components/checklistComponents/checklist_sec
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { SYMPTOM_CATEGORY_STEPS } from '@/constants/symptomCategories';
+import { useThemeColor } from '@/hooks/use-theme-color';
 import { createEvaluation } from '@/services/evaluations';
 import { fetchSymptoms } from '@/services/symptoms';
 import type { PatientSex, SymptomDto } from '@/services/types/api';
@@ -28,6 +29,7 @@ export default function ChecklistClinicoScreen() {
   const [isLoadingSymptoms, setIsLoadingSymptoms] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const errorColor = useThemeColor({}, 'error');
 
   const patientId = params.patientId;
   const patientName = params.patientName ?? 'Paciente';
@@ -152,7 +154,9 @@ export default function ChecklistClinicoScreen() {
           ))}
         </ChecklistSection>
 
-        {errorMessage ? <ThemedText style={styles.error}>{errorMessage}</ThemedText> : null}
+        {errorMessage ? (
+          <ThemedText style={[styles.error, { color: errorColor }]}>{errorMessage}</ThemedText>
+        ) : null}
 
         <ChecklistButton
           label={
@@ -196,7 +200,6 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   error: {
-    color: '#DC2626',
     fontSize: 14,
   },
 });
