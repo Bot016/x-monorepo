@@ -20,7 +20,8 @@ export function RegisterInput({
   const borderColor = useThemeColor({}, 'inputBorder');
   const iconColor = useThemeColor({}, 'icon');
   const textColor = useThemeColor({}, 'inputText');
-  const placeholderTextColor = textInputProps.placeholderTextColor ?? useThemeColor({}, 'placeholderTextColor');
+  const themePlaceholderTextColor = useThemeColor({}, 'placeholderTextColor');
+  const placeholderTextColor = textInputProps.placeholderTextColor ?? themePlaceholderTextColor;
 
   return (
     <ThemedView lightColor={backgroundColor} darkColor={backgroundColor} style={[styles.wrapper, { borderColor }]}> 

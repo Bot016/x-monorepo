@@ -2,7 +2,6 @@ import { TouchableOpacity, StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';;
 import { useThemeColor } from '@/hooks/use-theme-color';
 
 type LoginButtonProps = {
