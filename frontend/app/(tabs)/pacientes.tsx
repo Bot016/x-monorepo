@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import { Screen } from '@/components/Screen';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { useAsyncList } from '@/hooks/useAsyncList';
@@ -23,14 +24,14 @@ export default function PacientesScreen() {
 
   if (isLoading) {
     return (
-      <ThemedView style={styles.centered}>
+      <Screen withTabBar topAppBar style={styles.centered}>
         <ActivityIndicator size="large" />
-      </ThemedView>
+      </Screen>
     );
   }
 
   return (
-    <ThemedView style={styles.container}>
+    <Screen withTabBar topAppBar style={styles.container}>
       <ThemedText type="title">Pacientes</ThemedText>
       <ThemedText style={styles.subtitle}>
         Pacientes cadastrados e avaliados por você.
@@ -68,7 +69,7 @@ export default function PacientesScreen() {
           </TouchableOpacity>
         )}
       />
-    </ThemedView>
+    </Screen>
   );
 }
 
@@ -79,7 +80,6 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   centered: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
   },

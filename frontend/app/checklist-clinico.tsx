@@ -2,12 +2,12 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet } from 'react-native';
 
+import { Screen } from '@/components/Screen';
 import { ChecklistButton } from '@/components/checklistComponents/checklist_button';
 import { ChecklistHeader } from '@/components/checklistComponents/checklist_header';
 import { ChecklistItem } from '@/components/checklistComponents/checklist_item';
 import { ChecklistSection } from '@/components/checklistComponents/checklist_section';
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { SYMPTOM_CATEGORY_STEPS } from '@/constants/symptomCategories';
 import { useThemeColor } from '@/hooks/use-theme-color';
 import { createEvaluation } from '@/services/evaluations';
@@ -120,15 +120,15 @@ export default function ChecklistClinicoScreen() {
 
   if (isLoadingSymptoms) {
     return (
-      <ThemedView style={styles.centered}>
+      <Screen topAppBar={{ variant: 'back' }} style={styles.centered}>
         <ActivityIndicator size="large" />
         <ThemedText style={styles.loadingText}>Carregando sintomas...</ThemedText>
-      </ThemedView>
+      </Screen>
     );
   }
 
   return (
-    <ThemedView style={styles.screen}>
+    <Screen topAppBar={{ variant: 'back' }}>
       <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
         <ThemedText style={styles.stepLabel}>
           PASSO {currentStep + 2} DE 4
@@ -170,14 +170,11 @@ export default function ChecklistClinicoScreen() {
           disabled={isSubmitting || stepSymptoms.length === 0}
         />
       </ScrollView>
-    </ThemedView>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-  },
   container: {
     flexGrow: 1,
     padding: 24,
@@ -185,7 +182,6 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   centered: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 12,

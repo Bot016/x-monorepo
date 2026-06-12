@@ -5,17 +5,22 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useThemeColor } from '@/hooks/use-theme-color';
 
 type Props = {
-onPress: () => void;
+  onPress: () => void;
+  fullWidth?: boolean;
 };
 
-export function NovaAvaliacaoButton({ onPress }: Props) {
-const corBotao = useThemeColor({}, 'buttonColor');
+export function NovaAvaliacaoButton({ onPress, fullWidth = true }: Props) {
+  const corBotao = useThemeColor({}, 'buttonColor');
 
-return (
+  return (
     <TouchableOpacity
-    style={[styles.button, { backgroundColor: corBotao }]}
-    onPress={onPress}
-    activeOpacity={0.85}
+      style={[
+        styles.button,
+        fullWidth ? styles.buttonFullWidth : styles.buttonCompact,
+        { backgroundColor: corBotao },
+      ]}
+      onPress={onPress}
+      activeOpacity={0.85}
     >
     <IconSymbol name="plus.circle.fill" size={20} color="#FFFFFF" />
     <ThemedText lightColor="#FFFFFF" darkColor="#FFFFFF" style={styles.label}>
@@ -26,7 +31,7 @@ return (
 }
 
 const styles = StyleSheet.create({
-button: {
+  button: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -38,9 +43,16 @@ button: {
     shadowOpacity: 0.3,
     shadowRadius: 8,
     elevation: 5,
-},
-label: {
+  },
+  buttonFullWidth: {
+    alignSelf: 'stretch',
+  },
+  buttonCompact: {
+    alignSelf: 'flex-start',
+    paddingHorizontal: 24,
+  },
+  label: {
     fontSize: 16,
     fontWeight: '700',
-},
+  },
 });

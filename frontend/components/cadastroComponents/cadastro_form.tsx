@@ -55,6 +55,7 @@ export function CadastroForm({
           value={nomeCompleto}
           onChangeText={setNomeCompleto}
           autoCapitalize="words"
+          iconName="person.fill"
         />
 
         <ThemedText style={[formStyles.label, { color: labelColor }]}>
@@ -83,6 +84,7 @@ export function CadastroForm({
           value={nomeResponsavel}
           onChangeText={setNomeResponsavel}
           autoCapitalize="words"
+          iconName="person.fill"
         />
 
         <ThemedView style={styles.infoBox}>

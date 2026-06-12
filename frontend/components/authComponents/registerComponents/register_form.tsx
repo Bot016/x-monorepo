@@ -1,7 +1,10 @@
 import { useState } from 'react';
+import { View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { AuthDivider } from '@/components/authComponents/auth_divider';
+import { AuthOutlineButton } from '@/components/authComponents/auth_outline_button';
 import { formStyles } from '@/components/authComponents/formStyles';
 import { FormButton } from '@/components/ui/form-button';
 import { FormInput } from '@/components/ui/form-input';
@@ -14,12 +17,14 @@ type RegisterFormProps = {
     password: string,
     confirmPassword: string,
   ) => void | Promise<void>;
+  onGoToLogin: () => void;
   isLoading?: boolean;
   errorMessage?: string | null;
 };
 
 export function RegisterForm({
   onSubmit,
+  onGoToLogin,
   isLoading = false,
   errorMessage = null,
 }: RegisterFormProps) {
@@ -89,11 +94,16 @@ export function RegisterForm({
         </ThemedText>
       ) : null}
 
-      <FormButton
-        onPress={() => void onSubmit(name, email, password, confirmPassword)}
-        disabled={isLoading}
-        label={isLoading ? 'Cadastrando...' : 'Cadastrar'}
-      />
+      <View style={formStyles.actionsSection}>
+        <FormButton
+          onPress={() => void onSubmit(name, email, password, confirmPassword)}
+          disabled={isLoading}
+          label={isLoading ? 'Cadastrando...' : 'Cadastrar'}
+          grouped
+        />
+        <AuthDivider />
+        <AuthOutlineButton label="Entrar" onPress={onGoToLogin} />
+      </View>
     </ThemedView>
   );
 }
