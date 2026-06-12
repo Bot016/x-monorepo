@@ -28,7 +28,7 @@ export default function TabLayout() {
         name="relatorios"
         options={{
           title: 'Relatórios',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="doc.text.fill" color={color} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="chart.bar.fill" color={color} />,
         }}
       />
       <Tabs.Screen

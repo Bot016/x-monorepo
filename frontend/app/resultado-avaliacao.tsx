@@ -2,7 +2,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 
 import { ResultadoAvaliacaoForm } from '@/components/resultado-avaliacao/ResultadoAvaliacaoForm';
-import { ThemedView } from '@/components/themed-view';
+import { Screen } from '@/components/Screen';
 import type { ScreeningResult } from '@/services/types/api';
 
 export default function ResultadoAvaliacaoScreen() {
@@ -19,7 +19,7 @@ export default function ResultadoAvaliacaoScreen() {
   const isSuspected = params.screeningResult === 'SUSPEITO';
 
   return (
-    <ThemedView style={styles.screen}>
+    <Screen topAppBar>
       <KeyboardAvoidingView
         style={styles.keyboard}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -42,11 +42,10 @@ export default function ResultadoAvaliacaoScreen() {
           onNewEvaluation={() => router.replace('/cadastro-paciente')}
         />
       </KeyboardAvoidingView>
-    </ThemedView>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1 },
   keyboard: { flex: 1 },
 });

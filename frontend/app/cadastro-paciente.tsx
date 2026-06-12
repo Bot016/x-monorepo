@@ -3,7 +3,7 @@ import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 import { useState } from 'react';
 
 import { CadastroForm } from '@/components/cadastroComponents/cadastro_form';
-import { ThemedView } from '@/components/themed-view';
+import { Screen } from '@/components/Screen';
 import { createPatient } from '@/services/patients';
 import { ageFromBirthDate, birthDateFromAge, mapBiologicalSex } from '@/utils/patient';
 
@@ -53,7 +53,7 @@ export default function CadastroPacienteScreen() {
   };
 
   return (
-    <ThemedView style={styles.screen}>
+    <Screen topAppBar={{ variant: 'back' }}>
       <KeyboardAvoidingView
         style={styles.keyboard}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -64,14 +64,11 @@ export default function CadastroPacienteScreen() {
           errorMessage={errorMessage}
         />
       </KeyboardAvoidingView>
-    </ThemedView>
+    </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-  },
   keyboard: {
     flex: 1,
   },

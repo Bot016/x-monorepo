@@ -1,0 +1,6 @@
+export const LAYOUT = {
+  statsRowMinWidth: 640,
+  dashboardWideMinWidth: 960,
+  contentMaxWidth: 1152,
+  formMaxWidth: 640,
+} as const;

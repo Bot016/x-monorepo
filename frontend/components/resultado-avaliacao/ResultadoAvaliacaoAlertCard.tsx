@@ -1,8 +1,8 @@
 import { StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import { useThemeColor } from '@/hooks/use-theme-color';
 
 type AlertType = 'warning' | 'danger' | 'info';
 
@@ -17,18 +17,24 @@ export function ResultadoAvaliacaoAlertCard({
   description,
   type = 'info',
 }: ResultadoAvaliacaoAlertCardProps) {
-  const getAlertColors = () => {
+  const cardBackground = useThemeColor({}, 'background');
+  const warningBackground = useThemeColor(
+    { light: '#FEE2E2', dark: '#422020' },
+    'background',
+  );
+
+  const colors = (() => {
     switch (type) {
       case 'danger':
         return {
-          backgroundColor: { light: '#FEE2E2', dark: '#422020' },
+          backgroundColor: warningBackground,
           borderColor: '#DC2626',
           iconColor: '#DC2626',
           textColor: '#DC2626',
         };
       case 'warning':
         return {
-          backgroundColor: { light: '#FEE2E2', dark: '#422020' },
+          backgroundColor: warningBackground,
           borderColor: '#EF4444',
           iconColor: '#EF4444',
           textColor: '#EF4444',
@@ -36,26 +42,23 @@ export function ResultadoAvaliacaoAlertCard({
       case 'info':
       default:
         return {
-          backgroundColor: { light: '#F0F7FF', dark: '#1F2426' },
+          backgroundColor: cardBackground,
           borderColor: '#005EB8',
           iconColor: '#005EB8',
           textColor: '#005EB8',
         };
     }
-  };
-
-  const colors = getAlertColors();
+  })();
 
   return (
-    <ThemedView
+    <View
       style={[
         styles.container,
         {
+          backgroundColor: colors.backgroundColor,
           borderColor: colors.borderColor,
         },
       ]}
-      lightColor={colors.backgroundColor.light}
-      darkColor={colors.backgroundColor.dark}
     >
       <View style={styles.header}>
         <View style={[styles.iconBox, { backgroundColor: colors.borderColor + '20' }]}>
@@ -70,7 +73,7 @@ export function ResultadoAvaliacaoAlertCard({
       <ThemedText style={[styles.description, { color: colors.textColor }]}>
         {description}
       </ThemedText>
-    </ThemedView>
+    </View>
   );
 }
 

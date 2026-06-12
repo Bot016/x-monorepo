@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -7,51 +7,63 @@ import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useThemeColor } from '@/hooks/use-theme-color';
 
-export function LoginHeader() {
-    const colorScheme = useColorScheme();
-    const backgroundColor = useThemeColor({}, 'background');
-    const titleColor = useThemeColor({}, 'text');
-    const iconBoxColor = useThemeColor({}, 'iconBoxColor');
+type AuthHeaderProps = {
+  subtitle: string;
+};
 
-    return (
-        <ThemedView lightColor={backgroundColor} darkColor={backgroundColor} style={styles.container}>
-            <ThemedView
-                lightColor={iconBoxColor}
-                darkColor={iconBoxColor}
-                style={styles.iconBox}
-            >
-                <IconSymbol
-                    name="cross.case.fill"
-                    size={28}
-                    color={Colors[colorScheme ?? 'light'].iconColor}
-                />
-            </ThemedView>
-            <ThemedText
-                type="title"
-                style={[styles.title, { color: titleColor }]}
-            >
-                Login Triagem X
-            </ThemedText>
-        </ThemedView>
-    );
+export function AuthHeader({ subtitle }: AuthHeaderProps) {
+  const colorScheme = useColorScheme();
+  const titleColor = useThemeColor({}, 'text');
+  const subtitleColor = useThemeColor({}, 'label');
+  const iconBoxColor = useThemeColor({}, 'iconBoxColor');
+
+  return (
+    <View style={styles.container}>
+      <ThemedView
+        lightColor={iconBoxColor}
+        darkColor={iconBoxColor}
+        style={styles.iconBox}
+      >
+        <IconSymbol
+          name="cross.case.fill"
+          size={28}
+          color={Colors[colorScheme ?? 'light'].iconColor}
+        />
+      </ThemedView>
+
+      <View style={styles.titles}>
+        <ThemedText type="title" style={[styles.title, { color: titleColor }]}>
+          Triagem X
+        </ThemedText>
+        <ThemedText style={[styles.subtitle, { color: subtitleColor }]}>{subtitle}</ThemedText>
+      </View>
+    </View>
+  );
 }
 
-export const AuthHeader = LoginHeader;
-
 const styles = StyleSheet.create({
-    container: {
-        alignItems: 'center',
-        marginBottom: 40,
-        gap: 16,
-    },
-    iconBox: {
-        width: 64,
-        height: 64,
-        borderRadius: 16,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    title: {
-        textAlign: 'center',
-    },
+  container: {
+    alignItems: 'center',
+    marginBottom: 40,
+    gap: 16,
+  },
+  iconBox: {
+    width: 64,
+    height: 64,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  titles: {
+    alignItems: 'center',
+    gap: 10,
+  },
+  title: {
+    textAlign: 'center',
+  },
+  subtitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
 });

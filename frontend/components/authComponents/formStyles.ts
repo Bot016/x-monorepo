@@ -25,4 +25,8 @@ export const formStyles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
   },
+  actionsSection: {
+    marginTop: 24,
+    gap: 24,
+  },
 });

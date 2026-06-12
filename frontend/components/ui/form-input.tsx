@@ -1,4 +1,11 @@
-import { StyleSheet, TextInput, TextInputProps, TouchableOpacity } from 'react-native';
+import {
+  Platform,
+  StyleSheet,
+  TextInput,
+  type TextInputProps,
+  type TextStyle,
+  TouchableOpacity,
+} from 'react-native';
 
 import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
@@ -39,7 +46,7 @@ export function FormInput({
         />
       ) : null}
       <TextInput
-        style={[styles.input, { color: textColor }, style]}
+        style={[styles.input, Platform.OS === 'web' && inputWebStyle, { color: textColor }, style]}
         placeholderTextColor={placeholderTextColor}
         {...textInputProps}
       />
@@ -58,6 +65,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderRadius: 10,
+    overflow: 'hidden',
     paddingHorizontal: 14,
     height: 50,
   },
@@ -68,8 +76,14 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 15,
     height: '100%',
+    backgroundColor: 'transparent',
   },
   rightIconBtn: {
     paddingLeft: 10,
   },
 });
+
+const inputWebStyle = {
+  outlineStyle: 'none',
+  outlineWidth: 0,
+} as unknown as TextStyle;

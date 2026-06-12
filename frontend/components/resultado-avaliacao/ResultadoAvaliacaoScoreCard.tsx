@@ -17,10 +17,7 @@ export function ResultadoAvaliacaoScoreCard({
 }: ResultadoAvaliacaoScoreCardProps) {
   const colorScheme = useColorScheme();
   const buttonColor = useThemeColor({}, 'buttonColor');
-  const backgroundColor = useThemeColor(
-    { light: '#F0F7FF', dark: '#1F2426' },
-    'background',
-  );
+  const backgroundColor = useThemeColor({}, 'background');
   const textColor = useThemeColor({}, 'text');
   const percentage = (score / maxScore) * 100;
 

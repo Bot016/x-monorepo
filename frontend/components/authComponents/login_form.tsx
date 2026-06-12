@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
+import { AuthDivider } from '@/components/authComponents/auth_divider';
+import { AuthInfoModal } from '@/components/authComponents/auth_info_modal';
+import { AuthOutlineButton } from '@/components/authComponents/auth_outline_button';
 import { formStyles } from '@/components/authComponents/formStyles';
 import { FormButton } from '@/components/ui/form-button';
 import { FormInput } from '@/components/ui/form-input';
@@ -12,27 +14,28 @@ import { useThemeColor } from '@/hooks/use-theme-color';
 
 type LoginFormProps = {
   onSubmit: (email: string, password: string) => void | Promise<void>;
-  onForgotPassword: () => void;
+  onGoToRegister: () => void;
   isLoading?: boolean;
   errorMessage?: string | null;
 };
 
 export function LoginForm({
   onSubmit,
-  onForgotPassword,
+  onGoToRegister,
   isLoading = false,
   errorMessage = null,
 }: LoginFormProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [forgotPasswordVisible, setForgotPasswordVisible] = useState(false);
   const colorScheme = useColorScheme();
   const placeholderTextColor = useThemeColor({}, 'placeholderTextColor');
   const labelColor = useThemeColor({}, 'label');
   const errorColor = useThemeColor({}, 'error');
 
   return (
-    <ThemedView style={formStyles.container}>
+    <View style={formStyles.container}>
       <ThemedText style={[formStyles.label, { color: labelColor }]}>
         E-MAIL PROFISSIONAL
       </ThemedText>
@@ -47,18 +50,18 @@ export function LoginForm({
         iconName="envelope.fill"
       />
 
-      <ThemedView style={formStyles.passwordLabelRow}>
-        <ThemedText style={[formStyles.label, { color: labelColor }]}>
+      <View style={formStyles.passwordLabelRow}>
+        <ThemedText style={[formStyles.label, { color: labelColor, marginTop: 0 }]}>
           SENHA
         </ThemedText>
-        <TouchableOpacity onPress={onForgotPassword}>
+        <TouchableOpacity onPress={() => setForgotPasswordVisible(true)} activeOpacity={0.7}>
           <ThemedText
             style={[formStyles.forgotText, { color: Colors[colorScheme ?? 'light'].tint }]}
           >
             Esqueci minha senha
           </ThemedText>
         </TouchableOpacity>
-      </ThemedView>
+      </View>
 
       <FormInput
         value={password}
@@ -77,11 +80,24 @@ export function LoginForm({
         </ThemedText>
       ) : null}
 
-      <FormButton
-        onPress={() => void onSubmit(email, password)}
-        disabled={isLoading}
-        label={isLoading ? 'Entrando...' : 'Entrar'}
+      <View style={formStyles.actionsSection}>
+        <FormButton
+          onPress={() => void onSubmit(email, password)}
+          disabled={isLoading}
+          label={isLoading ? 'Entrando...' : 'Entrar'}
+          grouped
+        />
+        <AuthDivider />
+        <AuthOutlineButton label="Cadastrar" onPress={onGoToRegister} />
+      </View>
+
+      <AuthInfoModal
+        visible={forgotPasswordVisible}
+        title="Redefinição de senha"
+        message="Para redefinição de senha, entre em contato com o administrador do sistema."
+        onClose={() => setForgotPasswordVisible(false)}
       />
-    </ThemedView>
+    </View>
   );
 }
+

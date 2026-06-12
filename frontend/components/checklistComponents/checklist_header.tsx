@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -12,6 +12,8 @@ type ChecklistHeaderProps = {
 export function ChecklistHeader({ patientName, patientAge }: ChecklistHeaderProps) {
   const titleColor = useThemeColor({}, 'text');
   const subtitleColor = useThemeColor({}, 'label');
+  const patientCardBackground = useThemeColor({ light: '#F5F7FA', dark: '#1F2426' }, 'iconBoxColor');
+  const patientIconBackground = useThemeColor({}, 'cardBorder');
 
   return (
     <ThemedView style={styles.container}>
@@ -21,22 +23,22 @@ export function ChecklistHeader({ patientName, patientAge }: ChecklistHeaderProp
       <ThemedText style={[styles.description, { color: subtitleColor }]}>
         Avalie o presente ou passado nos sintomas abaixo com base na observação clínica e histórico do paciente.
       </ThemedText>
-      
-      <ThemedView style={styles.patientInfo}>
-        <ThemedView style={styles.patientIconContainer}>
+
+      <View style={[styles.patientInfo, { backgroundColor: patientCardBackground }]}>
+        <View style={[styles.patientIconContainer, { backgroundColor: patientIconBackground }]}>
           <ThemedText style={styles.patientIcon}>👤</ThemedText>
-        </ThemedView>
-        <ThemedView>
+        </View>
+        <View style={styles.patientText}>
           <ThemedText style={[styles.patientName, { color: titleColor }]}>
             {patientName}
           </ThemedText>
-          {patientAge && (
+          {patientAge !== undefined ? (
             <ThemedText style={[styles.patientAge, { color: subtitleColor }]}>
               {patientAge} anos
             </ThemedText>
-          )}
-        </ThemedView>
-      </ThemedView>
+          ) : null}
+        </View>
+      </View>
     </ThemedView>
   );
 }
@@ -64,15 +66,17 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 12,
     borderRadius: 10,
-    backgroundColor: '#F5F7FA',
   },
   patientIconContainer: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#DDE4EE',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  patientText: {
+    flex: 1,
+    gap: 2,
   },
   patientIcon: {
     fontSize: 20,

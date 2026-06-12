@@ -4,6 +4,7 @@ import { ThemedView } from '@/components/themed-view';
 import { ThemedText } from '@/components/themed-text';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useColorScheme } from '@/hooks/use-color-scheme';
+import { useThemeColor } from '@/hooks/use-theme-color';
 import { Colors } from '@/constants/theme';
 
 type CardPrincipalProps = {
@@ -17,9 +18,10 @@ export function CardPrincipal({ label, value, icon, valueColor }: CardPrincipalP
 const colorScheme = useColorScheme();
 const iconColor = Colors[colorScheme ?? 'light'].icon;
 const defaultValueColor = Colors[colorScheme ?? 'light'].text;
+const cardBorderColor = useThemeColor({}, 'cardBorder');
 
 return (
-    <ThemedView style={styles.card}>
+    <ThemedView style={[styles.card, { borderColor: cardBorderColor }]}>
     <ThemedView style={styles.row}>
         <ThemedView style={styles.textBlock}>
         <ThemedText style={styles.label}>{label}</ThemedText>
@@ -37,7 +39,6 @@ const styles = StyleSheet.create({
 card: {
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#DDE4EE',
     paddingHorizontal: 16,
     paddingVertical: 14,
 },
