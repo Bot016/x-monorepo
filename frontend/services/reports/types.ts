@@ -43,5 +43,5 @@ export type FilteredRecord = {
   patientName: string;
   patientCode: string;
   assessmentDate: string;
-  screeningResult: 'SUSPEITO' | 'BAIXO_RISCO';
+  screeningResult: 'suspected' | 'low_risk';
 };
