@@ -26,7 +26,7 @@ export default function PrincipalScreen() {
         contentContainerStyle={styles.scroll}
         showsVerticalScrollIndicator={false}>
         <DashboardOfflineBanner status={status} message={errorMessage} />
-        <NovaAvaliacaoButton onPress={() => router.push('/Cadastro')} />
+        <NovaAvaliacaoButton onPress={() => router.push('/cadastro-paciente')} />
 
         <ThemedView style={styles.statsRow}>
           <CardPrincipal

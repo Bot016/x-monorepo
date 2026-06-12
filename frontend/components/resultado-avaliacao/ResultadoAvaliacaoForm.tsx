@@ -1,17 +1,17 @@
 import { ScrollView, StyleSheet } from 'react-native';
 
+import { formStyles } from '@/components/authComponents/formStyles';
+import { ResultadoAvaliacaoActions } from '@/components/resultado-avaliacao/ResultadoAvaliacaoActions';
+import { ResultadoAvaliacaoAlertCard } from '@/components/resultado-avaliacao/ResultadoAvaliacaoAlertCard';
+import { ResultadoAvaliacaoDetails } from '@/components/resultado-avaliacao/ResultadoAvaliacaoDetails';
+import { ResultadoAvaliacaoHeader } from '@/components/resultado-avaliacao/ResultadoAvaliacaoHeader';
+import { ResultadoAvaliacaoScoreCard } from '@/components/resultado-avaliacao/ResultadoAvaliacaoScoreCard';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { ResultadoAvaliacao_Header } from '@/components/resultadoAvaliacao/resultadoAvaliacao_header';
-import { ResultadoAvaliacao_ScoreCard } from '@/components/resultadoAvaliacao/resultadoAvaliacao_score_card';
-import { ResultadoAvaliacao_AlertCard } from '@/components/resultadoAvaliacao/resultadoAvaliacao_alert_card';
-import { ResultadoAvaliacao_Details } from '@/components/resultadoAvaliacao/resultadoAvaliacao_details';
-import { ResultadoAvaliacao_Actions } from '@/components/resultadoAvaliacao/resultadoAvaliacao_actions';
 import { useThemeColor } from '@/hooks/use-theme-color';
-import { formStyles } from '@/components/authComponents/formStyles';
 import type { ScreeningResult } from '@/services/types/api';
 
-type ResultadoAvaliacao_FormProps = {
+type ResultadoAvaliacaoFormProps = {
   patientName?: string;
   score?: number;
   maxScore?: number;
@@ -25,7 +25,7 @@ type ResultadoAvaliacao_FormProps = {
   onNewEvaluation?: () => void;
 };
 
-export function ResultadoAvaliacao_Form({
+export function ResultadoAvaliacaoForm({
   patientName,
   score = 0,
   maxScore = 1,
@@ -34,13 +34,13 @@ export function ResultadoAvaliacao_Form({
   detailItems = [],
   onGoHome,
   onNewEvaluation,
-}: ResultadoAvaliacao_FormProps) {
+}: ResultadoAvaliacaoFormProps) {
   const labelColor = useThemeColor({}, 'label');
   const isSuspected = screeningResult === 'SUSPEITO';
 
   return (
     <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
-      <ResultadoAvaliacao_Header />
+      <ResultadoAvaliacaoHeader />
 
       <ThemedView style={formStyles.container}>
         {patientName ? (
@@ -49,9 +49,9 @@ export function ResultadoAvaliacao_Form({
           </ThemedText>
         ) : null}
 
-        <ResultadoAvaliacao_ScoreCard score={score} maxScore={maxScore} />
+        <ResultadoAvaliacaoScoreCard score={score} maxScore={maxScore} />
 
-        <ResultadoAvaliacao_AlertCard
+        <ResultadoAvaliacaoAlertCard
           title={isSuspected ? 'SUSPEITA DE X FRÁGIL' : 'BAIXO RISCO'}
           description={alertMessage}
           type={isSuspected ? 'warning' : 'info'}
@@ -61,7 +61,7 @@ export function ResultadoAvaliacao_Form({
           RECOMENDAÇÃO CLÍNICA
         </ThemedText>
 
-        <ResultadoAvaliacao_AlertCard
+        <ResultadoAvaliacaoAlertCard
           title={isSuspected ? 'ENCAMINHAMENTO INDICADO' : 'ACOMPANHAMENTO DE ROTINA'}
           description={
             isSuspected
@@ -71,9 +71,9 @@ export function ResultadoAvaliacao_Form({
           type="info"
         />
 
-        <ResultadoAvaliacao_Details items={detailItems} />
+        <ResultadoAvaliacaoDetails items={detailItems} />
 
-        <ResultadoAvaliacao_Actions
+        <ResultadoAvaliacaoActions
           onGoHome={onGoHome}
           onNewEvaluation={onNewEvaluation}
         />

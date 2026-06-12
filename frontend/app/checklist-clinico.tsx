@@ -99,7 +99,7 @@ export default function ChecklistClinicoScreen() {
       });
 
       router.replace({
-        pathname: '/resultadoAvaliacao',
+        pathname: '/resultado-avaliacao',
         params: {
           patientName,
           score: String(evaluation.score),

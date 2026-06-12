@@ -7,7 +7,7 @@ import { ThemedView } from '@/components/themed-view';
 import { createPatient } from '@/services/patients';
 import { ageFromBirthDate, birthDateFromAge, mapBiologicalSex } from '@/utils/patient';
 
-export default function CadastroScreen() {
+export default function CadastroPacienteScreen() {
   const router = useRouter();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -33,7 +33,7 @@ export default function CadastroScreen() {
       });
 
       router.push({
-        pathname: '/checklistClinico',
+        pathname: '/checklist-clinico',
         params: {
           patientId: patient.id,
           patientName: patient.name,

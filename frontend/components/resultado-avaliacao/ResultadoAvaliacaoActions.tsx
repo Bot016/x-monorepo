@@ -5,17 +5,18 @@ import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useThemeColor } from '@/hooks/use-theme-color';
 
-type ResultadoAvaliacao_ActionsProps = {
+type ResultadoAvaliacaoActionsProps = {
   onGoHome?: () => void;
   onNewEvaluation?: () => void;
 };
 
-export function ResultadoAvaliacao_Actions({
+export function ResultadoAvaliacaoActions({
   onGoHome,
   onNewEvaluation,
-}: ResultadoAvaliacao_ActionsProps) {
+}: ResultadoAvaliacaoActionsProps) {
   const buttonColor = useThemeColor({}, 'buttonColor');
   const labelColor = useThemeColor({}, 'label');
+  const onPrimaryColor = useThemeColor({}, 'onPrimary');
   const backgroundColor = useThemeColor(
     { light: '#FFFFFF', dark: '#1F2426' },
     'background',
@@ -34,8 +35,10 @@ export function ResultadoAvaliacao_Actions({
           );
         }}
       >
-        <IconSymbol name="arrow.down.circle.fill" size={20} color="#FFFFFF" />
-        <ThemedText style={styles.primaryLabel}>Baixar Relatório (PDF)</ThemedText>
+        <IconSymbol name="arrow.down.circle.fill" size={20} color={onPrimaryColor} />
+        <ThemedText style={[styles.primaryLabel, { color: onPrimaryColor }]}>
+          Baixar Relatório (PDF)
+        </ThemedText>
       </TouchableOpacity>
 
       <View style={styles.secondaryButtonsRow}>
@@ -84,7 +87,6 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   primaryLabel: {
-    color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '700',
     letterSpacing: 0.3,

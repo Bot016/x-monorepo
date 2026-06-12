@@ -1,11 +1,11 @@
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
 
-import { ResultadoAvaliacao_Form } from '@/components/resultadoAvaliacao/resultadoAvaliacao_form';
+import { ResultadoAvaliacaoForm } from '@/components/resultado-avaliacao/ResultadoAvaliacaoForm';
 import { ThemedView } from '@/components/themed-view';
 import type { ScreeningResult } from '@/services/types/api';
 
-export default function ResultadoAvaliacao() {
+export default function ResultadoAvaliacaoScreen() {
   const router = useRouter();
   const params = useLocalSearchParams<{
     patientName?: string;
@@ -24,7 +24,7 @@ export default function ResultadoAvaliacao() {
         style={styles.keyboard}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        <ResultadoAvaliacao_Form
+        <ResultadoAvaliacaoForm
           patientName={params.patientName}
           score={score}
           maxScore={1}
@@ -39,7 +39,7 @@ export default function ResultadoAvaliacao() {
             { label: 'Limiar aplicado', value: appliedThreshold.toFixed(3) },
           ]}
           onGoHome={() => router.replace('/(tabs)')}
-          onNewEvaluation={() => router.replace('/Cadastro')}
+          onNewEvaluation={() => router.replace('/cadastro-paciente')}
         />
       </KeyboardAvoidingView>
     </ThemedView>
