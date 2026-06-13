@@ -13,13 +13,13 @@ type FilteredRecordsTableProps = {
 };
 
 const LEFT_BAR_COLORS = {
-  SUSPEITO: '#E53E3E',
-  BAIXO_RISCO: '#38A169',
+  suspected: '#E53E3E',
+  low_risk: '#38A169',
 };
 
 const BADGE_COLORS = {
-  SUSPEITO: { bg: '#FEE2E2', text: '#C53030' },
-  BAIXO_RISCO: { bg: '#D1FAE5', text: '#065F46' },
+  suspected: { bg: '#FEE2E2', text: '#C53030' },
+  low_risk: { bg: '#D1FAE5', text: '#065F46' },
 };
 
 export function FilteredRecordsTable({

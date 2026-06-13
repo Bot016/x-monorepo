@@ -20,7 +20,7 @@ NODE_ENV=development
 ```bash
 cp .env.example .env   # 1. preencha com as credenciais do Supabase
 pnpm install           # 2. instala as dependências
-pnpm db:migrate        # 3. cria as tabelas no banco + roda o seed
+pnpm db:generate       # 3. gera o cliente Prisma (o banco já está migrado)
 pnpm dev               # 4. sobe o servidor (http://localhost:3000)
 ```
 
@@ -85,10 +85,11 @@ pnpm dev            # servidor em watch (tsx)
 pnpm build          # compila TypeScript para dist/
 pnpm start          # roda o build de produção
 
-pnpm db:migrate     # cria/aplica migrations + roda o seed
-pnpm db:seed        # roda só o seed
+pnpm db:generate    # gera o cliente Prisma a partir do schema
+pnpm db:migrate     # cria uma migration nova (só em banco de dev — pode resetar!)
+pnpm db:deploy      # aplica migrations pendentes sem prompt (banco compartilhado/CI)
+pnpm db:seed        # roda o seed (idempotente)
 pnpm db:studio      # GUI do banco
-pnpm db:deploy      # aplica migrations sem prompt (CI/produção)
 
 pnpm check:types    # checagem de tipos (tsc)
 pnpm format         # formata o código com Prettier

@@ -29,14 +29,14 @@ export function ResultadoAvaliacaoForm({
   patientName,
   score = 0,
   maxScore = 1,
-  screeningResult = 'BAIXO_RISCO',
+  screeningResult = 'low_risk',
   alertMessage = 'O resultado sugere possível manifestação de características relacionadas à Síndrome de X Frágil.',
   detailItems = [],
   onGoHome,
   onNewEvaluation,
 }: ResultadoAvaliacaoFormProps) {
   const labelColor = useThemeColor({}, 'label');
-  const isSuspected = screeningResult === 'SUSPEITO';
+  const isSuspected = screeningResult === 'suspected';
 
   return (
     <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">

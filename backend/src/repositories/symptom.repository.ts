@@ -8,7 +8,12 @@ export const symptomRepository = {
   },
 
   async findBySex(sex: SexOption) {
-    const symptoms = await prisma.symptom.findMany();
+    const symptoms = await prisma.symptom.findMany({
+      where:
+        sex === ""
+          ? {}
+          : { OR: [{ applicableSex: null }, { applicableSex: sex }] },
+    });
 
     return symptoms.map((symptom) => {
       if (sex === "") {

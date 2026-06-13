@@ -102,7 +102,13 @@ function matchesFilters(
     return false;
   }
 
-  if (filters.resultado !== 'all' && evaluation.screeningResult !== filters.resultado) {
+  // filters.resultado uses the /reports wire format (SUSPEITO/BAIXO_RISCO);
+  // evaluation.screeningResult uses the DB enum (suspected/low_risk).
+  if (
+    filters.resultado !== 'all' &&
+    evaluation.screeningResult !==
+      (filters.resultado === 'SUSPEITO' ? 'suspected' : 'low_risk')
+  ) {
     return false;
   }
 
@@ -164,7 +170,7 @@ function buildFallbackReport(
 
   for (const evaluation of filtered) {
     const resultKey =
-      evaluation.screeningResult === 'SUSPEITO' ? 'suspeito' : 'baixo_risco';
+      evaluation.screeningResult === 'suspected' ? 'suspeito' : 'baixo_risco';
     totais[resultKey]++;
 
     const patient = patients.find((p) => p.id === evaluation.patientId);
@@ -232,5 +238,5 @@ export function nextRecordsPageSize(current: number): number {
 }
 
 export function mapScreeningLabel(result: ScreeningResult): string {
-  return result === 'SUSPEITO' ? 'SUSPEITO' : 'NÃO SUSPEITO';
+  return result === 'suspected' ? 'SUSPEITO' : 'NÃO SUSPEITO';
 }
