@@ -25,7 +25,7 @@ function formatAssessmentDate(isoDate: string): string {
 }
 
 function mapScreeningResult(result: ScreeningResult): RecentEvaluation['status'] {
-  return result === 'suspected' ? 'SUSPEITA' : 'NORMAL';
+  return result === 'suspected' ? 'SUSPEITA' : 'Não suspeito';
 }
 
 function buildDashboardData(

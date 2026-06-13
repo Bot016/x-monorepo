@@ -1,7 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { useThemeColor } from '@/hooks/use-theme-color';
 
 type CadastroHeaderProps = {
@@ -14,7 +13,7 @@ export function CadastroHeader({ step = 1, totalSteps = 2 }: CadastroHeaderProps
   const stepColor = useThemeColor({}, 'label');
 
   return (
-    <ThemedView style={styles.container}>
+    <View style={styles.container}>
       <ThemedText style={[styles.step, { color: stepColor }]}>
         PASSO {step} DE {totalSteps}
       </ThemedText>
@@ -24,7 +23,7 @@ export function CadastroHeader({ step = 1, totalSteps = 2 }: CadastroHeaderProps
       <ThemedText style={[styles.description, { color: stepColor }]}>
         Preencha os dados básicos do paciente para iniciar o rastreio da Síndrome de X Frágil.
       </ThemedText>
-    </ThemedView>
+    </View>
   );
 }
 

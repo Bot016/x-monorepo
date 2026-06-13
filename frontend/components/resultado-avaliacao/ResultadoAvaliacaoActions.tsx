@@ -2,7 +2,11 @@ import { Alert, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import { FormButton } from '@/components/ui/form-button';
+import { useBreakpointLayout } from '@/hooks/useBreakpointLayout';
 import { useThemeColor } from '@/hooks/use-theme-color';
+
+const BUTTON_HEIGHT = 52;
 
 type ResultadoAvaliacaoActionsProps = {
   onGoHome?: () => void;
@@ -13,29 +17,75 @@ export function ResultadoAvaliacaoActions({
   onGoHome,
   onNewEvaluation,
 }: ResultadoAvaliacaoActionsProps) {
+  const { isStatsRow } = useBreakpointLayout();
   const buttonColor = useThemeColor({}, 'buttonColor');
-  const labelColor = useThemeColor({}, 'label');
   const onPrimaryColor = useThemeColor({}, 'onPrimary');
+  const labelColor = useThemeColor({}, 'label');
   const backgroundColor = useThemeColor({}, 'background');
   const greenColor = '#10B981';
 
+  const handleDownload = () => {
+    Alert.alert(
+      'Relatório em PDF',
+      'A exportação de relatórios estará disponível em uma versão futura.',
+    );
+  };
+
+  if (isStatsRow) {
+    return (
+      <View style={styles.wideContainer}>
+        <TouchableOpacity
+          style={[styles.wideButton, { backgroundColor: buttonColor }]}
+          activeOpacity={0.85}
+          onPress={handleDownload}
+        >
+          <IconSymbol name="arrow.down.circle.fill" size={20} color={onPrimaryColor} />
+          <ThemedText style={[styles.widePrimaryLabel, { color: onPrimaryColor }]}>
+            Baixar Relatório (PDF)
+          </ThemedText>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[
+            styles.wideButton,
+            styles.wideOutlineButton,
+            { backgroundColor, borderColor: labelColor },
+          ]}
+          activeOpacity={0.85}
+          onPress={onGoHome}
+        >
+          <IconSymbol name="house.fill" size={18} color={labelColor} />
+          <ThemedText style={[styles.wideOutlineLabel, { color: labelColor }]}>
+            Voltar ao Início
+          </ThemedText>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[
+            styles.wideButton,
+            styles.wideOutlineButton,
+            { backgroundColor, borderColor: greenColor },
+          ]}
+          activeOpacity={0.85}
+          onPress={onNewEvaluation}
+        >
+          <IconSymbol name="plus.circle.fill" size={18} color={greenColor} />
+          <ThemedText style={[styles.wideOutlineLabel, { color: greenColor }]}>
+            Nova Avaliação
+          </ThemedText>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={[styles.primaryButton, { backgroundColor: buttonColor }]}
-        activeOpacity={0.85}
-        onPress={() => {
-          Alert.alert(
-            'Relatório em PDF',
-            'A exportação de relatórios estará disponível em uma versão futura.',
-          );
-        }}
-      >
-        <IconSymbol name="arrow.down.circle.fill" size={20} color={onPrimaryColor} />
-        <ThemedText style={[styles.primaryLabel, { color: onPrimaryColor }]}>
-          Baixar Relatório (PDF)
-        </ThemedText>
-      </TouchableOpacity>
+      <FormButton
+        label="Baixar Relatório (PDF)"
+        icon="arrow.down.circle.fill"
+        grouped
+        onPress={handleDownload}
+      />
 
       <View style={styles.secondaryButtonsRow}>
         <TouchableOpacity
@@ -69,23 +119,34 @@ const styles = StyleSheet.create({
     gap: 16,
     marginTop: 24,
   },
-  primaryButton: {
+  wideContainer: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    gap: 12,
+    marginTop: 24,
+  },
+  wideButton: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 10,
-    height: 56,
-    gap: 10,
-    shadowColor: '#1A56DB',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.35,
-    shadowRadius: 10,
-    elevation: 6,
+    height: BUTTON_HEIGHT,
+    gap: 8,
+    paddingHorizontal: 12,
   },
-  primaryLabel: {
+  wideOutlineButton: {
+    borderWidth: 2,
+  },
+  widePrimaryLabel: {
     fontSize: 16,
     fontWeight: '700',
     letterSpacing: 0.3,
+  },
+  wideOutlineLabel: {
+    fontSize: 16,
+    fontWeight: '600',
+    textAlign: 'center',
   },
   secondaryButtonsRow: {
     flexDirection: 'row',

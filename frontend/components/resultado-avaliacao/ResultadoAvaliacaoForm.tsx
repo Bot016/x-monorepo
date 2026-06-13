@@ -8,6 +8,7 @@ import { ResultadoAvaliacaoDetails } from '@/components/resultado-avaliacao/Resu
 import { ResultadoAvaliacaoHeader } from '@/components/resultado-avaliacao/ResultadoAvaliacaoHeader';
 import { ResultadoAvaliacaoScoreCard } from '@/components/resultado-avaliacao/ResultadoAvaliacaoScoreCard';
 import { ThemedText } from '@/components/themed-text';
+import { useBreakpointLayout } from '@/hooks/useBreakpointLayout';
 import { useThemeColor } from '@/hooks/use-theme-color';
 import type { ScreeningResult } from '@/services/types/api';
 
@@ -36,7 +37,30 @@ export function ResultadoAvaliacaoForm({
   onNewEvaluation,
 }: ResultadoAvaliacaoFormProps) {
   const labelColor = useThemeColor({}, 'label');
+  const { isStatsRow } = useBreakpointLayout();
   const isSuspected = screeningResult === 'suspected';
+
+  const screeningCard = (
+    <ResultadoAvaliacaoAlertCard
+      title={isSuspected ? 'SUSPEITA DE X FRÁGIL' : 'BAIXO RISCO'}
+      description={alertMessage}
+      type={isSuspected ? 'warning' : 'info'}
+      style={isStatsRow ? styles.alertCardInRow : undefined}
+    />
+  );
+
+  const recommendationCard = (
+    <ResultadoAvaliacaoAlertCard
+      title={isSuspected ? 'ENCAMINHAMENTO INDICADO' : 'ACOMPANHAMENTO DE ROTINA'}
+      description={
+        isSuspected
+          ? 'Exame molecular para confirmação diagnóstica. Recomenda-se referência para serviço de genética clínica para avaliação especializada.'
+          : 'Continue o acompanhamento clínico de rotina. Reavalie se novos sintomas surgirem.'
+      }
+      type="info"
+      style={isStatsRow ? styles.alertCardInRow : undefined}
+    />
+  );
 
   return (
     <ScrollView contentContainerStyle={styles.container} keyboardShouldPersistTaps="handled">
@@ -52,25 +76,20 @@ export function ResultadoAvaliacaoForm({
 
         <ResultadoAvaliacaoScoreCard score={score} maxScore={maxScore} />
 
-        <ResultadoAvaliacaoAlertCard
-          title={isSuspected ? 'SUSPEITA DE X FRÁGIL' : 'BAIXO RISCO'}
-          description={alertMessage}
-          type={isSuspected ? 'warning' : 'info'}
-        />
-
-        <ThemedText style={[formStyles.label, { color: labelColor }]}>
-          RECOMENDAÇÃO CLÍNICA
-        </ThemedText>
-
-        <ResultadoAvaliacaoAlertCard
-          title={isSuspected ? 'ENCAMINHAMENTO INDICADO' : 'ACOMPANHAMENTO DE ROTINA'}
-          description={
-            isSuspected
-              ? 'Exame molecular para confirmação diagnóstica. Recomenda-se referência para serviço de genética clínica para avaliação especializada.'
-              : 'Continue o acompanhamento clínico de rotina. Reavalie se novos sintomas surgirem.'
-          }
-          type="info"
-        />
+        {isStatsRow ? (
+          <View style={styles.alertCardsRow}>
+            <View style={styles.alertCardColumn}>{screeningCard}</View>
+            <View style={styles.alertCardColumn}>{recommendationCard}</View>
+          </View>
+        ) : (
+          <>
+            {screeningCard}
+            <ThemedText style={[formStyles.label, { color: labelColor }]}>
+              RECOMENDAÇÃO CLÍNICA
+            </ThemedText>
+            {recommendationCard}
+          </>
+        )}
 
         <ResultadoAvaliacaoDetails items={detailItems} />
 
@@ -93,5 +112,18 @@ const styles = StyleSheet.create({
   },
   content: {
     gap: 12,
+  },
+  alertCardsRow: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    gap: 12,
+  },
+  alertCardColumn: {
+    flex: 1,
+    gap: 6,
+  },
+  alertCardInRow: {
+    flex: 1,
+    marginBottom: 0,
   },
 });

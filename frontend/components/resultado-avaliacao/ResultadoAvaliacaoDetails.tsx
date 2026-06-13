@@ -60,7 +60,8 @@ export function ResultadoAvaliacaoDetails({ items }: ResultadoAvaliacaoDetailsPr
 
 const styles = StyleSheet.create({
   container: {
-    gap: 12,
+    gap: 6,
+    marginTop: 16,
     marginBottom: 24,
   },
   title: {

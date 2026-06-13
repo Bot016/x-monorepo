@@ -1,9 +1,8 @@
 import { useState } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { ScreenContent } from '@/components/ScreenContent';
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { LAYOUT } from '@/constants/layout';
 import { CadastroHeader } from '@/components/cadastroComponents/cadastro_header';
 import { BiologicoSelector } from '@/components/cadastroComponents/biologico_selector';
@@ -48,7 +47,7 @@ export function CadastroForm({
       <ScreenContent maxWidth={LAYOUT.formMaxWidth} style={styles.form}>
         <CadastroHeader step={1} totalSteps={4} />
 
-        <ThemedView style={formStyles.container}>
+        <View style={formStyles.container}>
         <ThemedText style={[formStyles.label, { color: labelColor }]}>
           NOME COMPLETO
         </ThemedText>
@@ -102,7 +101,7 @@ export function CadastroForm({
           }
           disabled={!isFormValid() || isLoading}
         />
-        </ThemedView>
+        </View>
       </ScreenContent>
     </ScrollView>
   );

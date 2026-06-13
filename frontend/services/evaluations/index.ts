@@ -1,1 +1,1 @@
-export { createEvaluation, listEvaluations } from './evaluationService';
+export { createEvaluation, getEvaluationById, listEvaluations } from './evaluationService';

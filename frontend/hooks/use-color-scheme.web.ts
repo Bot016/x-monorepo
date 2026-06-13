@@ -1,21 +1,31 @@
 import { useEffect, useState } from 'react';
-import { useColorScheme as useRNColorScheme } from 'react-native';
+import { Appearance, useColorScheme as useRNColorScheme } from 'react-native';
 
 /**
- * To support static rendering, this value needs to be re-calculated on the client side for web
+ * To support static rendering, this value needs to be re-calculated on the client side for web.
+ * Appearance.addChangeListener keeps components in sync when the OS/browser theme changes.
  */
 export function useColorScheme() {
   const [hasHydrated, setHasHydrated] = useState(false);
+  const [colorScheme, setColorScheme] = useState<'light' | 'dark' | null>(
+    () => Appearance.getColorScheme() ?? 'light',
+  );
 
   useEffect(() => {
     setHasHydrated(true);
+
+    const subscription = Appearance.addChangeListener(({ colorScheme: next }) => {
+      setColorScheme(next ?? 'light');
+    });
+
+    return () => subscription.remove();
   }, []);
 
-  const colorScheme = useRNColorScheme();
+  const rnColorScheme = useRNColorScheme();
 
-  if (hasHydrated) {
-    return colorScheme;
+  if (!hasHydrated) {
+    return 'light';
   }
 
-  return 'light';
+  return colorScheme ?? rnColorScheme ?? 'light';
 }

@@ -21,14 +21,13 @@ export function HeaderActionButton({
 }: HeaderActionButtonProps) {
   const buttonColor = useThemeColor({}, 'buttonColor');
   const onPrimaryColor = useThemeColor({}, 'onPrimary');
-  const buttonShadow = useThemeColor({}, 'buttonShadow');
 
   return (
     <TouchableOpacity
       style={[
         styles.button,
         fullWidth ? styles.buttonFullWidth : styles.buttonCompact,
-        { backgroundColor: buttonColor, shadowColor: buttonShadow },
+        { backgroundColor: buttonColor },
         loading && styles.buttonDisabled,
       ]}
       activeOpacity={0.85}
@@ -53,10 +52,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     height: 52,
     gap: 8,
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 4,
   },
   buttonFullWidth: {
     alignSelf: 'stretch',

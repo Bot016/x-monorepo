@@ -1,7 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useThemeColor } from '@/hooks/use-theme-color';
@@ -17,17 +16,21 @@ export function ResultadoAvaliacaoScoreCard({
 }: ResultadoAvaliacaoScoreCardProps) {
   const colorScheme = useColorScheme();
   const buttonColor = useThemeColor({}, 'buttonColor');
-  const backgroundColor = useThemeColor({}, 'background');
-  const textColor = useThemeColor({}, 'text');
+  const cardSurface = useThemeColor({}, 'cardSurface');
+  const cardBorderColor = useThemeColor({}, 'cardBorder');
+  const progressTrackColor = useThemeColor(
+    { light: 'rgba(0, 94, 184, 0.12)', dark: 'rgba(96, 165, 250, 0.2)' },
+    'iconBoxColor',
+  );
   const percentage = (score / maxScore) * 100;
 
   return (
-    <ThemedView
+    <View
       style={[
         styles.container,
         {
-          backgroundColor,
-          borderColor: buttonColor,
+          backgroundColor: cardSurface,
+          borderColor: cardBorderColor,
         },
       ]}
     >
@@ -35,16 +38,11 @@ export function ResultadoAvaliacaoScoreCard({
         PONTUAÇÃO GERAL
       </ThemedText>
 
-      <View style={styles.scoreContainer}>
-        <ThemedText style={[styles.scoreValue, { color: buttonColor }]}>
-          {score.toFixed(2)}
-        </ThemedText>
-        <ThemedText style={[styles.scoreMax, { color: Colors[colorScheme ?? 'light'].label }]}>
-          / {maxScore.toFixed(1)}
-        </ThemedText>
-      </View>
+      <ThemedText style={[styles.scoreValue, { color: buttonColor }]}>
+        {score.toFixed(2)}
+      </ThemedText>
 
-      <View style={styles.progressContainer}>
+      <View style={[styles.progressContainer, { backgroundColor: progressTrackColor }]}>
         <View
           style={[
             styles.progressFill,
@@ -55,13 +53,7 @@ export function ResultadoAvaliacaoScoreCard({
           ]}
         />
       </View>
-
-      <View style={styles.percentageContainer}>
-        <ThemedText style={[styles.percentage, { color: textColor }]}>
-          Probabilidade: {Math.round(percentage)}%
-        </ThemedText>
-      </View>
-    </ThemedView>
+    </View>
   );
 }
 
@@ -70,7 +62,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 20,
     gap: 16,
-    borderWidth: 2,
+    borderWidth: 1,
     marginBottom: 16,
   },
   label: {
@@ -78,34 +70,17 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     letterSpacing: 0.8,
   },
-  scoreContainer: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    gap: 4,
-  },
   scoreValue: {
     fontSize: 48,
     fontWeight: '700',
   },
-  scoreMax: {
-    fontSize: 18,
-    fontWeight: '600',
-  },
   progressContainer: {
     height: 8,
-    backgroundColor: 'rgba(0, 94, 184, 0.1)',
     borderRadius: 4,
     overflow: 'hidden',
   },
   progressFill: {
     height: '100%',
     borderRadius: 4,
-  },
-  percentageContainer: {
-    alignItems: 'center',
-  },
-  percentage: {
-    fontSize: 14,
-    fontWeight: '600',
   },
 });

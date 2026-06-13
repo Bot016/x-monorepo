@@ -1,6 +1,5 @@
 import { StyleSheet, View, ViewProps } from 'react-native';
 
-import { ThemedView } from '@/components/themed-view';
 import { ThemedText } from '@/components/themed-text';
 import { useThemeColor } from '@/hooks/use-theme-color';
 
@@ -21,7 +20,7 @@ export function ChecklistSection({
   const borderColor = useThemeColor({}, 'inputBorder');
 
   return (
-    <ThemedView
+    <View
       style={[
         styles.container,
         { borderColor },
@@ -37,7 +36,7 @@ export function ChecklistSection({
         </ThemedText>
       )}
       <View style={styles.content}>{children}</View>
-    </ThemedView>
+    </View>
   );
 }
 

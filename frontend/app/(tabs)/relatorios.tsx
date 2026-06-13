@@ -1,4 +1,5 @@
 import { useCallback, useState } from 'react';
+import { useRouter } from 'expo-router';
 import {
   ActivityIndicator,
   RefreshControl,
@@ -20,9 +21,11 @@ import { ThemedView } from '@/components/themed-view';
 import { useBreakpointLayout } from '@/hooks/useBreakpointLayout';
 import { useReports } from '@/hooks/useReports';
 import { exportReportPdf } from '@/services/reports';
+import { navigateToEvaluationResult } from '@/utils/evaluationResult';
 import { showAlert } from '@/utils/showAlert';
 
 export default function RelatoriosScreen() {
+  const router = useRouter();
   const { isStatsRow, isWide } = useBreakpointLayout();
 
   const {
@@ -111,6 +114,9 @@ export default function RelatoriosScreen() {
             totalCount={totalRecords}
             canLoadMore={canLoadMore}
             onLoadMore={loadMoreRecords}
+            onRecordPress={(evaluationId) =>
+              navigateToEvaluationResult(router, { evaluationId })
+            }
           />
         </ScreenContent>
       </ScrollView>
