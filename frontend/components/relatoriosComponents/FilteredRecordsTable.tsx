@@ -1,7 +1,8 @@
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity, useWindowDimensions } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { LAYOUT } from '@/constants/layout';
 import { useThemeColor } from '@/hooks/use-theme-color';
 import { mapScreeningLabel, type FilteredRecord } from '@/services/reports';
 
@@ -25,6 +26,8 @@ export function FilteredRecordsTable({
   onLoadMore,
   onRecordPress,
 }: FilteredRecordsTableProps) {
+  const { width } = useWindowDimensions();
+  const isCompact = width < LAYOUT.statsRowMinWidth;
   const cardBorderColor = useThemeColor({}, 'cardBorder');
   const titleColor = useThemeColor({ light: '#0B1C30', dark: '#ECEDEE' }, 'text');
   const labelColor = useThemeColor({}, 'label');
@@ -42,7 +45,13 @@ export function FilteredRecordsTable({
 
   return (
     <ThemedView style={[styles.card, { borderColor: cardBorderColor }]}>
-      <ThemedView style={[styles.header, { borderBottomColor: cardBorderColor }]}>
+      <ThemedView
+        style={[
+          styles.header,
+          isCompact && styles.headerCompact,
+          { borderBottomColor: cardBorderColor },
+        ]}
+      >
         <ThemedText style={[styles.title, { color: titleColor }]}>Registros Filtrados</ThemedText>
         <ThemedView style={[styles.countBadge, { backgroundColor: badgeBackground }]}>
           <ThemedText style={[styles.countText, { color: activeColor }]}>
@@ -51,14 +60,35 @@ export function FilteredRecordsTable({
         </ThemedView>
       </ThemedView>
 
-      <ThemedView style={[styles.tableHeader, { borderBottomColor: cardBorderColor }]}>
-        <ThemedText style={[styles.columnLabel, styles.patientColumn, { color: labelColor }]}>
+      <ThemedView
+        style={[
+          styles.tableHeader,
+          isCompact && styles.tableHeaderCompact,
+          { borderBottomColor: cardBorderColor },
+        ]}
+      >
+        <ThemedText
+          style={[
+            styles.columnLabel,
+            styles.patientColumn,
+            { color: labelColor },
+          ]}
+        >
           PACIENTE / ID
         </ThemedText>
-        <ThemedText style={[styles.columnLabel, styles.dateColumn, { color: labelColor }]}>
-          DATA TRIAGEM
-        </ThemedText>
-        <ThemedText style={[styles.columnLabel, styles.statusColumn, { color: labelColor }]}>
+        {!isCompact ? (
+          <ThemedText style={[styles.columnLabel, styles.dateColumn, { color: labelColor }]}>
+            DATA TRIAGEM
+          </ThemedText>
+        ) : null}
+        <ThemedText
+          style={[
+            styles.columnLabel,
+            styles.statusColumn,
+            styles.statusColumnLabel,
+            { color: labelColor },
+          ]}
+        >
           STATUS
         </ThemedText>
       </ThemedView>
@@ -76,31 +106,56 @@ export function FilteredRecordsTable({
               activeOpacity={0.8}
               onPress={() => onRecordPress?.(record.id)}
             >
-              <ThemedView style={[styles.row, { borderBottomColor: cardBorderColor }]}>
               <ThemedView
                 style={[
-                  styles.leftBar,
-                  { backgroundColor: LEFT_BAR_COLORS[record.screeningResult] },
+                  styles.row,
+                  isCompact && styles.rowCompact,
+                  { borderBottomColor: cardBorderColor },
                 ]}
-              />
-              <ThemedView style={[styles.patientColumn, styles.patientCell]}>
-                <ThemedText style={styles.patientName} numberOfLines={2}>
-                  {record.patientName}
-                </ThemedText>
-                <ThemedText style={[styles.patientId, { color: labelColor }]}>
-                  ID: {record.patientCode}
-                </ThemedText>
-              </ThemedView>
-              <ThemedText style={[styles.dateColumn, styles.dateText, { color: labelColor }]}>
-                {record.assessmentDate}
-              </ThemedText>
-              <ThemedView style={styles.statusColumn}>
-                <ThemedView style={[styles.statusBadge, { backgroundColor: badge.bg }]}>
-                  <ThemedText style={[styles.statusText, { color: badge.text }]}>
-                    {mapScreeningLabel(record.screeningResult)}
+              >
+                <ThemedView
+                  style={[
+                    styles.leftBar,
+                    { backgroundColor: LEFT_BAR_COLORS[record.screeningResult] },
+                  ]}
+                />
+                <ThemedView style={[styles.patientColumn, styles.patientCell]}>
+                  <ThemedText style={styles.patientName} numberOfLines={1}>
+                    {record.patientName}
                   </ThemedText>
+                  <ThemedText style={[styles.patientId, { color: labelColor }]}>
+                    ID: {record.patientCode}
+                  </ThemedText>
+                  {isCompact ? (
+                    <ThemedText
+                      style={[styles.dateInline, { color: labelColor }]}
+                      numberOfLines={1}
+                    >
+                      {record.assessmentDate}
+                    </ThemedText>
+                  ) : null}
                 </ThemedView>
-              </ThemedView>
+                {!isCompact ? (
+                  <ThemedText
+                    style={[styles.dateColumn, styles.dateText, { color: labelColor }]}
+                    numberOfLines={1}
+                  >
+                    {record.assessmentDate}
+                  </ThemedText>
+                ) : null}
+                <ThemedView style={styles.statusColumn}>
+                  <ThemedView style={[styles.statusBadge, { backgroundColor: badge.bg }]}>
+                    <ThemedText
+                      style={[
+                        styles.statusText,
+                        isCompact && styles.statusTextCompact,
+                        { color: badge.text },
+                      ]}
+                    >
+                      {mapScreeningLabel(record.screeningResult)}
+                    </ThemedText>
+                  </ThemedView>
+                </ThemedView>
               </ThemedView>
             </TouchableOpacity>
           );
@@ -108,7 +163,11 @@ export function FilteredRecordsTable({
       )}
 
       {canLoadMore ? (
-        <TouchableOpacity style={styles.loadMore} onPress={onLoadMore} activeOpacity={0.8}>
+        <TouchableOpacity
+          style={[styles.loadMore, isCompact && styles.loadMoreCompact]}
+          onPress={onLoadMore}
+          activeOpacity={0.8}
+        >
           <ThemedText style={[styles.loadMoreText, { color: activeColor }]}>
             CARREGAR MAIS REGISTROS
           </ThemedText>
@@ -123,6 +182,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     overflow: 'hidden',
+    alignSelf: 'stretch',
+    flexGrow: 0,
   },
   header: {
     flexDirection: 'row',
@@ -131,6 +192,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingVertical: 24,
     borderBottomWidth: 1,
+  },
+  headerCompact: {
+    paddingHorizontal: 16,
+    paddingVertical: 16,
   },
   title: {
     fontSize: 18,
@@ -155,20 +220,30 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     gap: 8,
   },
+  tableHeaderCompact: {
+    paddingHorizontal: 16,
+    gap: 12,
+  },
   columnLabel: {
     fontSize: 10,
     fontWeight: '700',
     letterSpacing: 0.5,
   },
   patientColumn: {
-    flex: 1.2,
+    flex: 1,
+    minWidth: 0,
   },
   dateColumn: {
-    flex: 0.9,
+    width: 88,
+    flexShrink: 0,
   },
   statusColumn: {
-    flex: 0.9,
-    alignItems: 'flex-end',
+    width: 84,
+    flexShrink: 0,
+    alignItems: 'center',
+  },
+  statusColumnLabel: {
+    textAlign: 'center',
   },
   empty: {
     padding: 24,
@@ -182,6 +257,11 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     borderBottomWidth: 1,
     gap: 8,
+  },
+  rowCompact: {
+    paddingRight: 16,
+    paddingVertical: 12,
+    gap: 12,
   },
   leftBar: {
     width: 4,
@@ -198,22 +278,38 @@ const styles = StyleSheet.create({
   patientId: {
     fontSize: 10,
   },
+  dateInline: {
+    fontSize: 12,
+    marginTop: 2,
+  },
   dateText: {
     fontSize: 13,
   },
   statusBadge: {
     borderRadius: 6,
-    paddingHorizontal: 8,
+    paddingHorizontal: 6,
     paddingVertical: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+    maxWidth: '100%',
   },
   statusText: {
     fontSize: 10,
     fontWeight: '700',
     letterSpacing: 0.4,
+    textAlign: 'center',
+  },
+  statusTextCompact: {
+    fontSize: 9,
+    letterSpacing: 0.2,
+    lineHeight: 12,
   },
   loadMore: {
     alignItems: 'center',
     paddingVertical: 16,
+  },
+  loadMoreCompact: {
+    paddingVertical: 12,
   },
   loadMoreText: {
     fontSize: 12,

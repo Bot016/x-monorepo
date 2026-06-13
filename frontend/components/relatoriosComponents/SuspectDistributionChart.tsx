@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { useThemeColor } from '@/hooks/use-theme-color';
+import { displayNumberStyle } from '@/utils/displayText';
 
 type SuspectDistributionChartProps = {
   suspect: number;
@@ -112,12 +113,10 @@ const styles = StyleSheet.create({
     borderRadius: 56,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 2,
+    gap: 4,
+    overflow: 'visible',
   },
-  totalValue: {
-    fontSize: 28,
-    fontWeight: '700',
-  },
+  totalValue: displayNumberStyle(28),
   totalLabel: {
     fontSize: 12,
     fontWeight: '600',

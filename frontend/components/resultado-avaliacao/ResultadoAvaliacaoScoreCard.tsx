@@ -4,6 +4,7 @@ import { ThemedText } from '@/components/themed-text';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useThemeColor } from '@/hooks/use-theme-color';
+import { displayNumberStyle } from '@/utils/displayText';
 
 type ResultadoAvaliacaoScoreCardProps = {
   score: number;
@@ -70,10 +71,7 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     letterSpacing: 0.8,
   },
-  scoreValue: {
-    fontSize: 48,
-    fontWeight: '700',
-  },
+  scoreValue: displayNumberStyle(48),
   progressContainer: {
     height: 8,
     borderRadius: 4,

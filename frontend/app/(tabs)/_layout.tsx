@@ -1,5 +1,6 @@
 import { Tabs } from 'expo-router';
-import { Platform, useWindowDimensions } from 'react-native';
+import { Platform, StyleSheet, useWindowDimensions } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { AppTabBar } from '@/components/AppTabBar';
 import { HapticTab } from '@/components/haptic-tab';
@@ -11,10 +12,13 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const theme = Colors[colorScheme ?? 'light'];
   const isCompact = width < LAYOUT.tabBarCompactMaxWidth;
   const iconSize = isCompact ? 20 : 28;
+  const bottomPadding = Platform.OS === 'web' ? 12 : Math.max(6, insets.bottom);
+  const tabBarHeight = (isCompact ? 58 : 62) + bottomPadding;
 
   return (
     <Tabs
@@ -22,6 +26,15 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: theme.tint,
         tabBarInactiveTintColor: theme.tabIconDefault,
+        tabBarStyle: {
+          backgroundColor: theme.background,
+          borderTopColor: theme.cardBorder,
+          borderTopWidth: StyleSheet.hairlineWidth,
+          width: '100%',
+          height: tabBarHeight,
+          paddingTop: 8,
+          paddingBottom: bottomPadding,
+        },
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarLabel: ({ color, children }) => (

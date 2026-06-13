@@ -2,22 +2,25 @@ import { ScrollViewStyleReset } from 'expo-router/html';
 import type { PropsWithChildren } from 'react';
 
 const TAB_BAR_WEB_STYLES = `
-  #app-tab-bar,
-  #app-tab-bar * {
-    overflow: visible !important;
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    background-color: #F8F9FF;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    html,
+    body {
+      background-color: #151718;
+    }
   }
 
   #app-tab-bar {
-    min-height: calc(58px + env(safe-area-inset-bottom, 0px)) !important;
-    padding-bottom: max(12px, env(safe-area-inset-bottom, 0px)) !important;
-    box-sizing: border-box !important;
-  }
-
-  [role="tablist"] {
-    min-height: calc(58px + env(safe-area-inset-bottom, 0px)) !important;
-    height: auto !important;
-    overflow: visible !important;
-    padding-bottom: max(12px, env(safe-area-inset-bottom, 0px)) !important;
+    width: 100% !important;
+    align-self: stretch !important;
+    flex-shrink: 0 !important;
     box-sizing: border-box !important;
   }
 
@@ -33,6 +36,14 @@ const TAB_BAR_WEB_STYLES = `
   [role="tab"] * {
     overflow: visible !important;
     line-height: 1.3 !important;
+  }
+
+  [role="dialog"] {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    max-height: 100% !important;
   }
 `;
 

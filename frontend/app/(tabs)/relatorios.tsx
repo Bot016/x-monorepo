@@ -126,11 +126,10 @@ export default function RelatoriosScreen() {
 
 const styles = StyleSheet.create({
   scroll: {
-    flexGrow: 1,
     alignItems: 'center',
     paddingHorizontal: 24,
     paddingTop: 24,
-    paddingBottom: 32,
+    paddingBottom: 24,
   },
   content: {
     gap: 12,

@@ -8,7 +8,7 @@ type Evaluation = {
   id: string;
   name: string;
   date: string;
-  status: 'SUSPEITA' | 'Não suspeito';
+  status: 'SUSPEITA' | 'NÃO SUSPEITO';
 };
 
 type RecentesPrincipalProps = {
@@ -19,7 +19,7 @@ type RecentesPrincipalProps = {
 
 const LEFT_BAR_COLORS = {
   SUSPEITA: '#E53E3E',
-  'Não suspeito': '#38A169',
+  'NÃO SUSPEITO': '#38A169',
 };
 
 function chunk<T>(items: T[], size: number): T[][] {
