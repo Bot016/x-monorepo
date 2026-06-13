@@ -1,6 +1,5 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import { ThemedView } from '@/components/themed-view';
 import { ThemedText } from '@/components/themed-text';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useThemeColor } from '@/hooks/use-theme-color';
@@ -21,7 +20,7 @@ export function BiologicoSelector({ value, onChange }: BiologicoSelectorProps) {
   ];
 
   return (
-    <ThemedView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.optionsRow}>
         {options.map((option) => (
           <TouchableOpacity
@@ -56,7 +55,7 @@ export function BiologicoSelector({ value, onChange }: BiologicoSelectorProps) {
           </TouchableOpacity>
         ))}
       </View>
-    </ThemedView>
+    </View>
   );
 }
 

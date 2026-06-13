@@ -10,6 +10,7 @@ type FilteredRecordsTableProps = {
   totalCount: number;
   canLoadMore: boolean;
   onLoadMore?: () => void;
+  onRecordPress?: (evaluationId: string) => void;
 };
 
 const LEFT_BAR_COLORS = {
@@ -17,22 +18,27 @@ const LEFT_BAR_COLORS = {
   low_risk: '#38A169',
 };
 
-const BADGE_COLORS = {
-  suspected: { bg: '#FEE2E2', text: '#C53030' },
-  low_risk: { bg: '#D1FAE5', text: '#065F46' },
-};
-
 export function FilteredRecordsTable({
   records,
   totalCount,
   canLoadMore,
   onLoadMore,
+  onRecordPress,
 }: FilteredRecordsTableProps) {
   const cardBorderColor = useThemeColor({}, 'cardBorder');
   const titleColor = useThemeColor({ light: '#0B1C30', dark: '#ECEDEE' }, 'text');
   const labelColor = useThemeColor({}, 'label');
+  const badgeSuspectBackground = useThemeColor({}, 'badgeSuspectBackground');
+  const badgeSuspectText = useThemeColor({}, 'badgeSuspectText');
+  const badgeNormalBackground = useThemeColor({}, 'badgeNormalBackground');
+  const badgeNormalText = useThemeColor({}, 'badgeNormalText');
   const badgeBackground = useThemeColor({ light: '#EFF6FF', dark: '#1F2426' }, 'iconBoxColor');
   const activeColor = useThemeColor({ light: '#1D4ED8', dark: '#60A5FA' }, 'tint');
+
+  const getBadgeColors = (screeningResult: FilteredRecord['screeningResult']) =>
+    screeningResult === 'suspected'
+      ? { bg: badgeSuspectBackground, text: badgeSuspectText }
+      : { bg: badgeNormalBackground, text: badgeNormalText };
 
   return (
     <ThemedView style={[styles.card, { borderColor: cardBorderColor }]}>
@@ -63,12 +69,14 @@ export function FilteredRecordsTable({
         </ThemedText>
       ) : (
         records.map((record) => {
-          const badge = BADGE_COLORS[record.screeningResult];
+          const badge = getBadgeColors(record.screeningResult);
           return (
-            <ThemedView
+            <TouchableOpacity
               key={record.id}
-              style={[styles.row, { borderBottomColor: cardBorderColor }]}
+              activeOpacity={0.8}
+              onPress={() => onRecordPress?.(record.id)}
             >
+              <ThemedView style={[styles.row, { borderBottomColor: cardBorderColor }]}>
               <ThemedView
                 style={[
                   styles.leftBar,
@@ -93,7 +101,8 @@ export function FilteredRecordsTable({
                   </ThemedText>
                 </ThemedView>
               </ThemedView>
-            </ThemedView>
+              </ThemedView>
+            </TouchableOpacity>
           );
         })
       )}

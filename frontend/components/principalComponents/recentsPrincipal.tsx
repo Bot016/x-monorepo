@@ -1,6 +1,5 @@
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
-import { ThemedView } from '@/components/themed-view';
 import { ThemedText } from '@/components/themed-text';
 import { useBreakpointLayout } from '@/hooks/useBreakpointLayout';
 import { useThemeColor } from '@/hooks/use-theme-color';
@@ -9,66 +8,108 @@ type Evaluation = {
   id: string;
   name: string;
   date: string;
-  status: 'SUSPEITA' | 'NORMAL';
+  status: 'SUSPEITA' | 'Não suspeito';
 };
 
 type RecentesPrincipalProps = {
   data: Evaluation[];
   onVerTodos?: () => void;
-};
-
-const STATUS_COLORS = {
-  SUSPEITA: { bg: '#FEE2E2', text: '#C53030' },
-  NORMAL: { bg: '#D1FAE5', text: '#065F46' },
+  onItemPress?: (evaluationId: string) => void;
 };
 
 const LEFT_BAR_COLORS = {
   SUSPEITA: '#E53E3E',
-  NORMAL: '#38A169',
+  'Não suspeito': '#38A169',
 };
 
-export function RecentesPrincipal({ data, onVerTodos }: RecentesPrincipalProps) {
-  const { gridColumns } = useBreakpointLayout();
+function chunk<T>(items: T[], size: number): T[][] {
+  const rows: T[][] = [];
+
+  for (let index = 0; index < items.length; index += size) {
+    rows.push(items.slice(index, index + size));
+  }
+
+  return rows;
+}
+
+export function RecentesPrincipal({ data, onVerTodos, onItemPress }: RecentesPrincipalProps) {
+  const { isStatsRow } = useBreakpointLayout();
+  const columns = isStatsRow ? 3 : 1;
+  const rows = chunk(data, columns);
+
+  const cardBackground = useThemeColor({}, 'background');
   const cardBorderColor = useThemeColor({}, 'cardBorder');
-  const cardWidth =
-    gridColumns === 3 ? '32%' : gridColumns === 2 ? '48%' : '100%';
+  const badgeSuspectBackground = useThemeColor({}, 'badgeSuspectBackground');
+  const badgeSuspectText = useThemeColor({}, 'badgeSuspectText');
+  const badgeNormalBackground = useThemeColor({}, 'badgeNormalBackground');
+  const badgeNormalText = useThemeColor({}, 'badgeNormalText');
+
+  const getBadgeColors = (status: Evaluation['status']) =>
+    status === 'SUSPEITA'
+      ? { bg: badgeSuspectBackground, text: badgeSuspectText }
+      : { bg: badgeNormalBackground, text: badgeNormalText };
 
   return (
-    <ThemedView style={styles.section}>
-      <ThemedView style={styles.sectionHeader}>
+    <View style={styles.section}>
+      <View style={styles.sectionHeader}>
         <ThemedText style={styles.sectionTitle}>Avaliações Recentes</ThemedText>
         <TouchableOpacity onPress={onVerTodos}>
           <ThemedText style={styles.seeAll}>Ver todos</ThemedText>
         </TouchableOpacity>
-      </ThemedView>
+      </View>
 
-      <ThemedView
-        style={[styles.list, gridColumns > 1 && styles.listGrid]}
-      >
-        {data.map((item) => (
-          <View key={item.id} style={[styles.cardOuter, { width: cardWidth }]}>
-            <TouchableOpacity activeOpacity={0.7} style={styles.cardTouchable}>
-              <ThemedView style={[styles.card, { borderColor: cardBorderColor }]}>
-                <ThemedView
-                  style={[styles.leftBar, { backgroundColor: LEFT_BAR_COLORS[item.status] }]}
-                />
-                <ThemedView style={styles.cardContent}>
-                  <ThemedText style={styles.patientName}>{item.name}</ThemedText>
-                  <ThemedText style={styles.date}>{item.date}</ThemedText>
-                </ThemedView>
-                <ThemedView
-                  style={[styles.badge, { backgroundColor: STATUS_COLORS[item.status].bg }]}
-                >
-                  <ThemedText style={[styles.badgeText, { color: STATUS_COLORS[item.status].text }]}>
-                    {item.status}
-                  </ThemedText>
-                </ThemedView>
-              </ThemedView>
-            </TouchableOpacity>
+      <View style={styles.list}>
+        {rows.map((row, rowIndex) => (
+          <View
+            key={`recent-row-${rowIndex}`}
+            style={[styles.row, isStatsRow && styles.rowHorizontal]}
+          >
+            {row.map((item) => {
+              const badgeColors = getBadgeColors(item.status);
+
+              return (
+                <View key={item.id} style={isStatsRow ? styles.gridCard : styles.fullCard}>
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    style={styles.cardTouchable}
+                    onPress={() => onItemPress?.(item.id)}
+                  >
+                    <View
+                      style={[
+                        styles.card,
+                        {
+                          borderColor: cardBorderColor,
+                          backgroundColor: cardBackground,
+                        },
+                      ]}
+                    >
+                      <View
+                        style={[styles.leftBar, { backgroundColor: LEFT_BAR_COLORS[item.status] }]}
+                      />
+                      <View style={styles.cardContent}>
+                        <ThemedText style={styles.patientName}>{item.name}</ThemedText>
+                        <ThemedText style={styles.date}>{item.date}</ThemedText>
+                      </View>
+                      <View style={[styles.badge, { backgroundColor: badgeColors.bg }]}>
+                        <ThemedText style={[styles.badgeText, { color: badgeColors.text }]}>
+                          {item.status}
+                        </ThemedText>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              );
+            })}
+
+            {isStatsRow && row.length < columns
+              ? Array.from({ length: columns - row.length }).map((_, spacerIndex) => (
+                  <View key={`recent-spacer-${rowIndex}-${spacerIndex}`} style={styles.gridCard} />
+                ))
+              : null}
           </View>
         ))}
-      </ThemedView>
-    </ThemedView>
+      </View>
+    </View>
   );
 }
 
@@ -92,15 +133,20 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   list: {
-    gap: 10,
+    gap: 12,
   },
-  listGrid: {
+  row: {
+    gap: 12,
+  },
+  rowHorizontal: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-between',
+    alignItems: 'stretch',
   },
-  cardOuter: {
-    marginBottom: 0,
+  gridCard: {
+    flex: 1,
+  },
+  fullCard: {
+    width: '100%',
   },
   cardTouchable: {
     flex: 1,

@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { IconSymbol } from '@/components/ui/icon-symbol';
@@ -10,17 +10,23 @@ type ResultadoAvaliacaoAlertCardProps = {
   title: string;
   description: string;
   type?: AlertType;
+  style?: StyleProp<ViewStyle>;
 };
 
 export function ResultadoAvaliacaoAlertCard({
   title,
   description,
   type = 'info',
+  style,
 }: ResultadoAvaliacaoAlertCardProps) {
-  const cardBackground = useThemeColor({}, 'background');
+  const cardBorderColor = useThemeColor({}, 'cardBorder');
   const warningBackground = useThemeColor(
     { light: '#FEE2E2', dark: '#422020' },
-    'background',
+    'badgeSuspectBackground',
+  );
+  const infoBackground = useThemeColor(
+    { light: '#EFF6FF', dark: '#1A2A3D' },
+    'iconBoxColor',
   );
 
   const colors = (() => {
@@ -42,7 +48,7 @@ export function ResultadoAvaliacaoAlertCard({
       case 'info':
       default:
         return {
-          backgroundColor: cardBackground,
+          backgroundColor: infoBackground,
           borderColor: '#005EB8',
           iconColor: '#005EB8',
           textColor: '#005EB8',
@@ -56,11 +62,13 @@ export function ResultadoAvaliacaoAlertCard({
         styles.container,
         {
           backgroundColor: colors.backgroundColor,
-          borderColor: colors.borderColor,
+          borderColor: cardBorderColor,
+          borderLeftColor: colors.borderColor,
         },
+        style,
       ]}
     >
-      <View style={styles.header}>
+      <View style={styles.row}>
         <View style={[styles.iconBox, { backgroundColor: colors.borderColor + '20' }]}>
           <IconSymbol
             name={type === 'danger' ? 'exclamationmark.triangle.fill' : 'exclamationmark.circle.fill'}
@@ -68,11 +76,14 @@ export function ResultadoAvaliacaoAlertCard({
             color={colors.iconColor}
           />
         </View>
-        <ThemedText style={[styles.title, { color: colors.textColor }]}>{title}</ThemedText>
+
+        <View style={styles.textColumn}>
+          <ThemedText style={[styles.title, { color: colors.textColor }]}>{title}</ThemedText>
+          <ThemedText style={[styles.description, { color: colors.textColor }]}>
+            {description}
+          </ThemedText>
+        </View>
       </View>
-      <ThemedText style={[styles.description, { color: colors.textColor }]}>
-        {description}
-      </ThemedText>
     </View>
   );
 }
@@ -81,13 +92,13 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: 10,
     padding: 12,
-    gap: 8,
+    borderWidth: 1,
     borderLeftWidth: 4,
     marginBottom: 16,
   },
-  header: {
+  row: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     gap: 12,
   },
   iconBox: {
@@ -96,15 +107,18 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
+    flexShrink: 0,
+  },
+  textColumn: {
+    flex: 1,
+    gap: 4,
   },
   title: {
     fontSize: 14,
     fontWeight: '700',
-    flex: 1,
   },
   description: {
     fontSize: 13,
     lineHeight: 18,
-    marginLeft: 52,
   },
 });

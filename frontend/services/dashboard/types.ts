@@ -6,7 +6,7 @@ export type RecentEvaluation = {
   id: string;
   name: string;
   date: string;
-  status: 'SUSPEITA' | 'NORMAL';
+  status: 'SUSPEITA' | 'Não suspeito';
 };
 
 export type DashboardData = {

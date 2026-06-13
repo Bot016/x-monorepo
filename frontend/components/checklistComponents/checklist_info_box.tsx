@@ -1,7 +1,6 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
 
 type ChecklistInfoBoxProps = {
@@ -40,22 +39,22 @@ export function ChecklistInfoBox({
   }[type];
 
   return (
-    <ThemedView style={[styles.container, { backgroundColor, borderColor }]}>
+    <View style={[styles.container, { backgroundColor, borderColor }]}>
       <IconSymbol
         name={iconName as any}
         size={20}
         color={iconColor}
         style={styles.icon}
       />
-      <ThemedView style={styles.content}>
+      <View style={styles.content}>
         <ThemedText style={[styles.title, { color: iconColor }]}>
           {title}
         </ThemedText>
         <ThemedText style={[styles.message, { color: iconColor }]}>
           {message}
         </ThemedText>
-      </ThemedView>
-    </ThemedView>
+      </View>
+    </View>
   );
 }
 

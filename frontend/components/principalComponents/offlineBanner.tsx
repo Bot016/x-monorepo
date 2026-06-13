@@ -1,8 +1,8 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { ThemedView } from '@/components/themed-view';
 import { ThemedText } from '@/components/themed-text';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import { useThemeColor } from '@/hooks/use-theme-color';
 import type { DashboardSyncStatus } from '@/services/dashboard';
 
 type DashboardOfflineBannerProps = {
@@ -11,6 +11,9 @@ type DashboardOfflineBannerProps = {
 };
 
 export function DashboardOfflineBanner({ status, message }: DashboardOfflineBannerProps) {
+  const badgeBackground = useThemeColor({ light: '#F1F5F9', dark: '#2A3036' }, 'iconBoxColor');
+  const badgeTextColor = useThemeColor({}, 'label');
+
   if (status === 'synced') {
     return null;
   }
@@ -18,35 +21,34 @@ export function DashboardOfflineBanner({ status, message }: DashboardOfflineBann
   const isLoading = status === 'loading';
 
   return (
-    <ThemedView style={styles.container}>
+    <View style={[styles.badge, { backgroundColor: badgeBackground }]}>
       <IconSymbol
         name={isLoading ? 'arrow.clockwise' : 'wifi.slash'}
-        size={14}
-        color="#64748B"
+        size={11}
+        color={badgeTextColor}
       />
-      <ThemedText style={styles.text}>
+      <ThemedText style={[styles.text, { color: badgeTextColor }]}>
         {isLoading
           ? 'Sincronizando dados...'
           : (message ?? 'Não foi possível sincronizar com o servidor.')}
       </ThemedText>
-    </ThemedView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-container: {
+  badge: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    borderWidth: 1,
-    borderColor: '#DDE4EE',
-    borderRadius: 10,
-    paddingVertical: 10,
-    marginTop: 12,
-},
-text: {
-    fontSize: 13,
-    color: '#64748B',
-},
+    alignSelf: 'flex-start',
+    gap: 6,
+    paddingHorizontal: 10,
+    paddingVertical: 4,
+    borderRadius: 6,
+  },
+  text: {
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
 });

@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
+import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useThemeColor } from '@/hooks/use-theme-color';
 
 type ChecklistHeaderProps = {
@@ -12,11 +12,13 @@ type ChecklistHeaderProps = {
 export function ChecklistHeader({ patientName, patientAge }: ChecklistHeaderProps) {
   const titleColor = useThemeColor({}, 'text');
   const subtitleColor = useThemeColor({}, 'label');
-  const patientCardBackground = useThemeColor({ light: '#F5F7FA', dark: '#1F2426' }, 'iconBoxColor');
-  const patientIconBackground = useThemeColor({}, 'cardBorder');
+  const patientCardBackground = useThemeColor({ light: '#FFFFFF', dark: '#1F2426' }, 'background');
+  const patientCardBorderColor = useThemeColor({}, 'cardBorder');
+  const patientIconBackground = useThemeColor({}, 'iconBoxColor');
+  const patientIconColor = useThemeColor({}, 'buttonColor');
 
   return (
-    <ThemedView style={styles.container}>
+    <View style={styles.container}>
       <ThemedText style={[styles.title, { color: titleColor }]}>
         Lista de Sintomas
       </ThemedText>
@@ -24,9 +26,17 @@ export function ChecklistHeader({ patientName, patientAge }: ChecklistHeaderProp
         Avalie o presente ou passado nos sintomas abaixo com base na observação clínica e histórico do paciente.
       </ThemedText>
 
-      <View style={[styles.patientInfo, { backgroundColor: patientCardBackground }]}>
+      <View
+        style={[
+          styles.patientInfo,
+          {
+            backgroundColor: patientCardBackground,
+            borderColor: patientCardBorderColor,
+          },
+        ]}
+      >
         <View style={[styles.patientIconContainer, { backgroundColor: patientIconBackground }]}>
-          <ThemedText style={styles.patientIcon}>👤</ThemedText>
+          <IconSymbol name="person.fill" size={20} color={patientIconColor} />
         </View>
         <View style={styles.patientText}>
           <ThemedText style={[styles.patientName, { color: titleColor }]}>
@@ -39,7 +49,7 @@ export function ChecklistHeader({ patientName, patientAge }: ChecklistHeaderProp
           ) : null}
         </View>
       </View>
-    </ThemedView>
+    </View>
   );
 }
 
@@ -66,6 +76,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 12,
     borderRadius: 10,
+    borderWidth: 1,
   },
   patientIconContainer: {
     width: 40,
@@ -77,9 +88,6 @@ const styles = StyleSheet.create({
   patientText: {
     flex: 1,
     gap: 2,
-  },
-  patientIcon: {
-    fontSize: 20,
   },
   patientName: {
     fontSize: 14,

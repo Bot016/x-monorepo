@@ -22,15 +22,39 @@ export async function createEvaluation(
   }
 }
 
-export async function listEvaluations(): Promise<EvaluationDto[]> {
+type ListEvaluationsOptions = {
+  patientId?: string;
+};
+
+export async function listEvaluations(
+  options?: ListEvaluationsOptions,
+): Promise<EvaluationDto[]> {
+  const accessToken = await getAccessToken();
+  const api = createApiClient({ baseUrl: getApiBaseUrl() });
+  const query = options?.patientId
+    ? `?patientId=${encodeURIComponent(options.patientId)}`
+    : '';
+
+  try {
+    return await api.get<EvaluationDto[]>(`/evaluations${query}`, accessToken);
+  } catch (error) {
+    if (error instanceof ApiError && error.status === 404) {
+      return [];
+    }
+
+    throw error;
+  }
+}
+
+export async function getEvaluationById(id: string): Promise<EvaluationDto> {
   const accessToken = await getAccessToken();
   const api = createApiClient({ baseUrl: getApiBaseUrl() });
 
   try {
-    return await api.get<EvaluationDto[]>('/evaluations', accessToken);
+    return await api.get<EvaluationDto>(`/evaluations/${id}`, accessToken);
   } catch (error) {
     if (error instanceof ApiError && error.status === 404) {
-      return [];
+      throw new Error('Avaliação não encontrada.');
     }
 
     throw error;

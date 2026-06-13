@@ -238,5 +238,5 @@ export function nextRecordsPageSize(current: number): number {
 }
 
 export function mapScreeningLabel(result: ScreeningResult): string {
-  return result === 'suspected' ? 'SUSPEITO' : 'NÃO SUSPEITO';
+  return result === 'suspected' ? 'SUSPEITO' : 'Não suspeito';
 }
