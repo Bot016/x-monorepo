@@ -6,6 +6,7 @@ import { IconSymbol } from '@/components/ui/icon-symbol';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useThemeColor } from '@/hooks/use-theme-color';
 import { Colors } from '@/constants/theme';
+import { displayNumberStyle } from '@/utils/displayText';
 
 type CardPrincipalProps = {
 label: string;
@@ -41,14 +42,16 @@ card: {
     borderWidth: 1,
     paddingHorizontal: 16,
     paddingVertical: 14,
+    overflow: 'visible',
 },
 row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'flex-start',
 },
 textBlock: {
     gap: 4,
+    overflow: 'visible',
 },
 label: {
     fontSize: 11,
@@ -56,10 +59,7 @@ label: {
     letterSpacing: 0.8,
     opacity: 0.5,
 },
-value: {
-    fontSize: 28,
-    fontWeight: '700',
-},
+value: displayNumberStyle(28),
 icon: {
     opacity: 0.15,
 },

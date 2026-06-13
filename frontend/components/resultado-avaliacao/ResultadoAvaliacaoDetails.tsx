@@ -4,6 +4,7 @@ import { ThemedText } from '@/components/themed-text';
 import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useThemeColor } from '@/hooks/use-theme-color';
+import { displayNumberStyle } from '@/utils/displayText';
 
 type DetailItem = {
   label: string;
@@ -85,10 +86,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: '500',
   },
-  detailValue: {
-    fontSize: 14,
-    fontWeight: '700',
-  },
+  detailValue: displayNumberStyle(14),
   divider: {
     borderBottomWidth: 1,
   },

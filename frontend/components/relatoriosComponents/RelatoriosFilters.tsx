@@ -1,5 +1,7 @@
-import { Alert, StyleSheet, TouchableOpacity } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 
+import { SelectSheet } from '@/components/SelectSheet';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { IconSymbol } from '@/components/ui/icon-symbol';
@@ -16,6 +18,8 @@ type RelatoriosFiltersProps = {
   filters: ReportFilters;
   onChange: (patch: Partial<ReportFilters>) => void;
 };
+
+type OpenSelect = 'sexo' | 'faixaEtaria' | 'resultado' | null;
 
 const PERIOD_OPTIONS: { value: ReportPeriod; label: string }[] = [
   { value: 'ultima_semana', label: 'SEMANA' },
@@ -43,27 +47,8 @@ const RESULT_OPTIONS: { value: ReportResultFilter; label: string }[] = [
   { value: 'BAIXO_RISCO', label: 'Não suspeito' },
 ];
 
-function showSelectAlert<T extends string>(
-  title: string,
-  options: { value: T; label: string }[],
-  current: T,
-  onSelect: (value: T) => void,
-) {
-  Alert.alert(
-    title,
-    undefined,
-    [
-      ...options.map((option) => ({
-        text: option.label,
-        onPress: () => onSelect(option.value),
-        style: option.value === current ? ('default' as const) : ('default' as const),
-      })),
-      { text: 'Cancelar', style: 'cancel' as const },
-    ],
-  );
-}
-
 export function RelatoriosFilters({ filters, onChange }: RelatoriosFiltersProps) {
+  const [openSelect, setOpenSelect] = useState<OpenSelect>(null);
   const cardBorderColor = useThemeColor({}, 'cardBorder');
   const labelColor = useThemeColor({}, 'label');
   const inputBackground = useThemeColor({}, 'inputBackground');
@@ -77,71 +62,90 @@ export function RelatoriosFilters({ filters, onChange }: RelatoriosFiltersProps)
     RESULT_OPTIONS.find((option) => option.value === filters.resultado)?.label ?? 'Todos';
 
   return (
-    <ThemedView style={[styles.card, { borderColor: cardBorderColor }]}>
-      <ThemedView style={styles.field}>
-        <ThemedText style={[styles.fieldLabel, { color: labelColor }]}>PERÍODO</ThemedText>
-        <ThemedView style={[styles.segmented, { backgroundColor: segmentBackground }]}>
-          {PERIOD_OPTIONS.map((option) => {
-            const isActive = filters.periodo === option.value;
-            return (
-              <TouchableOpacity
-                key={option.value}
-                style={[styles.segment, isActive && { backgroundColor: inputBackground }]}
-                onPress={() => onChange({ periodo: option.value })}
-                activeOpacity={0.8}
-              >
-                <ThemedText
-                  style={[
-                    styles.segmentText,
-                    { color: isActive ? activeColor : labelColor },
-                    isActive && styles.segmentTextActive,
-                  ]}
+    <>
+      <ThemedView style={[styles.card, { borderColor: cardBorderColor }]}>
+        <ThemedView style={styles.field}>
+          <ThemedText style={[styles.fieldLabel, { color: labelColor }]}>PERÍODO</ThemedText>
+          <ThemedView style={[styles.segmented, { backgroundColor: segmentBackground }]}>
+            {PERIOD_OPTIONS.map((option) => {
+              const isActive = filters.periodo === option.value;
+              return (
+                <TouchableOpacity
+                  key={option.value}
+                  style={[styles.segment, isActive && { backgroundColor: inputBackground }]}
+                  onPress={() => onChange({ periodo: option.value })}
+                  activeOpacity={0.8}
                 >
-                  {option.label}
-                </ThemedText>
-              </TouchableOpacity>
-            );
-          })}
+                  <ThemedText
+                    style={[
+                      styles.segmentText,
+                      { color: isActive ? activeColor : labelColor },
+                      isActive && styles.segmentTextActive,
+                    ]}
+                  >
+                    {option.label}
+                  </ThemedText>
+                </TouchableOpacity>
+              );
+            })}
+          </ThemedView>
         </ThemedView>
+
+        <FilterSelect
+          label="SEXO"
+          value={sexLabel}
+          labelColor={labelColor}
+          inputBackground={inputBackground}
+          cardBorderColor={cardBorderColor}
+          onPress={() => setOpenSelect('sexo')}
+        />
+
+        <FilterSelect
+          label="FAIXA ETÁRIA"
+          value={ageLabel}
+          labelColor={labelColor}
+          inputBackground={inputBackground}
+          cardBorderColor={cardBorderColor}
+          onPress={() => setOpenSelect('faixaEtaria')}
+        />
+
+        <FilterSelect
+          label="STATUS DE SUSPEITA"
+          value={resultLabel}
+          labelColor={labelColor}
+          inputBackground={inputBackground}
+          cardBorderColor={cardBorderColor}
+          onPress={() => setOpenSelect('resultado')}
+        />
       </ThemedView>
 
-      <FilterSelect
-        label="SEXO"
-        value={sexLabel}
-        labelColor={labelColor}
-        inputBackground={inputBackground}
-        cardBorderColor={cardBorderColor}
-        onPress={() =>
-          showSelectAlert('Sexo', SEX_OPTIONS, filters.sexo, (sexo) => onChange({ sexo }))
-        }
+      <SelectSheet
+        visible={openSelect === 'sexo'}
+        title="Sexo"
+        options={SEX_OPTIONS}
+        selectedValue={filters.sexo}
+        onSelect={(sexo) => onChange({ sexo })}
+        onClose={() => setOpenSelect(null)}
       />
 
-      <FilterSelect
-        label="FAIXA ETÁRIA"
-        value={ageLabel}
-        labelColor={labelColor}
-        inputBackground={inputBackground}
-        cardBorderColor={cardBorderColor}
-        onPress={() =>
-          showSelectAlert('Faixa etária', AGE_OPTIONS, filters.faixaEtaria, (faixaEtaria) =>
-            onChange({ faixaEtaria }),
-          )
-        }
+      <SelectSheet
+        visible={openSelect === 'faixaEtaria'}
+        title="Faixa etária"
+        options={AGE_OPTIONS}
+        selectedValue={filters.faixaEtaria}
+        onSelect={(faixaEtaria) => onChange({ faixaEtaria })}
+        onClose={() => setOpenSelect(null)}
       />
 
-      <FilterSelect
-        label="STATUS DE SUSPEITA"
-        value={resultLabel}
-        labelColor={labelColor}
-        inputBackground={inputBackground}
-        cardBorderColor={cardBorderColor}
-        onPress={() =>
-          showSelectAlert('Status de suspeita', RESULT_OPTIONS, filters.resultado, (resultado) =>
-            onChange({ resultado }),
-          )
-        }
+      <SelectSheet
+        visible={openSelect === 'resultado'}
+        title="Status de suspeita"
+        options={RESULT_OPTIONS}
+        selectedValue={filters.resultado}
+        onSelect={(resultado) => onChange({ resultado })}
+        onClose={() => setOpenSelect(null)}
       />
-    </ThemedView>
+    </>
   );
 }
 
