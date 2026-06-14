@@ -13,6 +13,7 @@ export function BiologicoSelector({ value, onChange }: BiologicoSelectorProps) {
   const borderColor = useThemeColor({}, 'inputBorder');
   const inputBackground = useThemeColor({}, 'inputBackground');
   const buttonColor = useThemeColor({}, 'buttonColor');
+  const onPrimaryColor = useThemeColor({}, 'onPrimary');
 
   const options = [
     { label: 'Masculino', value: 'masculino', icon: 'figure.stand' },
@@ -40,13 +41,13 @@ export function BiologicoSelector({ value, onChange }: BiologicoSelectorProps) {
             <IconSymbol
               name={option.icon as any}
               size={28}
-              color={value === option.value ? '#FFFFFF' : buttonColor}
+              color={value === option.value ? onPrimaryColor : buttonColor}
             />
             <ThemedText
               style={[
                 styles.optionLabel,
                 {
-                  color: value === option.value ? '#FFFFFF' : buttonColor,
+                  color: value === option.value ? onPrimaryColor : buttonColor,
                 },
               ]}
             >

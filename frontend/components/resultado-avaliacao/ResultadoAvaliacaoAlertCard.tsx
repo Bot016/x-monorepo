@@ -20,38 +20,35 @@ export function ResultadoAvaliacaoAlertCard({
   style,
 }: ResultadoAvaliacaoAlertCardProps) {
   const cardBorderColor = useThemeColor({}, 'cardBorder');
-  const warningBackground = useThemeColor(
-    { light: '#FEE2E2', dark: '#422020' },
-    'badgeSuspectBackground',
-  );
-  const infoBackground = useThemeColor(
-    { light: '#EFF6FF', dark: '#1A2A3D' },
-    'iconBoxColor',
-  );
+  const warningBackground = useThemeColor({}, 'badgeSuspectBackground');
+  const infoBackground = useThemeColor({}, 'alertInfoBackground');
+  const alertDangerBorder = useThemeColor({}, 'alertDangerBorder');
+  const alertWarningBorder = useThemeColor({}, 'alertWarningBorder');
+  const alertInfoBorder = useThemeColor({}, 'alertInfoBorder');
 
   const colors = (() => {
     switch (type) {
       case 'danger':
         return {
           backgroundColor: warningBackground,
-          borderColor: '#DC2626',
-          iconColor: '#DC2626',
-          textColor: '#DC2626',
+          borderColor: alertDangerBorder,
+          iconColor: alertDangerBorder,
+          textColor: alertDangerBorder,
         };
       case 'warning':
         return {
           backgroundColor: warningBackground,
-          borderColor: '#EF4444',
-          iconColor: '#EF4444',
-          textColor: '#EF4444',
+          borderColor: alertWarningBorder,
+          iconColor: alertWarningBorder,
+          textColor: alertWarningBorder,
         };
       case 'info':
       default:
         return {
           backgroundColor: infoBackground,
-          borderColor: '#005EB8',
-          iconColor: '#005EB8',
-          textColor: '#005EB8',
+          borderColor: alertInfoBorder,
+          iconColor: alertInfoBorder,
+          textColor: alertInfoBorder,
         };
     }
   })();

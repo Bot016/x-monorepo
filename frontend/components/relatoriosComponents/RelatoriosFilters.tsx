@@ -52,8 +52,8 @@ export function RelatoriosFilters({ filters, onChange }: RelatoriosFiltersProps)
   const cardBorderColor = useThemeColor({}, 'cardBorder');
   const labelColor = useThemeColor({}, 'label');
   const inputBackground = useThemeColor({}, 'inputBackground');
-  const activeColor = useThemeColor({ light: '#1D4ED8', dark: '#60A5FA' }, 'tint');
-  const segmentBackground = useThemeColor({ light: '#F1F5F9', dark: '#1F2426' }, 'background');
+  const activeColor = useThemeColor({}, 'active');
+  const segmentBackground = useThemeColor({}, 'segmentBackground');
 
   const sexLabel = SEX_OPTIONS.find((option) => option.value === filters.sexo)?.label ?? 'Todos';
   const ageLabel =

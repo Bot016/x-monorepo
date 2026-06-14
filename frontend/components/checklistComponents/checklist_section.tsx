@@ -23,7 +23,7 @@ export function ChecklistSection({
     <View
       style={[
         styles.container,
-        { borderColor },
+        { borderColor, borderLeftColor: borderColor },
         style,
       ]}
     >
@@ -46,7 +46,6 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 14,
     borderLeftWidth: 3,
-    borderLeftColor: '#DDE4EE',
   },
   title: {
     fontSize: 15,

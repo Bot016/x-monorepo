@@ -43,6 +43,7 @@ const MAPPING = {
   'arrow.down.circle.fill': 'download',
   'figure.stand': 'man',
   figure: 'woman',
+  magnifyingglass: 'search',
 } as IconMapping;
 
 /**

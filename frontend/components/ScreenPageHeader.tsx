@@ -17,11 +17,11 @@ export function ScreenPageHeader({
   wide = false,
   action,
 }: ScreenPageHeaderProps) {
-  const titleColor = useThemeColor({ light: '#0B1C30', dark: '#ECEDEE' }, 'text');
+  const titleColor = useThemeColor({}, 'title');
   const subtitleColor = useThemeColor({}, 'label');
 
   const textBlock = (
-    <View style={styles.headerText}>
+    <View style={[styles.headerText, wide && action ? styles.headerTextWithAction : null]}>
       <ThemedText style={[styles.title, { color: titleColor }]}>{title}</ThemedText>
       {subtitle ? (
         <ThemedText style={[styles.subtitle, { color: subtitleColor }]}>{subtitle}</ThemedText>
@@ -58,7 +58,9 @@ const styles = StyleSheet.create({
   },
   headerText: {
     flex: 1,
-    gap: 4,
+    gap: 8,
+  },
+  headerTextWithAction: {
     paddingRight: 8,
   },
   title: {

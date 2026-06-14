@@ -22,7 +22,7 @@ export function ResultadoAvaliacaoActions({
   const onPrimaryColor = useThemeColor({}, 'onPrimary');
   const labelColor = useThemeColor({}, 'label');
   const backgroundColor = useThemeColor({}, 'background');
-  const greenColor = '#10B981';
+  const greenColor = useThemeColor({}, 'success');
 
   const handleDownload = () => {
     Alert.alert(

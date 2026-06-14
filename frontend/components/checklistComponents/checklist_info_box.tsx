@@ -2,6 +2,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { IconSymbol } from '@/components/ui/icon-symbol';
+import { useThemeColor } from '@/hooks/use-theme-color';
 
 type ChecklistInfoBoxProps = {
   title: string;
@@ -14,22 +15,23 @@ export function ChecklistInfoBox({
   message,
   type = 'info',
 }: ChecklistInfoBoxProps) {
+  const infoBackground = useThemeColor({}, 'infoBoxInfoBackground');
+  const warningBackground = useThemeColor({}, 'infoBoxWarningBackground');
+  const errorBackground = useThemeColor({}, 'infoBoxErrorBackground');
+  const infoAccent = useThemeColor({}, 'infoBoxInfoAccent');
+  const warningAccent = useThemeColor({}, 'infoBoxWarningAccent');
+  const errorAccent = useThemeColor({}, 'infoBoxErrorAccent');
+
   const backgroundColor = {
-    info: '#E0E7FF',
-    warning: '#FEF3C7',
-    error: '#FEE2E2',
+    info: infoBackground,
+    warning: warningBackground,
+    error: errorBackground,
   }[type];
 
-  const borderColor = {
-    info: '#818CF8',
-    warning: '#F59E0B',
-    error: '#F87171',
-  }[type];
-
-  const iconColor = {
-    info: '#818CF8',
-    warning: '#F59E0B',
-    error: '#F87171',
+  const accentColor = {
+    info: infoAccent,
+    warning: warningAccent,
+    error: errorAccent,
   }[type];
 
   const iconName = {
@@ -39,18 +41,18 @@ export function ChecklistInfoBox({
   }[type];
 
   return (
-    <View style={[styles.container, { backgroundColor, borderColor }]}>
+    <View style={[styles.container, { backgroundColor, borderColor: accentColor }]}>
       <IconSymbol
-        name={iconName as any}
+        name={iconName as never}
         size={20}
-        color={iconColor}
+        color={accentColor}
         style={styles.icon}
       />
       <View style={styles.content}>
-        <ThemedText style={[styles.title, { color: iconColor }]}>
+        <ThemedText style={[styles.title, { color: accentColor }]}>
           {title}
         </ThemedText>
-        <ThemedText style={[styles.message, { color: iconColor }]}>
+        <ThemedText style={[styles.message, { color: accentColor }]}>
           {message}
         </ThemedText>
       </View>

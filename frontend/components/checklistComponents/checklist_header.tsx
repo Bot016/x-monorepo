@@ -12,7 +12,7 @@ type ChecklistHeaderProps = {
 export function ChecklistHeader({ patientName, patientAge }: ChecklistHeaderProps) {
   const titleColor = useThemeColor({}, 'text');
   const subtitleColor = useThemeColor({}, 'label');
-  const patientCardBackground = useThemeColor({ light: '#FFFFFF', dark: '#1F2426' }, 'background');
+  const patientCardBackground = useThemeColor({}, 'background');
   const patientCardBorderColor = useThemeColor({}, 'cardBorder');
   const patientIconBackground = useThemeColor({}, 'iconBoxColor');
   const patientIconColor = useThemeColor({}, 'buttonColor');

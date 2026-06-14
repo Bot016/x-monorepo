@@ -19,10 +19,7 @@ export function ResultadoAvaliacaoScoreCard({
   const buttonColor = useThemeColor({}, 'buttonColor');
   const cardSurface = useThemeColor({}, 'cardSurface');
   const cardBorderColor = useThemeColor({}, 'cardBorder');
-  const progressTrackColor = useThemeColor(
-    { light: 'rgba(0, 94, 184, 0.12)', dark: 'rgba(96, 165, 250, 0.2)' },
-    'iconBoxColor',
-  );
+  const progressTrackColor = useThemeColor({}, 'progressTrack');
   const percentage = (score / maxScore) * 100;
 
   return (

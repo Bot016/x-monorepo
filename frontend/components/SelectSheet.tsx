@@ -33,13 +33,10 @@ export function SelectSheet<T extends string>({
   const borderColor = useThemeColor({}, 'cardBorder');
   const titleColor = useThemeColor({}, 'text');
   const labelColor = useThemeColor({}, 'label');
-  const activeColor = useThemeColor({ light: '#1D4ED8', dark: '#60A5FA' }, 'tint');
-  const handleColor = useThemeColor({ light: '#CBD5E1', dark: '#475569' }, 'inputBorder');
+  const activeColor = useThemeColor({}, 'active');
+  const handleColor = useThemeColor({}, 'sheetHandle');
   const sheetBackground = useThemeColor({}, 'background');
-  const optionBackground = useThemeColor(
-    { light: '#F8FAFC', dark: '#1F2426' },
-    'iconBoxColor',
-  );
+  const optionBackground = useThemeColor({}, 'sheetSelectedRow');
 
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>

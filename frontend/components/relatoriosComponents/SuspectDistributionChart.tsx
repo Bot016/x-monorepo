@@ -13,12 +13,14 @@ type SuspectDistributionChartProps = {
 export function SuspectDistributionChart({ suspect, lowRisk }: SuspectDistributionChartProps) {
   const cardBorderColor = useThemeColor({}, 'cardBorder');
   const cardBackground = useThemeColor({}, 'background');
-  const titleColor = useThemeColor({ light: '#0B1C30', dark: '#ECEDEE' }, 'text');
-  const legendBackground = useThemeColor({ light: '#EFF6FF', dark: '#1F2426' }, 'iconBoxColor');
+  const titleColor = useThemeColor({}, 'title');
+  const legendBackground = useThemeColor({}, 'softSurface');
   const centerBackground = useThemeColor({}, 'background');
-  const totalValueColor = useThemeColor({ light: '#0B1C30', dark: '#ECEDEE' }, 'text');
+  const totalValueColor = useThemeColor({}, 'title');
   const totalLabelColor = useThemeColor({}, 'label');
-  const legendValueColor = useThemeColor({ light: '#0B1C30', dark: '#ECEDEE' }, 'text');
+  const legendValueColor = useThemeColor({}, 'title');
+  const chartSuspectColor = useThemeColor({}, 'chartSuspect');
+  const chartNotSuspectColor = useThemeColor({}, 'chartNotSuspect');
 
   const total = suspect + lowRisk;
   const suspectPct = total > 0 ? (suspect / total) * 100 : 0;
@@ -35,8 +37,8 @@ export function SuspectDistributionChart({ suspect, lowRisk }: SuspectDistributi
       <View style={styles.chartArea}>
         <View style={styles.donut}>
           <View style={styles.ratioBar}>
-            <View style={[styles.suspectSlice, { flex: suspectPct || 0.001 }]} />
-            <View style={[styles.lowRiskSlice, { flex: lowRiskPct || 0.001 }]} />
+            <View style={[styles.suspectSlice, { flex: suspectPct || 0.001, backgroundColor: chartSuspectColor }]} />
+            <View style={[styles.lowRiskSlice, { flex: lowRiskPct || 0.001, backgroundColor: chartNotSuspectColor }]} />
           </View>
           <View style={[styles.center, { backgroundColor: centerBackground }]}>
             <ThemedText style={[styles.totalValue, { color: totalValueColor }]}>{total}</ThemedText>
@@ -48,7 +50,7 @@ export function SuspectDistributionChart({ suspect, lowRisk }: SuspectDistributi
       <View style={styles.legend}>
         <View style={[styles.legendRow, { backgroundColor: legendBackground }]}>
           <View style={styles.legendLeft}>
-            <View style={[styles.dot, styles.suspectDot]} />
+            <View style={[styles.dot, { backgroundColor: chartSuspectColor }]} />
             <ThemedText style={styles.legendLabel}>Suspeitas</ThemedText>
           </View>
           <ThemedText style={[styles.legendValue, { color: legendValueColor }]}>
@@ -58,7 +60,7 @@ export function SuspectDistributionChart({ suspect, lowRisk }: SuspectDistributi
 
         <View style={[styles.legendRow, { backgroundColor: legendBackground }]}>
           <View style={styles.legendLeft}>
-            <View style={[styles.dot, styles.lowRiskDot]} />
+            <View style={[styles.dot, { backgroundColor: chartNotSuspectColor }]} />
             <ThemedText style={styles.legendLabel}>Não Suspeitas</ThemedText>
           </View>
           <ThemedText style={[styles.legendValue, { color: legendValueColor }]}>
@@ -101,12 +103,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     transform: [{ rotate: '-90deg' }],
   },
-  suspectSlice: {
-    backgroundColor: '#38A169',
-  },
-  lowRiskSlice: {
-    backgroundColor: '#1D4ED8',
-  },
+  suspectSlice: {},
+  lowRiskSlice: {},
   center: {
     width: 112,
     height: 112,
@@ -141,12 +139,6 @@ const styles = StyleSheet.create({
     width: 12,
     height: 12,
     borderRadius: 6,
-  },
-  suspectDot: {
-    backgroundColor: '#38A169',
-  },
-  lowRiskDot: {
-    backgroundColor: '#1D4ED8',
   },
   legendLabel: {
     fontSize: 14,

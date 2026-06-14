@@ -17,11 +17,6 @@ type RecentesPrincipalProps = {
   onItemPress?: (evaluationId: string) => void;
 };
 
-const LEFT_BAR_COLORS = {
-  SUSPEITA: '#E53E3E',
-  'NÃO SUSPEITO': '#38A169',
-};
-
 function chunk<T>(items: T[], size: number): T[][] {
   const rows: T[][] = [];
 
@@ -43,6 +38,14 @@ export function RecentesPrincipal({ data, onVerTodos, onItemPress }: RecentesPri
   const badgeSuspectText = useThemeColor({}, 'badgeSuspectText');
   const badgeNormalBackground = useThemeColor({}, 'badgeNormalBackground');
   const badgeNormalText = useThemeColor({}, 'badgeNormalText');
+  const linkColor = useThemeColor({}, 'link');
+  const statusSuspectBar = useThemeColor({}, 'statusSuspectBar');
+  const statusNormalBar = useThemeColor({}, 'statusNormalBar');
+
+  const leftBarColors = {
+    SUSPEITA: statusSuspectBar,
+    'NÃO SUSPEITO': statusNormalBar,
+  };
 
   const getBadgeColors = (status: Evaluation['status']) =>
     status === 'SUSPEITA'
@@ -54,7 +57,7 @@ export function RecentesPrincipal({ data, onVerTodos, onItemPress }: RecentesPri
       <View style={styles.sectionHeader}>
         <ThemedText style={styles.sectionTitle}>Avaliações Recentes</ThemedText>
         <TouchableOpacity onPress={onVerTodos}>
-          <ThemedText style={styles.seeAll}>Ver todos</ThemedText>
+          <ThemedText style={[styles.seeAll, { color: linkColor }]}>Ver todos</ThemedText>
         </TouchableOpacity>
       </View>
 
@@ -84,7 +87,7 @@ export function RecentesPrincipal({ data, onVerTodos, onItemPress }: RecentesPri
                       ]}
                     >
                       <View
-                        style={[styles.leftBar, { backgroundColor: LEFT_BAR_COLORS[item.status] }]}
+                        style={[styles.leftBar, { backgroundColor: leftBarColors[item.status] }]}
                       />
                       <View style={styles.cardContent}>
                         <ThemedText style={styles.patientName}>{item.name}</ThemedText>
@@ -129,7 +132,6 @@ const styles = StyleSheet.create({
   },
   seeAll: {
     fontSize: 13,
-    color: '#00478D',
     fontWeight: '500',
   },
   list: {

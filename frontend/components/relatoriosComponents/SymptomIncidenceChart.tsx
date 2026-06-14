@@ -13,11 +13,11 @@ const TOP_LIMIT = 5;
 
 export function SymptomIncidenceChart({ symptoms }: SymptomIncidenceChartProps) {
   const cardBorderColor = useThemeColor({}, 'cardBorder');
-  const titleColor = useThemeColor({ light: '#0B1C30', dark: '#ECEDEE' }, 'text');
+  const titleColor = useThemeColor({}, 'title');
   const labelColor = useThemeColor({}, 'label');
-  const badgeColor = useThemeColor({ light: '#00478D', dark: '#60A5FA' }, 'iconColor');
+  const badgeColor = useThemeColor({}, 'active');
   const barColor = useThemeColor({}, 'buttonColor');
-  const trackColor = useThemeColor({ light: '#F1F5F9', dark: '#384047' }, 'cardBorder');
+  const trackColor = useThemeColor({}, 'segmentBackground');
 
   const topSymptoms = [...symptoms]
     .sort((left, right) => right.ocorrencias - left.ocorrencias)

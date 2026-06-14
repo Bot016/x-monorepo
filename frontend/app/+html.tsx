@@ -1,19 +1,21 @@
 import { ScrollViewStyleReset } from 'expo-router/html';
 import type { PropsWithChildren } from 'react';
 
+import { Colors } from '@/constants/theme';
+
 const TAB_BAR_WEB_STYLES = `
   html,
   body {
     margin: 0;
     padding: 0;
     min-height: 100%;
-    background-color: #F8F9FF;
+    background-color: ${Colors.light.pageBackground};
   }
 
   @media (prefers-color-scheme: dark) {
     html,
     body {
-      background-color: #151718;
+      background-color: ${Colors.dark.pageBackground};
     }
   }
 

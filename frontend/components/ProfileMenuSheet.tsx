@@ -29,7 +29,6 @@ export function ProfileMenuSheet({
   const avatarBorderColor = useThemeColor({}, 'inputBorder');
   const logoutBackground = useThemeColor({}, 'error');
   const logoutTextColor = useThemeColor({}, 'onPrimary');
-  const handleColor = useThemeColor({ light: '#CBD5E1', dark: '#475569' }, 'inputBorder');
 
   const displayName = name?.trim() || 'Profissional';
   const displayEmail = email?.trim() || '—';
@@ -42,8 +41,6 @@ export function ProfileMenuSheet({
       onRequestClose={onClose}
     >
       <BottomSheetFrame onClose={onClose} style={styles.sheet}>
-        <View style={[styles.handle, { backgroundColor: handleColor }]} />
-
         <View
           style={[
             styles.avatar,
@@ -83,15 +80,9 @@ export function ProfileMenuSheet({
 const styles = StyleSheet.create({
   sheet: {
     paddingHorizontal: 24,
-    paddingTop: 12,
+    paddingTop: 20,
     alignItems: 'center',
     gap: 8,
-  },
-  handle: {
-    width: 40,
-    height: 4,
-    borderRadius: 2,
-    marginBottom: 8,
   },
   avatar: {
     width: 72,
@@ -100,7 +91,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 4,
   },
   initials: {
     fontSize: 24,

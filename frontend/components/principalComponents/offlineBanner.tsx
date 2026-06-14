@@ -11,7 +11,7 @@ type DashboardOfflineBannerProps = {
 };
 
 export function DashboardOfflineBanner({ status, message }: DashboardOfflineBannerProps) {
-  const badgeBackground = useThemeColor({ light: '#F1F5F9', dark: '#2A3036' }, 'iconBoxColor');
+  const badgeBackground = useThemeColor({}, 'offlineBadgeBackground');
   const badgeTextColor = useThemeColor({}, 'label');
 
   if (status === 'synced') {

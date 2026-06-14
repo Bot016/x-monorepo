@@ -16,11 +16,16 @@ export function AuthInfoModal({ visible, title, message, onClose }: AuthInfoModa
   const messageColor = useThemeColor({}, 'label');
   const buttonColor = useThemeColor({}, 'buttonColor');
   const buttonTextColor = useThemeColor({}, 'onPrimary');
+  const overlayColor = useThemeColor({}, 'overlay');
 
   return (
     <Modal visible={visible} transparent animationType="fade" onRequestClose={onClose}>
       <View style={styles.overlay}>
-        <Pressable style={styles.backdrop} onPress={onClose} accessibilityLabel="Fechar" />
+        <Pressable
+          style={[styles.backdrop, { backgroundColor: overlayColor }]}
+          onPress={onClose}
+          accessibilityLabel="Fechar"
+        />
 
         <View style={[styles.card, { backgroundColor: cardBackground }]}>
           <ThemedText style={[styles.title, { color: titleColor }]}>{title}</ThemedText>
@@ -48,7 +53,6 @@ const styles = StyleSheet.create({
   },
   backdrop: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(15, 23, 42, 0.45)',
   },
   card: {
     width: '100%',

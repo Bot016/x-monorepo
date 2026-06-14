@@ -16,6 +16,7 @@ export function BottomSheetFrame({ children, onClose, style }: BottomSheetFrameP
   const { width, height } = useWindowDimensions();
   const sheetBackground = useThemeColor({}, 'background');
   const borderColor = useThemeColor({}, 'cardBorder');
+  const overlayColor = useThemeColor({}, 'overlay');
   const isWeb = Platform.OS === 'web';
   const isCentered = isWeb && width >= LAYOUT.statsRowMinWidth;
 
@@ -27,7 +28,11 @@ export function BottomSheetFrame({ children, onClose, style }: BottomSheetFrameP
         isCentered && styles.overlayCentered,
       ]}
     >
-      <Pressable style={styles.backdrop} onPress={onClose} accessibilityLabel="Fechar" />
+      <Pressable
+        style={[styles.backdrop, { backgroundColor: overlayColor }]}
+        onPress={onClose}
+        accessibilityLabel="Fechar"
+      />
 
       <View style={[styles.sheetSlot, isCentered && styles.sheetSlotCentered]}>
         <View
@@ -62,7 +67,6 @@ const styles = StyleSheet.create({
   },
   backdrop: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(15, 23, 42, 0.45)',
   },
   sheetSlot: {
     width: '100%',

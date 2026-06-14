@@ -14,11 +14,6 @@ type FilteredRecordsTableProps = {
   onRecordPress?: (evaluationId: string) => void;
 };
 
-const LEFT_BAR_COLORS = {
-  suspected: '#E53E3E',
-  low_risk: '#38A169',
-};
-
 export function FilteredRecordsTable({
   records,
   totalCount,
@@ -29,14 +24,21 @@ export function FilteredRecordsTable({
   const { width } = useWindowDimensions();
   const isCompact = width < LAYOUT.statsRowMinWidth;
   const cardBorderColor = useThemeColor({}, 'cardBorder');
-  const titleColor = useThemeColor({ light: '#0B1C30', dark: '#ECEDEE' }, 'text');
+  const titleColor = useThemeColor({}, 'title');
   const labelColor = useThemeColor({}, 'label');
   const badgeSuspectBackground = useThemeColor({}, 'badgeSuspectBackground');
   const badgeSuspectText = useThemeColor({}, 'badgeSuspectText');
   const badgeNormalBackground = useThemeColor({}, 'badgeNormalBackground');
   const badgeNormalText = useThemeColor({}, 'badgeNormalText');
-  const badgeBackground = useThemeColor({ light: '#EFF6FF', dark: '#1F2426' }, 'iconBoxColor');
-  const activeColor = useThemeColor({ light: '#1D4ED8', dark: '#60A5FA' }, 'tint');
+  const badgeBackground = useThemeColor({}, 'softSurface');
+  const activeColor = useThemeColor({}, 'active');
+  const statusSuspectBar = useThemeColor({}, 'statusSuspectBar');
+  const statusNormalBar = useThemeColor({}, 'statusNormalBar');
+
+  const leftBarColors = {
+    suspected: statusSuspectBar,
+    low_risk: statusNormalBar,
+  };
 
   const getBadgeColors = (screeningResult: FilteredRecord['screeningResult']) =>
     screeningResult === 'suspected'
@@ -116,7 +118,7 @@ export function FilteredRecordsTable({
                 <ThemedView
                   style={[
                     styles.leftBar,
-                    { backgroundColor: LEFT_BAR_COLORS[record.screeningResult] },
+                    { backgroundColor: leftBarColors[record.screeningResult] },
                   ]}
                 />
                 <ThemedView style={[styles.patientColumn, styles.patientCell]}>
